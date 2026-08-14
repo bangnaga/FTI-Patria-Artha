@@ -109,11 +109,11 @@ export const Footer: React.FC = () => {
           <div className="space-y-3">
             <h4 className="text-sm font-extrabold uppercase tracking-wider text-amber-300">Tautan Cepat</h4>
             <ul className="space-y-2 text-sm opacity-85">
-              <li><Link href="/profil" className="hover:text-white transition-colors">Profil & Akreditasi</Link></li>
-              <li><Link href="/prodi" className="hover:text-white transition-colors">Kurikulum & Silabus</Link></li>
-              <li><Link href="/dosen" className="hover:text-white transition-colors">Direktori Dosen</Link></li>
-              <li><Link href="/prodi" className="hover:text-white transition-colors">Publikasi & Showcase</Link></li>
-              <li><Link href="/kontak" className="hover:text-white transition-colors">Informasi PMB</Link></li>
+              <li><Link href="/halaman/profil" className="hover:text-white transition-colors">Profil & Akreditasi</Link></li>
+              <li><Link href="/halaman/prodi" className="hover:text-white transition-colors">Kurikulum & Silabus</Link></li>
+              <li><Link href="/halaman/dosen" className="hover:text-white transition-colors">Direktori Dosen</Link></li>
+              <li><Link href="/halaman/prodi" className="hover:text-white transition-colors">Publikasi & Showcase</Link></li>
+              <li><Link href="/halaman/kontak" className="hover:text-white transition-colors">Informasi PMB</Link></li>
             </ul>
           </div>
 
@@ -121,11 +121,11 @@ export const Footer: React.FC = () => {
           <div className="space-y-3">
             <h4 className="text-sm font-extrabold uppercase tracking-wider text-amber-300">Layanan Akademik</h4>
             <ul className="space-y-2 text-sm opacity-85">
-              <li><Link href="/berita" className="hover:text-white transition-colors">Kalender Akademik</Link></li>
-              <li><Link href="/organisasi" className="hover:text-white transition-colors">HMTI & Organisasi</Link></li>
-              <li><Link href="/dosen" className="hover:text-white transition-colors">Tracer Study Alumni</Link></li>
-              <li><Link href="/berita" className="hover:text-white transition-colors">Pengumuman Terbaru</Link></li>
-              <li><Link href="/kontak" className="hover:text-white transition-colors">Kalkulator UKT</Link></li>
+              <li><Link href="/halaman/berita" className="hover:text-white transition-colors">Kalender Akademik</Link></li>
+              <li><Link href="/halaman/organisasi" className="hover:text-white transition-colors">HMTI & Organisasi</Link></li>
+              <li><Link href="/halaman/dosen" className="hover:text-white transition-colors">Tracer Study Alumni</Link></li>
+              <li><Link href="/halaman/berita" className="hover:text-white transition-colors">Pengumuman Terbaru</Link></li>
+              <li><Link href="/halaman/kontak" className="hover:text-white transition-colors">Kalkulator UKT</Link></li>
             </ul>
           </div>
 

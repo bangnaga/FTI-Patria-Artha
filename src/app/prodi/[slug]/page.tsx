@@ -1,40 +1,31 @@
 "use client";
 
 import React from 'react';
-import { useParams } from 'next/navigation';
-import { Breadcrumb } from '../../../components/Breadcrumb';
-import { StudyPrograms } from '../../../components/StudyPrograms';
-import { Curriculum } from '../../../components/Curriculum';
+import { useParams, useRouter } from 'next/navigation';
+import { CustomPageViewer } from '../../../components/CustomPageViewer';
 import { useApp } from '../../../context/AppContext';
+import { defaultCustomPages } from '../../../data/defaultCustomPages';
 
-export default function DynamicProdiPage() {
+export default function ProdiSlugPage() {
   const params = useParams();
+  const router = useRouter();
   const rawSlug = params?.slug as string || '';
   const slug = Array.isArray(rawSlug) ? rawSlug[0] : rawSlug;
 
-  const { studyProgramsList, coursesList } = useApp();
+  const { customPagesList } = useApp();
+  const targetPage = 
+    customPagesList.find(p => p && (p.slug === slug || p.slug === `prodi-${slug}` || p.id === slug)) || 
+    defaultCustomPages.find(p => p && (p.slug === slug || p.slug === `prodi-${slug}` || p.id === slug));
 
-  const prodiTitles: Record<string, string> = {
-    'prodi-tif': 'Teknik Informatika (S1)',
-    'prodi-te': 'Teknik Elektro (S1)',
-    'prodi-tm': 'Teknik Mesin (S1)',
-  };
+  if (targetPage) {
+    return (
+      <CustomPageViewer 
+        page={targetPage} 
+        onBackToHome={() => router.push('/')} 
+        onNavigateSection={(sec) => router.push(`/halaman/${sec}`)} 
+      />
+    );
+  }
 
-  const currentTitle = prodiTitles[slug] || 'Detail Program Studi';
-
-  return (
-    <div className="pt-4 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <Breadcrumb 
-          items={[
-            { label: 'Beranda', href: '/' }, 
-            { label: 'Program Studi', href: '/prodi' },
-            { label: currentTitle }
-          ]} 
-        />
-      </div>
-      <StudyPrograms programs={studyProgramsList} />
-      <Curriculum courses={coursesList} />
-    </div>
-  );
+  return null;
 }

@@ -1,21 +1,27 @@
 "use client";
 
 import React from 'react';
-import { Breadcrumb } from '../../components/Breadcrumb';
-import { StudyPrograms } from '../../components/StudyPrograms';
-import { Curriculum } from '../../components/Curriculum';
+import { useRouter } from 'next/navigation';
+import { CustomPageViewer } from '../../components/CustomPageViewer';
 import { useApp } from '../../context/AppContext';
+import { defaultCustomPages } from '../../data/defaultCustomPages';
 
 export default function ProdiPage() {
-  const { studyProgramsList, coursesList } = useApp();
+  const router = useRouter();
+  const { customPagesList } = useApp();
+  const targetPage = 
+    customPagesList.find(p => p && p.slug === 'prodi') || 
+    defaultCustomPages.find(p => p && p.slug === 'prodi');
 
-  return (
-    <div className="pt-4 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <Breadcrumb items={[{ label: 'Beranda', href: '/' }, { label: 'Program Studi & Kurikulum' }]} />
-      </div>
-      <StudyPrograms programs={studyProgramsList} />
-      <Curriculum courses={coursesList} />
-    </div>
-  );
+  if (targetPage) {
+    return (
+      <CustomPageViewer 
+        page={targetPage} 
+        onBackToHome={() => router.push('/')} 
+        onNavigateSection={(sec) => router.push(`/halaman/${sec}`)} 
+      />
+    );
+  }
+
+  return null;
 }

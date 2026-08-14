@@ -1,19 +1,27 @@
 "use client";
 
 import React from 'react';
-import { Breadcrumb } from '../../components/Breadcrumb';
-import { Lecturers } from '../../components/Lecturers';
+import { useRouter } from 'next/navigation';
+import { CustomPageViewer } from '../../components/CustomPageViewer';
 import { useApp } from '../../context/AppContext';
+import { defaultCustomPages } from '../../data/defaultCustomPages';
 
 export default function DosenPage() {
-  const { lecturersList } = useApp();
+  const router = useRouter();
+  const { customPagesList } = useApp();
+  const targetPage = 
+    customPagesList.find(p => p && p.slug === 'dosen') || 
+    defaultCustomPages.find(p => p && p.slug === 'dosen');
 
-  return (
-    <div className="pt-4 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <Breadcrumb items={[{ label: 'Beranda', href: '/' }, { label: 'Direktori Dosen & Tenaga Pengajar' }]} />
-      </div>
-      <Lecturers lecturerList={lecturersList} />
-    </div>
-  );
+  if (targetPage) {
+    return (
+      <CustomPageViewer 
+        page={targetPage} 
+        onBackToHome={() => router.push('/')} 
+        onNavigateSection={(sec) => router.push(`/halaman/${sec}`)} 
+      />
+    );
+  }
+
+  return null;
 }

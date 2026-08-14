@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { Hero } from '../components/Hero';
 import { AcademicProfile } from '../components/AcademicProfile';
 import { FacultyStructure } from '../components/FacultyStructure';
@@ -11,17 +12,32 @@ import { StudentAndAlumni } from '../components/StudentAndAlumni';
 import { AcademicCalendar } from '../components/AcademicCalendar';
 import { NewsAndAgenda } from '../components/NewsAndAgenda';
 import { ContactSection } from '../components/ContactSection';
+import { CustomPageViewer } from '../components/CustomPageViewer';
 import { useApp } from '../context/AppContext';
 
 export default function HomePage() {
+  const router = useRouter();
   const { 
     setIsAiChatOpen, 
     newsList, 
     lecturersList, 
     studyProgramsList, 
     coursesList, 
-    studentOrgData 
+    studentOrgData,
+    customPagesList
   } = useApp();
+
+  const customBeranda = customPagesList.find(p => p && (p.slug === 'beranda' || p.slug === 'home'));
+
+  if (customBeranda) {
+    return (
+      <CustomPageViewer 
+        page={customBeranda} 
+        onBackToHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+        onNavigateSection={(sec) => router.push(`/halaman/${sec}`)} 
+      />
+    );
+  }
 
   return (
     <>

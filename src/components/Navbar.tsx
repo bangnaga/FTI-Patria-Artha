@@ -254,46 +254,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       return;
     }
 
-    const routeMap: Record<string, string> = {
-      'profil': '/profil',
-      'visi-misi': '/visi-misi',
-      'organisasi': '/organisasi',
-      'sambutan': '/sambutan',
-      'dosen': '/dosen',
-      'prodi': '/prodi',
-      'prodi-tif': '/prodi/prodi-tif',
-      'prodi/prodi-tif': '/prodi/prodi-tif',
-      'prodi-te': '/prodi/prodi-te',
-      'prodi/prodi-te': '/prodi/prodi-te',
-      'prodi-tm': '/prodi/prodi-tm',
-      'prodi/prodi-tm': '/prodi/prodi-tm',
-      'berita': '/berita',
-      'laboratorium': '/laboratorium',
-      'kontak': '/kontak',
-      'admin': '/admin',
-    };
-
-    if (routeMap[cleanSlug]) {
-      router.push(routeMap[cleanSlug]);
+    if (cleanSlug === 'admin' || targetUrl === '/admin') {
+      router.push('/admin');
       return;
     }
 
-    if (targetUrl.startsWith('/halaman/')) {
-      router.push(targetUrl);
-      return;
-    }
-
-    if (targetUrl.startsWith('/')) {
-      const firstSegment = targetUrl.replace(/^\//, '').split('/')[0];
-      if (['profil', 'visi-misi', 'organisasi', 'sambutan', 'dosen', 'prodi', 'berita', 'kontak', 'admin'].includes(firstSegment)) {
-        router.push(targetUrl);
-        return;
-      }
-      const slugWithoutSlash = targetUrl.replace(/^\//, '');
-      router.push(`/halaman/${slugWithoutSlash}`);
-      return;
-    }
-
+    // ALL MENU LINKS NAVIGATE TO CUSTOM PAGES (/halaman/[slug])
     router.push(`/halaman/${cleanSlug}`);
   };
 
