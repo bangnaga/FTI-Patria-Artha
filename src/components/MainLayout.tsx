@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { AiChatWidget } from './AiChatWidget';
@@ -11,6 +11,9 @@ import { useApp } from '../context/AppContext';
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const isVisualBuilder = pathname?.startsWith('/admin');
+
   const {
     theme,
     toggleTheme,
@@ -44,20 +47,22 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-[#9B2C2C] selection:text-white transition-colors duration-200">
-      <Navbar
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenAIAssistant={() => setIsAiChatOpen(true)}
-        onOpenAdminLogin={handleOpenAdminLogin}
-        isAdminLoggedIn={!!adminUser}
-        customMenuItems={menuItemsList}
-      />
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-[#9B2C2C] selection:text-white transition-colors duration-200 flex flex-col justify-between">
+      <div>
+        <Navbar
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenAIAssistant={() => setIsAiChatOpen(true)}
+          onOpenAdminLogin={handleOpenAdminLogin}
+          isAdminLoggedIn={!!adminUser}
+          customMenuItems={menuItemsList}
+        />
 
-      <main>{children}</main>
+        <main>{children}</main>
+      </div>
 
-      <Footer />
+      {!isVisualBuilder && <Footer />}
 
       <AiChatWidget
         isOpen={isAiChatOpen}
