@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { ChevronRight, Home, Sparkles, Calendar, User, Eye } from 'lucide-react';
+import { ChevronRight, Home, Calendar, User, Eye, Sparkles } from 'lucide-react';
 
 export interface PageBannerProps {
   badge?: string;
@@ -32,8 +32,8 @@ const getYoutubeId = (urlOrId?: string) => {
 };
 
 const HEIGHT_CLASSES = {
-  compact: 'py-3 sm:py-4 h-[150px] min-h-[150px]',
-  h150: 'py-3 sm:py-4 h-[150px] min-h-[150px]',
+  compact: 'py-2 sm:py-3 h-[150px] min-h-[150px]',
+  h150: 'py-2 sm:py-3 h-[150px] min-h-[150px]',
   medium: 'py-8 sm:py-12 min-h-[220px]',
   tall: 'py-14 sm:py-20 min-h-[320px]',
 };
@@ -47,27 +47,27 @@ const OVERLAY_CLASSES = {
 };
 
 const GRADIENT_CLASSES = {
-  'dark-bottom': 'bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent',
-  'dark-top': 'bg-gradient-to-b from-slate-950 via-slate-950/70 to-transparent',
-  'dark-full': 'bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/60',
-  'radial-center': 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-950/50 via-slate-950/90 to-slate-950',
-  'dark-left': 'bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent',
+  'dark-bottom': 'bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/30',
+  'dark-top': 'bg-gradient-to-b from-slate-950 via-slate-950/75 to-transparent',
+  'dark-full': 'bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-950/70',
+  'radial-center': 'bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900/60 via-slate-950/90 to-slate-950',
+  'dark-left': 'bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent',
 };
 
 const ACCENT_BORDER = {
-  maroon: 'from-[#9B2C2C] to-[#800020]',
-  amber: 'from-amber-500 to-amber-600',
-  emerald: 'from-emerald-500 to-emerald-600',
-  blue: 'from-blue-600 to-indigo-600',
-  purple: 'from-purple-600 to-purple-800',
+  maroon: 'from-[#800020] via-amber-400 to-[#9B2C2C]',
+  amber: 'from-amber-400 via-amber-500 to-amber-600',
+  emerald: 'from-emerald-400 via-teal-500 to-emerald-600',
+  blue: 'from-blue-500 via-cyan-400 to-indigo-600',
+  purple: 'from-purple-500 via-pink-500 to-purple-800',
 };
 
 const BADGE_COLOR_CLASSES = {
-  blue: 'bg-blue-600 text-white',
-  maroon: 'bg-[#9B2C2C] text-white',
-  amber: 'bg-amber-500 text-slate-950',
-  emerald: 'bg-emerald-600 text-white',
-  purple: 'bg-purple-600 text-white',
+  blue: 'bg-blue-600/90 text-white border-blue-400/30',
+  maroon: 'bg-[#9B2C2C]/90 text-white border-red-400/30',
+  amber: 'bg-amber-400 text-slate-950 border-amber-300 font-extrabold',
+  emerald: 'bg-emerald-600/90 text-white border-emerald-400/30',
+  purple: 'bg-purple-600/90 text-white border-purple-400/30',
 };
 
 export default function PageBanner({
@@ -136,86 +136,121 @@ export default function PageBanner({
         <div className={`absolute inset-0 z-0 ${customGradient || 'bg-gradient-to-br from-[#800020] via-red-950 to-slate-950'}`} />
       )}
 
+      {/* Ambient Lighting Orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
+        <div className="absolute -top-16 right-1/4 w-80 h-80 bg-[#800020]/25 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-10 w-60 h-60 bg-amber-500/15 rounded-full blur-3xl" />
+      </div>
+
       {/* Black Overlay & Gradient Effects */}
       <div className={`absolute inset-0 z-10 ${overlayClass}`} />
       <div className={`absolute inset-0 z-10 ${gradientClass}`} />
 
-      {/* Decorative Pattern */}
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
+      {/* Decorative Radial Grid Pattern */}
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:20px_20px] opacity-40 pointer-events-none" />
 
-      {/* Top Accent Line */}
-      <div className={`absolute top-0 left-0 right-0 h-1 z-20 bg-gradient-to-r ${accentGradient}`} />
+      {/* Top Gradient Line Accent */}
+      <div className={`absolute top-0 left-0 right-0 h-1 z-20 bg-gradient-to-r ${accentGradient} shadow-sm`} />
 
-      {/* Main Content */}
+      {/* Main Content Container */}
       <div className={`relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center ${heightClass}`}>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className={`flex flex-col max-w-4xl ${alignClass} space-y-4`}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className={`flex flex-col max-w-4xl ${alignClass} space-y-1 sm:space-y-1.5`}
         >
-          {/* Breadcrumb */}
-          {breadcrumbItems.length > 0 && (
-            <nav className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-slate-900/60 backdrop-blur-md border border-white/15 text-xs text-slate-200 font-semibold mb-1">
-              <Home className="w-3.5 h-3.5 text-amber-400" />
-              {breadcrumbItems.map((item, idx) => (
-                <React.Fragment key={idx}>
-                  {idx > 0 && <ChevronRight className="w-3 h-3 text-slate-400" />}
-                  <span className={idx === breadcrumbItems.length - 1 ? 'text-white font-extrabold' : 'text-slate-300 hover:text-white transition-colors'}>
-                    {item}
-                  </span>
-                </React.Fragment>
-              ))}
-            </nav>
-          )}
+          {/* Top Row: Breadcrumb or Pill Badge */}
+          <div className="flex flex-wrap items-center gap-2">
+            {breadcrumbItems.length > 0 && (
+              <motion.nav
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 dark:bg-slate-900/60 backdrop-blur-md border border-white/20 text-[11px] text-slate-200 font-semibold shadow-xs"
+              >
+                <Home className="w-3 h-3 text-amber-300" />
+                {breadcrumbItems.map((item, idx) => (
+                  <React.Fragment key={idx}>
+                    {idx > 0 && <ChevronRight className="w-2.5 h-2.5 text-slate-400" />}
+                    <span className={idx === breadcrumbItems.length - 1 ? 'text-white font-extrabold' : 'text-slate-300 hover:text-white transition-colors'}>
+                      {item}
+                    </span>
+                  </React.Fragment>
+                ))}
+              </motion.nav>
+            )}
 
-          {/* Pill Badge */}
-          {badge && (
-            <div className={`inline-flex items-center px-4 py-1.5 rounded-full ${badgeClass} text-xs font-black tracking-wide shadow-md`}>
-              <span>{badge}</span>
-            </div>
-          )}
+            {badge && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full ${badgeClass} border text-[10px] font-black uppercase tracking-wider shadow-sm`}
+              >
+                <Sparkles className="w-2.5 h-2.5" />
+                <span>{badge}</span>
+              </motion.div>
+            )}
+          </div>
 
-          {/* Main Title (H1) */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight drop-shadow-lg">
-            {title}
-          </h1>
+          {/* Main Title (H1) with Modern Text Gradient */}
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-lg sm:text-2xl lg:text-3xl font-black tracking-tight leading-tight drop-shadow-md"
+          >
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-amber-200">
+              {title}
+            </span>
+          </motion.h1>
 
           {/* Subtitle */}
           {subtitle && (
-            <p className="text-slate-200 text-sm sm:text-base lg:text-lg font-medium leading-relaxed max-w-2xl drop-shadow-sm">
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.25 }}
+              className="text-slate-200/90 text-xs sm:text-sm font-medium leading-normal max-w-2xl drop-shadow-xs line-clamp-1"
+            >
               {subtitle}
-            </p>
+            </motion.p>
           )}
 
           {/* Bottom Meta Bar (Date, Author, Views) */}
           {(date || author || views) && (
-            <div className="pt-2 flex flex-wrap items-center gap-5 text-xs sm:text-sm font-semibold text-white/90">
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              className="pt-0.5 flex flex-wrap items-center gap-2.5 text-[11px] font-medium text-slate-300"
+            >
               {date && (
-                <span className="flex items-center gap-1.5 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
-                  <Calendar className="w-4 h-4 text-amber-400" />
+                <span className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded-lg border border-white/10 text-slate-200">
+                  <Calendar className="w-3 h-3 text-amber-400" />
                   <span>{date}</span>
                 </span>
               )}
               {author && (
-                <span className="flex items-center gap-1.5 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
-                  <User className="w-4 h-4 text-amber-400" />
+                <span className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded-lg border border-white/10 text-slate-200">
+                  <User className="w-3 h-3 text-amber-400" />
                   <span>{author}</span>
                 </span>
               )}
               {views && (
-                <span className="flex items-center gap-1.5 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
-                  <Eye className="w-4 h-4 text-amber-400" />
+                <span className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded-lg border border-white/10 text-slate-200">
+                  <Eye className="w-3 h-3 text-amber-400" />
                   <span>{views}</span>
                 </span>
               )}
-            </div>
+            </motion.div>
           )}
         </motion.div>
       </div>
 
-      {/* Bottom Accent Border */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent z-20" />
+      {/* Bottom Accent Border Glow */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent z-20" />
     </section>
   );
 }
