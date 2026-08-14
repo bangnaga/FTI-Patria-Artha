@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Puck, Render, Config, Data, usePuck } from '@measured/puck';
+import { Puck, Render, Config, Data, usePuck, DropZone } from '@measured/puck';
 import '@measured/puck/puck.css';
 import { api } from '../services/api';
 import { NewsItem, Lecturer, StudyProgram, Course, AlumniTestimonial } from '../types';
@@ -3160,6 +3160,161 @@ const advancedStyleFields = {
   },
 };
 
+// ─── 📐 LAYOUT RENDER COMPONENTS (SECTION, COLUMNS, GRID) ───────────────────
+const SectionLayoutBlockRender: React.FC<Props['SectionLayoutBlock']> = (props) => {
+  const styleClass = getAdvancedStyleClasses(props);
+
+  const bgClasses = {
+    white: 'bg-white text-slate-900 dark:bg-slate-950 dark:text-white',
+    slate: 'bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-white border-y border-slate-200 dark:border-slate-800',
+    dark: 'bg-slate-950 text-white border-y border-slate-800',
+    maroon: 'bg-gradient-to-br from-[#800020] via-[#9B2C2C] to-red-950 text-white shadow-xl',
+    'gradient-red': 'bg-gradient-to-r from-[#800020] to-[#9B2C2C] text-white',
+    'gradient-dark': 'bg-gradient-to-b from-slate-900 to-slate-950 text-white',
+    glass: 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-3xl shadow-xl'
+  }[props.bgStyle || 'slate'];
+
+  const widthClass = {
+    boxed: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
+    compact: 'max-w-5xl mx-auto px-4 sm:px-6 lg:px-8',
+    full: 'w-full px-4 sm:px-8'
+  }[props.width || 'boxed'];
+
+  const borderTopClass = {
+    none: '',
+    maroon: 'border-t-4 border-[#800020]',
+    amber: 'border-t-4 border-amber-400',
+    emerald: 'border-t-4 border-emerald-500'
+  }[props.borderTop || 'none'];
+
+  const alignClass = {
+    left: 'text-left items-start',
+    center: 'text-center items-center mx-auto',
+    right: 'text-right items-end ml-auto'
+  }[props.alignment || 'left'];
+
+  return (
+    <section className={`${bgClasses} ${props.paddingY || 'py-12'} ${borderTopClass} ${styleClass} transition-all`}>
+      <div className={widthClass}>
+        {(props.heading || props.subheading) && (
+          <div className={`mb-8 flex flex-col ${alignClass} space-y-1.5`}>
+            {props.heading && (
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight">{props.heading}</h2>
+            )}
+            {props.subheading && (
+              <p className="text-sm opacity-80 max-w-2xl font-medium">{props.subheading}</p>
+            )}
+          </div>
+        )}
+        <div className="w-full">
+          <DropZone zone="section-content" />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ColumnsLayoutBlockRender: React.FC<Props['ColumnsLayoutBlock']> = (props) => {
+  const styleClass = getAdvancedStyleClasses(props);
+
+  const layout = props.layout || '2-equal';
+  const gap = props.gap || 'gap-6';
+  const alignItems = {
+    start: 'items-start',
+    center: 'items-center',
+    end: 'items-end',
+    stretch: 'items-stretch'
+  }[props.alignItems || 'start'];
+
+  const cardStyle = {
+    transparent: '',
+    'white-card': 'bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm',
+    'dark-card': 'bg-slate-900 text-white p-5 rounded-2xl border border-slate-800 shadow-lg',
+    'glass-card': 'bg-white/70 dark:bg-slate-800/70 backdrop-blur-md p-5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-md'
+  }[props.bgCard || 'transparent'];
+
+  let colCount = 2;
+  let gridColsClass = 'grid grid-cols-1 md:grid-cols-2';
+
+  if (layout === '2-equal') {
+    colCount = 2;
+    gridColsClass = 'grid grid-cols-1 md:grid-cols-2';
+  } else if (layout === '2-left-wide') {
+    colCount = 2;
+    gridColsClass = 'grid grid-cols-1 md:grid-cols-12';
+  } else if (layout === '2-right-wide') {
+    colCount = 2;
+    gridColsClass = 'grid grid-cols-1 md:grid-cols-12';
+  } else if (layout === '3-equal') {
+    colCount = 3;
+    gridColsClass = 'grid grid-cols-1 md:grid-cols-3';
+  } else if (layout === '4-equal') {
+    colCount = 4;
+    gridColsClass = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4';
+  }
+
+  return (
+    <div className={`w-full py-4 ${styleClass}`}>
+      <div className={`${gridColsClass} ${gap} ${alignItems}`}>
+        {layout === '2-left-wide' ? (
+          <>
+            <div className={`md:col-span-8 ${cardStyle}`}>
+              <DropZone zone="col-1" />
+            </div>
+            <div className={`md:col-span-4 ${cardStyle}`}>
+              <DropZone zone="col-2" />
+            </div>
+          </>
+        ) : layout === '2-right-wide' ? (
+          <>
+            <div className={`md:col-span-4 ${cardStyle}`}>
+              <DropZone zone="col-1" />
+            </div>
+            <div className={`md:col-span-8 ${cardStyle}`}>
+              <DropZone zone="col-2" />
+            </div>
+          </>
+        ) : (
+          Array.from({ length: colCount }).map((_, idx) => (
+            <div key={idx} className={`w-full ${cardStyle}`}>
+              <DropZone zone={`col-${idx + 1}`} />
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
+
+const GridLayoutBlockRender: React.FC<Props['GridLayoutBlock']> = (props) => {
+  const styleClass = getAdvancedStyleClasses(props);
+
+  const gridCols = {
+    'grid-2': 'grid-cols-1 sm:grid-cols-2',
+    'grid-3': 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
+    'grid-4': 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4',
+    'grid-auto': 'grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]'
+  }[props.gridCols || 'grid-3'];
+
+  const borderClass = {
+    none: '',
+    'subtle-border': 'p-4 rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50',
+    'card-box': 'p-6 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm'
+  }[props.borderStyle || 'none'];
+
+  return (
+    <div className={`w-full py-4 ${styleClass}`}>
+      <div className={`grid ${gridCols} ${props.gap || 'gap-6'} ${borderClass} ${props.padding || 'p-0'}`}>
+        {[1, 2, 3, 4, 5, 6].map((num) => (
+          <div key={num} className="w-full">
+            <DropZone zone={`grid-item-${num}`} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 type Props = {
   PageBannerBlock: PageBannerProps;
   ModernSvgBannerBlock: ModernSvgBannerProps;
@@ -3591,6 +3746,31 @@ type Props = {
   TrendingNewsBlock: TrendingNewsProps;
   NewsCarouselBlock: NewsCarouselProps;
   HeroSlideshowBlock: HeroSlideshowProps;
+
+  SectionLayoutBlock: {
+    bgStyle?: string;
+    width?: string;
+    paddingY?: string;
+    heading?: string;
+    subheading?: string;
+    alignment?: string;
+    borderTop?: string;
+  } & AdvancedStyleProps;
+
+  ColumnsLayoutBlock: {
+    layout?: string;
+    gap?: string;
+    alignItems?: string;
+    padding?: string;
+    bgCard?: string;
+  } & AdvancedStyleProps;
+
+  GridLayoutBlock: {
+    gridCols?: string;
+    gap?: string;
+    borderStyle?: string;
+    padding?: string;
+  } & AdvancedStyleProps;
 };
 
 export const puckConfig: Config<Props> = {
@@ -3598,6 +3778,10 @@ export const puckConfig: Config<Props> = {
     render: ({ children }) => <div className="w-full overflow-x-hidden">{children}</div>,
   },
   categories: {
+    layout: {
+      title: '📐 Layout & Struktur (Section, Kolom, Grid)',
+      components: ['SectionLayoutBlock', 'ColumnsLayoutBlock', 'GridLayoutBlock'],
+    },
     databaseLive: {
       title: '🗄️ Database Live Blocks',
       components: ['TrendingNewsBlock', 'NewsCarouselBlock', 'DbNewsBlock', 'DbNewsDetailBlock', 'DbTestimonialCarouselBlock', 'DbStudyProgramBlock', 'DbCurriculumBlock', 'DbLecturerBlock', 'DbAcademicCalendarBlock'],
@@ -3628,6 +3812,158 @@ export const puckConfig: Config<Props> = {
     },
   },
   components: {
+    // ─── 📐 SECTION LAYOUT BLOCK ──────────────────────────────────────────
+    SectionLayoutBlock: {
+      fields: {
+        ...advancedStyleFields,
+        bgStyle: {
+          type: 'select', label: '🎨 Latar Belakang Section',
+          options: [
+            { label: 'White (Putih Clean)', value: 'white' },
+            { label: 'Slate Terang (Light Slate)', value: 'slate' },
+            { label: 'Dark Mode (Hitam / Gelap)', value: 'dark' },
+            { label: 'Maroon UPA Premium', value: 'maroon' },
+            { label: 'Gradasi Merah Elegant', value: 'gradient-red' },
+            { label: 'Gradasi Dark Minimalis', value: 'gradient-dark' },
+            { label: 'Glassmorphism Kaca Transparan', value: 'glass' },
+          ],
+        },
+        width: {
+          type: 'select', label: '📐 Lebar Kontainer (Container Width)',
+          options: [
+            { label: 'Standar Boxed (Max 7XL)', value: 'boxed' },
+            { label: 'Rapat Compact (Max 5XL)', value: 'compact' },
+            { label: 'Full Width (Layar Penuh)', value: 'full' },
+          ],
+        },
+        heading: { type: 'text', label: '🏷️ Judul Section (Opsional)' },
+        subheading: { type: 'textarea', label: '📝 Subjudul / Deskripsi Section (Opsional)' },
+        alignment: {
+          type: 'select', label: '🎯 Posisi Teks Judul',
+          options: [
+            { label: 'Rata Kiri (Left)', value: 'left' },
+            { label: 'Rata Tengah (Center)', value: 'center' },
+            { label: 'Rata Kanan (Right)', value: 'right' },
+          ],
+        },
+        borderTop: {
+          type: 'select', label: '🎨 Garis Aksen Atas (Border Top Accent)',
+          options: [
+            { label: 'Tanpa Garis Aksen', value: 'none' },
+            { label: 'Garis Aksen Maroon UPA', value: 'maroon' },
+            { label: 'Garis Aksen Amber Emas', value: 'amber' },
+            { label: 'Garis Aksen Emerald Hijau', value: 'emerald' },
+          ],
+        },
+      },
+      defaultProps: {
+        bgStyle: 'slate',
+        width: 'boxed',
+        paddingY: 'md',
+        heading: 'Seksi Konten Baru',
+        subheading: 'Tambahkan komponen atau kolom di dalam seksi ini',
+        alignment: 'left',
+        borderTop: 'none',
+      },
+      render: (props) => <SectionLayoutBlockRender {...props} />,
+    },
+
+    // ─── 🏛️ COLUMNS LAYOUT BLOCK ──────────────────────────────────────────
+    ColumnsLayoutBlock: {
+      fields: {
+        layout: {
+          type: 'select', label: '🏛️ Susunan & Jumlah Kolom',
+          options: [
+            { label: '2 Kolom Seimbang (50% | 50%)', value: '2-equal' },
+            { label: '2 Kolom Kiri Lebar (70% | 30%)', value: '2-left-wide' },
+            { label: '2 Kolom Kanan Lebar (30% | 70%)', value: '2-right-wide' },
+            { label: '3 Kolom Seimbang (33% | 33% | 33%)', value: '3-equal' },
+            { label: '4 Kolom Seimbang (25% | 25% | 25% | 25%)', value: '4-equal' },
+          ],
+        },
+        gap: {
+          type: 'select', label: '↔️ Jarak Antar Kolom (Gap)',
+          options: [
+            { label: 'Rapat (Rapat / Small - gap-3)', value: 'gap-3' },
+            { label: 'Sedang (Standar / Medium - gap-6)', value: 'gap-6' },
+            { label: 'Longgar (Lebar / Large - gap-10)', value: 'gap-10' },
+          ],
+        },
+        alignItems: {
+          type: 'select', label: '↕️ Align Vertikal Konten',
+          options: [
+            { label: 'Atas (Start)', value: 'start' },
+            { label: 'Tengah (Center)', value: 'center' },
+            { label: 'Bawah (End)', value: 'end' },
+            { label: 'Sama Tinggi (Stretch)', value: 'stretch' },
+          ],
+        },
+        bgCard: {
+          type: 'select', label: '🎴 Gaya Latar Kartu Kolom',
+          options: [
+            { label: 'Transparan (Tanpa Kartu)', value: 'transparent' },
+            { label: 'Kartu Putih (White Card)', value: 'white-card' },
+            { label: 'Kartu Dark (Dark Card)', value: 'dark-card' },
+            { label: 'Kartu Glassmorphism (Frosted Glass)', value: 'glass-card' },
+          ],
+        },
+        ...advancedStyleFields,
+      },
+      defaultProps: {
+        layout: '2-equal',
+        gap: 'gap-6',
+        alignItems: 'start',
+        bgCard: 'transparent',
+      },
+      render: (props) => <ColumnsLayoutBlockRender {...props} />,
+    },
+
+    // ─── 🔳 GRID LAYOUT BLOCK ──────────────────────────────────────────
+    GridLayoutBlock: {
+      fields: {
+        gridCols: {
+          type: 'select', label: '🔳 Jumlah Kolom Grid Responsif',
+          options: [
+            { label: '2 Kolom (Grid 2)', value: 'grid-2' },
+            { label: '3 Kolom (Grid 3)', value: 'grid-3' },
+            { label: '4 Kolom (Grid 4)', value: 'grid-4' },
+            { label: 'Auto Fit (Otomatis Menyesuaikan Layar)', value: 'grid-auto' },
+          ],
+        },
+        gap: {
+          type: 'select', label: '↔️ Jarak Antar Sel Grid (Gap)',
+          options: [
+            { label: 'Rapat (gap-3)', value: 'gap-3' },
+            { label: 'Sedang (gap-6)', value: 'gap-6' },
+            { label: 'Longgar (gap-8)', value: 'gap-8' },
+          ],
+        },
+        borderStyle: {
+          type: 'select', label: '🖼️ Bingkai Container Grid',
+          options: [
+            { label: 'Tanpa Bingkai', value: 'none' },
+            { label: 'Garis Tipis Elegant (Subtle Border)', value: 'subtle-border' },
+            { label: 'Kotak Dashed Card (Card Box)', value: 'card-box' },
+          ],
+        },
+        padding: {
+          type: 'select', label: '📦 Padding Container Grid',
+          options: [
+            { label: 'Tanpa Padding (p-0)', value: 'p-0' },
+            { label: 'Sedang (p-4)', value: 'p-4' },
+            { label: 'Besar (p-8)', value: 'p-8' },
+          ],
+        },
+        ...advancedStyleFields,
+      },
+      defaultProps: {
+        gridCols: 'grid-3',
+        gap: 'gap-6',
+        borderStyle: 'none',
+        padding: 'p-0',
+      },
+      render: (props) => <GridLayoutBlockRender {...props} />,
+    },
     // ─── 🌄 HERO SLIDESHOW BLOCK ──────────────────────────────────────────
     HeroSlideshowBlock: {
       fields: {
