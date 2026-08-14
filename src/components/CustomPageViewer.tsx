@@ -27,6 +27,14 @@ export const CustomPageViewer: React.FC<CustomPageViewerProps> = ({
     puckData = { root: { props: { title: page.title } }, content: [] };
   }
 
+  // Ensure non-home subpages do not render default giant HeroBlock
+  if (page.slug !== 'beranda' && page.slug !== 'home' && page.slug !== 'hero' && puckData && puckData.content && Array.isArray(puckData.content)) {
+    puckData = {
+      ...puckData,
+      content: puckData.content.filter((block: any) => block && block.type !== 'HeroBlock')
+    };
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200 w-full overflow-x-hidden">
       {/* Full width Puck Visual Canvas Rendering */}

@@ -36,6 +36,28 @@ export async function GET(request: Request, context: { params: Promise<{ model: 
           where: { key: { startsWith: 'page_' } }
         });
 
+        // Always ensure subpages in database don't contain unwanted legacy HeroBlock
+        await Promise.all(
+          pages.map(async (p) => {
+            try {
+              const val = JSON.parse(p.value);
+              const slug = val?.slug || '';
+              if (slug !== 'beranda' && slug !== 'home' && slug !== 'hero' && val?.content?.content && Array.isArray(val.content.content)) {
+                const hasHero = val.content.content.some((b: any) => b && b.type === 'HeroBlock');
+                if (hasHero) {
+                  val.content.content = val.content.content.filter((b: any) => b && b.type !== 'HeroBlock');
+                  await prisma.siteData.update({
+                    where: { key: p.key },
+                    data: { value: JSON.stringify(val) }
+                  });
+                }
+              }
+            } catch {
+              // ignore
+            }
+          })
+        );
+
         const existingKeys = new Set(pages.map(p => p.key));
         const missingDefaults = defaultCustomPages.filter(dp => !existingKeys.has(`page_${dp.id}`));
 
@@ -53,13 +75,15 @@ export async function GET(request: Request, context: { params: Promise<{ model: 
                 })
               )
             );
-            pages = await prisma.siteData.findMany({
-              where: { key: { startsWith: 'page_' } }
-            });
           } catch (seedErr) {
             console.warn('Auto-seed missing custom pages failed:', seedErr);
           }
         }
+
+        pages = await prisma.siteData.findMany({
+          where: { key: { startsWith: 'page_' } }
+        });
+
         const parsed = pages.map(p => ({
           id: p.key.replace('page_', ''),
           ...JSON.parse(p.value)
