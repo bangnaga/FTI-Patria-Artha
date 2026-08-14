@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Puck, Render, Config, Data, usePuck } from '@measured/puck';
 import '@measured/puck/puck.css';
@@ -1502,12 +1502,18 @@ const DbCurriculumBlockRender: React.FC<Props['DbCurriculumBlock']> = (props) =>
 
 const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
   const styleClass = getAdvancedStyleClasses(props);
+  const blockRef = useRef<HTMLDivElement>(null);
   const [lecturers, setLecturers] = useState<Lecturer[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLecturerModal, setSelectedLecturerModal] = useState<Lecturer | null>(null);
   const [selectedProdi, setSelectedProdi] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    blockRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
 
   useEffect(() => {
     if (selectedLecturerModal) {
@@ -1570,7 +1576,7 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
   const cardStyle = props.cardStyle || 'grid-classic';
 
   return (
-    <div className={styleClass}>
+    <div ref={blockRef} className={styleClass}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-2">
@@ -1648,17 +1654,22 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
           {searchQuery || selectedProdi !== 'ALL' ? 'Dosen tidak ditemukan untuk filter ini.' : 'Belum ada data Dosen di database.'}
         </div>
       ) : (
-        <>
+        <AnimatePresence mode="popLayout">
           {/* CARD STYLE 1: GRID CLASSIC (PAS FOTO PORTRAIT RATIO) */}
           {cardStyle === 'grid-classic' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {displayed.map(lec => (
-                <div 
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                   key={lec.id} 
                   onClick={() => setSelectedLecturerModal(lec)}
-                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-start gap-3.5 hover:border-[#800020] hover:shadow-md transition-all cursor-pointer group"
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-start gap-3.5 hover:border-[#800020] hover:shadow-xl transition-all duration-300 cursor-pointer group hover:-translate-y-1"
                 >
-                  <div className="w-16 sm:w-20 aspect-[3/4] rounded-xl bg-slate-100 dark:bg-slate-900 overflow-hidden shrink-0 shadow-xs border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
+                  <div className="w-16 sm:w-20 aspect-[3/4] rounded-xl bg-slate-100 dark:bg-slate-900 overflow-hidden shrink-0 shadow-xs border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform duration-300">
                     {(lec.avatar || lec.photo) ? (
                       <img src={lec.avatar || lec.photo} alt={lec.name} className="w-full h-full object-cover object-top" />
                     ) : (
@@ -1684,19 +1695,24 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                       </span>
                     )}
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
 
           {/* CARD STYLE 2: GRID MODERN (PORTRAIT PAS FOTO BANNER) */}
           {cardStyle === 'grid-modern' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {displayed.map(lec => (
-                <div 
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                   key={lec.id} 
                   onClick={() => setSelectedLecturerModal(lec)}
-                  className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-red-500/50 transition-all cursor-pointer flex flex-col justify-between group"
+                  className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-red-500/50 transition-all duration-300 cursor-pointer flex flex-col justify-between group hover:-translate-y-1"
                 >
                   <div className="relative aspect-[3/4] max-h-64 overflow-hidden bg-slate-900">
                     <img 
@@ -1735,19 +1751,24 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                       <span className="group-hover:translate-x-1 transition-transform">Profil Detail →</span>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
 
           {/* CARD STYLE 3: PREMIUM MAROON GLASS */}
           {cardStyle === 'grid-maroon' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
               {displayed.map(lec => (
-                <div 
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                   key={lec.id} 
                   onClick={() => setSelectedLecturerModal(lec)}
-                  className="bg-gradient-to-br from-[#800020] via-[#9B2C2C] to-red-950 text-white rounded-3xl p-5 shadow-lg border border-red-500/30 hover:shadow-2xl hover:scale-[1.02] transition-all cursor-pointer flex flex-col justify-between group"
+                  className="bg-gradient-to-br from-[#800020] via-[#9B2C2C] to-red-950 text-white rounded-3xl p-5 shadow-lg border border-red-500/30 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between group"
                 >
                   <div className="flex items-start gap-4">
                     <img 
@@ -1773,19 +1794,24 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                     <span className="truncate">{lec.email}</span>
                     <span className="font-bold text-amber-300 group-hover:translate-x-1 transition-transform">Detail →</span>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
 
           {/* CARD STYLE 4: COMPACT LIST BAR */}
           {cardStyle === 'compact-list' && (
-            <div className="space-y-2.5">
+            <motion.div layout className="space-y-2.5">
               {displayed.map(lec => (
-                <div 
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
                   key={lec.id} 
                   onClick={() => setSelectedLecturerModal(lec)}
-                  className="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs hover:border-[#800020] hover:shadow-md transition-all cursor-pointer flex flex-wrap items-center justify-between gap-3 group"
+                  className="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs hover:border-[#800020] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-wrap items-center justify-between gap-3 group"
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <img 
@@ -1811,26 +1837,31 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                       Buka Profil
                     </span>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
 
           {/* CARD STYLE 5: CENTERED AVATAR BADGE */}
           {cardStyle === 'avatar-badge' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {displayed.map(lec => (
-                <div 
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                   key={lec.id} 
                   onClick={() => setSelectedLecturerModal(lec)}
-                  className="bg-slate-50 dark:bg-slate-800/90 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 text-center shadow-sm hover:shadow-xl hover:border-amber-400 transition-all cursor-pointer group flex flex-col justify-between"
+                  className="bg-slate-50 dark:bg-slate-800/90 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 text-center shadow-sm hover:shadow-xl hover:border-amber-400 transition-all duration-300 cursor-pointer group flex flex-col justify-between hover:-translate-y-1"
                 >
                   <div>
-                    <div className="relative w-20 aspect-[3/4] mx-auto mb-3 overflow-hidden rounded-2xl border-2 border-white dark:border-slate-700 shadow-md bg-slate-100 dark:bg-slate-900">
+                    <div className="relative w-20 aspect-[3/4] mx-auto mb-3 overflow-hidden rounded-2xl border-2 border-white dark:border-slate-700 shadow-md bg-slate-100 dark:bg-slate-900 group-hover:scale-105 transition-transform duration-300">
                       <img 
                         src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
                         alt={lec.name} 
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
+                        className="w-full h-full object-cover object-top"
                       />
                     </div>
 
@@ -1856,9 +1887,9 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                   >
                     Lihat Detail Dosen
                   </button>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
 
           {isPaginationActive && (
@@ -1867,10 +1898,10 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
               totalPages={totalPages}
               totalItems={filteredLecturers.length}
               pageSize={pageSize}
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
             />
           )}
-        </>
+        </AnimatePresence>
       )}
 
       {/* LECTURER DETAIL MODAL */}

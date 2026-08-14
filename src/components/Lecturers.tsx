@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lecturer, SpecializationType } from '../types';
 import { api } from '../services/api';
@@ -11,7 +11,11 @@ import {
   ExternalLink, 
   X,
   Award,
-  FlaskConical
+  FlaskConical,
+  ChevronLeft,
+  ChevronRight,
+  Grid,
+  LayoutList
 } from 'lucide-react';
 
 import { ensureArray } from '../utils/toArray';
@@ -37,6 +41,16 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
   const [selectedTitle, setSelectedTitle] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeLecturerModal, setActiveLecturerModal] = useState<Lecturer | null>(null);
+
+  const [viewMode, setViewMode] = useState<'grid' | 'carousel'>('grid');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = direction === 'left' ? -350 : 350;
+      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     if (activeLecturerModal) {
@@ -141,85 +155,231 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
               <option value="Lektor">Lektor</option>
               <option value="Asisten Ahli">Asisten Ahli</option>
             </select>
+
+            {/* Layout View Toggle (Grid vs Carousel Scroll) */}
+            <div className="flex items-center bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-700 ml-auto lg:ml-2">
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-slate-800 text-[#800020] dark:text-red-400 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
+                title="Tampilan Grid Responsif"
+              >
+                <Grid className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('carousel')}
+                className={`p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewMode === 'carousel'
+                    ? 'bg-white dark:bg-slate-800 text-[#800020] dark:text-red-400 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
+                title="Tampilan Horizontal Scroll Carousel"
+              >
+                <LayoutList className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
         </div>
 
-        {/* Lecturers Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredLecturers.map((lecturer) => (
-            <div
-              key={lecturer.id}
-              onClick={() => setActiveLecturerModal(lecturer)}
-              className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-[#800020]/60 transition-all cursor-pointer flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-start gap-4 mb-4">
-                  {/* Pas Foto 3:4 Ratio Frame */}
-                  <div className="w-20 sm:w-24 aspect-[3/4] rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shrink-0 shadow-xs group-hover:scale-105 transition-transform">
-                    <img
-                      src={lecturer.photo || lecturer.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
-                      alt={lecturer.name}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
-                        NIDN: {lecturer.nidn}
-                      </span>
-                      {lecturer.studyProgram && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
-                          {lecturer.studyProgram}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mt-1 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                      {lecturer.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
-                      {lecturer.title}
-                    </p>
-                    {lecturer.jabatan && (
-                      <div className="mt-1.5">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-black bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 inline-block">
-                          💼 {lecturer.jabatan}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-2 text-xs border-t border-slate-100 dark:border-slate-700/80 pt-3">
-                  <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                    <FlaskConical className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                    <span className="truncate">{lecturer.lab || 'Lab FTI UPA'}</span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
-                    <Mail className="w-3.5 h-3.5 text-rose-500 shrink-0" />
-                    <span className="truncate">{lecturer.email}</span>
-                  </div>
-                </div>
-
-                {/* Expertise Tags */}
-                <div className="flex flex-wrap gap-1 mt-4">
-                  {ensureArray(lecturer.expertiseTags).map((tag, idx) => (
-                    <span key={idx} className="text-[10px] font-medium px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end text-xs font-semibold text-red-600 dark:text-red-400">
-                <span className="group-hover:translate-x-1 transition-transform">Profil Detail →</span>
-              </div>
-
+        {/* Carousel Navigation Controls (Visible in Carousel View Mode) */}
+        {viewMode === 'carousel' && (
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <span>↔️ Geser kartu ke kanan / kiri atau gunakan tombol navigasi</span>
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleScroll('left')}
+                className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-[#800020] hover:text-white dark:hover:bg-[#800020] transition-colors shadow-sm cursor-pointer"
+                aria-label="Scroll Kiri"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleScroll('right')}
+                className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-[#800020] hover:text-white dark:hover:bg-[#800020] transition-colors shadow-sm cursor-pointer"
+                aria-label="Scroll Kanan"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        )}
+
+        {/* Lecturers Grid / Carousel Container with Smooth Animation */}
+        <AnimatePresence mode="popLayout">
+          {viewMode === 'grid' ? (
+            <motion.div
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {filteredLecturers.map((lecturer) => (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  key={lecturer.id}
+                  onClick={() => setActiveLecturerModal(lecturer)}
+                  className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-[#800020]/60 transition-all duration-300 cursor-pointer flex flex-col justify-between group hover:-translate-y-1"
+                >
+                  <div>
+                    <div className="flex items-start gap-4 mb-4">
+                      {/* Pas Foto 3:4 Ratio Frame */}
+                      <div className="w-20 sm:w-24 aspect-[3/4] rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300">
+                        <img
+                          src={lecturer.photo || lecturer.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                          alt={lecturer.name}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
+                            NIDN: {lecturer.nidn}
+                          </span>
+                          {lecturer.studyProgram && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                              {lecturer.studyProgram}
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mt-1 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                          {lecturer.name}
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
+                          {lecturer.title}
+                        </p>
+                        {lecturer.jabatan && (
+                          <div className="mt-1.5">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-black bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 inline-block">
+                              💼 {lecturer.jabatan}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 text-xs border-t border-slate-100 dark:border-slate-700/80 pt-3">
+                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                        <FlaskConical className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                        <span className="truncate">{lecturer.lab || 'Lab FTI UPA'}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                        <Mail className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                        <span className="truncate">{lecturer.email}</span>
+                      </div>
+                    </div>
+
+                    {/* Expertise Tags */}
+                    <div className="flex flex-wrap gap-1 mt-4">
+                      {ensureArray(lecturer.expertiseTags).map((tag, idx) => (
+                        <span key={idx} className="text-[10px] font-medium px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end text-xs font-semibold text-red-600 dark:text-red-400">
+                    <span className="group-hover:translate-x-1 transition-transform">Profil Detail →</span>
+                  </div>
+
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              layout
+              ref={scrollContainerRef}
+              className="flex items-stretch gap-6 overflow-x-auto pb-6 scroll-smooth snap-x snap-mandatory scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700"
+            >
+              {filteredLecturers.map((lecturer) => (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  key={lecturer.id}
+                  onClick={() => setActiveLecturerModal(lecturer)}
+                  className="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-[#800020]/60 transition-all duration-300 cursor-pointer flex flex-col justify-between group snap-start hover:-translate-y-1 shrink-0"
+                >
+                  <div>
+                    <div className="flex items-start gap-4 mb-4">
+                      {/* Pas Foto 3:4 Ratio Frame */}
+                      <div className="w-20 sm:w-24 aspect-[3/4] rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300">
+                        <img
+                          src={lecturer.photo || lecturer.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                          alt={lecturer.name}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
+                            NIDN: {lecturer.nidn}
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mt-1 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                          {lecturer.name}
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
+                          {lecturer.title}
+                        </p>
+                        {lecturer.jabatan && (
+                          <div className="mt-1.5">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-black bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 inline-block">
+                              💼 {lecturer.jabatan}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 text-xs border-t border-slate-100 dark:border-slate-700/80 pt-3">
+                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                        <FlaskConical className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                        <span className="truncate">{lecturer.lab || 'Lab FTI UPA'}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                        <Mail className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                        <span className="truncate">{lecturer.email}</span>
+                      </div>
+                    </div>
+
+                    {/* Expertise Tags */}
+                    <div className="flex flex-wrap gap-1 mt-4">
+                      {ensureArray(lecturer.expertiseTags).map((tag, idx) => (
+                        <span key={idx} className="text-[10px] font-medium px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end text-xs font-semibold text-red-600 dark:text-red-400">
+                    <span className="group-hover:translate-x-1 transition-transform">Profil Detail →</span>
+                  </div>
+
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       </div>
 
