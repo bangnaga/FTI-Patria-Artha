@@ -1638,241 +1638,251 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
           {searchQuery || selectedProdi !== 'ALL' ? 'Dosen tidak ditemukan untuk filter ini.' : 'Belum ada data Dosen di database.'}
         </div>
       ) : (
-        <AnimatePresence mode="popLayout">
+        <>
           {/* CARD STYLE 1: GRID CLASSIC (PAS FOTO PORTRAIT RATIO) */}
           {cardStyle === 'grid-classic' && (
-            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {displayed.map(lec => (
-                <motion.div 
-                  layout
-                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
-                  key={lec.id} 
-                  onClick={() => setSelectedLecturerModal(lec)}
-                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-start gap-3.5 hover:border-[#800020] hover:shadow-xl transition-all duration-300 cursor-pointer group hover:-translate-y-1"
-                >
-                  <div className="w-16 sm:w-20 aspect-[3/4] rounded-xl bg-slate-100 dark:bg-slate-900 overflow-hidden shrink-0 shadow-xs border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform duration-300">
-                    {(lec.avatar || lec.photo) ? (
-                      <img src={lec.avatar || lec.photo} alt={lec.name} className="w-full h-full object-cover object-top" />
-                    ) : (
-                      <div className="w-full h-full bg-[#800020] text-white flex items-center justify-center font-bold">
-                        <Users className="w-6 h-6" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                      {lec.name}
-                    </h4>
-                    <p className="text-[10px] text-slate-500 font-semibold mt-0.5">{lec.title || 'Dosen Pengajar'}</p>
-                    {lec.jabatan && (
-                      <span className="mt-1 inline-block px-1.5 py-0.2 rounded text-[9px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
-                        💼 {lec.jabatan}
-                      </span>
-                    )}
-                    <p className="text-[10px] font-mono text-slate-400 mt-1">NIDN: {lec.nidn}</p>
-                    {lec.expertise && (
-                      <span className="inline-block mt-2 px-2 py-0.5 rounded text-[9px] font-extrabold bg-red-100 dark:bg-red-950 text-[#800020] dark:text-red-300">
-                        {Array.isArray(lec.expertise) ? lec.expertise.join(', ') : String(lec.expertise)}
-                      </span>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+            <motion.div key={`grid-classic-${currentPageValid}`} layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <AnimatePresence mode="popLayout">
+                {displayed.map((lec, idx) => (
+                  <motion.div 
+                    layout
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    key={lec.id || lec.nidn || `lec-classic-${idx}`} 
+                    onClick={() => setSelectedLecturerModal(lec)}
+                    className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-start gap-3.5 hover:border-[#800020] hover:shadow-xl transition-all duration-300 cursor-pointer group hover:-translate-y-1"
+                  >
+                    <div className="w-16 sm:w-20 aspect-[3/4] rounded-xl bg-slate-100 dark:bg-slate-900 overflow-hidden shrink-0 shadow-xs border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform duration-300">
+                      {(lec.avatar || lec.photo) ? (
+                        <img src={lec.avatar || lec.photo} alt={lec.name} className="w-full h-full object-cover object-top" />
+                      ) : (
+                        <div className="w-full h-full bg-[#800020] text-white flex items-center justify-center font-bold">
+                          <Users className="w-6 h-6" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                        {lec.name}
+                      </h4>
+                      <p className="text-[10px] text-slate-500 font-semibold mt-0.5">{lec.title || 'Dosen Pengajar'}</p>
+                      {lec.jabatan && (
+                        <span className="mt-1 inline-block px-1.5 py-0.2 rounded text-[9px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
+                          💼 {lec.jabatan}
+                        </span>
+                      )}
+                      <p className="text-[10px] font-mono text-slate-400 mt-1">NIDN: {lec.nidn}</p>
+                      {lec.expertise && (
+                        <span className="inline-block mt-2 px-2 py-0.5 rounded text-[9px] font-extrabold bg-red-100 dark:bg-red-950 text-[#800020] dark:text-red-300">
+                          {Array.isArray(lec.expertise) ? lec.expertise.join(', ') : String(lec.expertise)}
+                        </span>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </motion.div>
           )}
 
           {/* CARD STYLE 2: GRID MODERN (PORTRAIT PAS FOTO BANNER) */}
           {cardStyle === 'grid-modern' && (
-            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {displayed.map(lec => (
-                <motion.div 
-                  layout
-                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
-                  key={lec.id} 
-                  onClick={() => setSelectedLecturerModal(lec)}
-                  className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-red-500/50 transition-all duration-300 cursor-pointer flex flex-col justify-between group hover:-translate-y-1"
-                >
-                  <div className="relative aspect-[3/4] max-h-64 overflow-hidden bg-slate-900">
-                    <img 
-                      src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
-                      alt={lec.name} 
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300 opacity-95"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-                    {lec.studyProgram && (
-                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-xl text-[10px] font-extrabold bg-black/60 backdrop-blur-md text-amber-300 border border-white/20">
-                        {lec.studyProgram}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                      <h4 className="font-extrabold text-sm text-slate-900 dark:text-white line-clamp-1 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                        {lec.name}
-                      </h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{lec.title || 'Dosen FTI'}</p>
-
-                      {lec.jabatan && (
-                        <div className="mt-1.5">
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 border border-amber-300 inline-block shadow-xs">
-                            💼 {lec.jabatan}
-                          </span>
-                        </div>
+            <motion.div key={`grid-modern-${currentPageValid}`} layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <AnimatePresence mode="popLayout">
+                {displayed.map((lec, idx) => (
+                  <motion.div 
+                    layout
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    key={lec.id || lec.nidn || `lec-modern-${idx}`} 
+                    onClick={() => setSelectedLecturerModal(lec)}
+                    className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-red-500/50 transition-all duration-300 cursor-pointer flex flex-col justify-between group hover:-translate-y-1"
+                  >
+                    <div className="relative aspect-[3/4] max-h-64 overflow-hidden bg-slate-900">
+                      <img 
+                        src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
+                        alt={lec.name} 
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300 opacity-95"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                      {lec.studyProgram && (
+                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-xl text-[10px] font-extrabold bg-black/60 backdrop-blur-md text-amber-300 border border-white/20">
+                          {lec.studyProgram}
+                        </span>
                       )}
-
-                      <p className="text-[11px] font-mono text-slate-400 mt-1">NIDN: {lec.nidn}</p>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-100 dark:border-slate-700/70 flex items-center justify-between text-xs font-bold text-red-600 dark:text-red-400">
-                      <span className="text-[11px] text-slate-500 font-normal">{lec.lab || 'Lab FTI'}</span>
-                      <span className="group-hover:translate-x-1 transition-transform">Profil Detail →</span>
+                    <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                      <div>
+                        <h4 className="font-extrabold text-sm text-slate-900 dark:text-white line-clamp-1 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                          {lec.name}
+                        </h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{lec.title || 'Dosen FTI'}</p>
+
+                        {lec.jabatan && (
+                          <div className="mt-1.5">
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 border border-amber-300 inline-block shadow-xs">
+                              💼 {lec.jabatan}
+                            </span>
+                          </div>
+                        )}
+
+                        <p className="text-[11px] font-mono text-slate-400 mt-1">NIDN: {lec.nidn}</p>
+                      </div>
+
+                      <div className="pt-3 border-t border-slate-100 dark:border-slate-700/70 flex items-center justify-between text-xs font-bold text-red-600 dark:text-red-400">
+                        <span className="text-[11px] text-slate-500 font-normal">{lec.lab || 'Lab FTI'}</span>
+                        <span className="group-hover:translate-x-1 transition-transform">Profil Detail →</span>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </motion.div>
           )}
 
           {/* CARD STYLE 3: PREMIUM MAROON GLASS */}
           {cardStyle === 'grid-maroon' && (
-            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-              {displayed.map(lec => (
-                <motion.div 
-                  layout
-                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
-                  key={lec.id} 
-                  onClick={() => setSelectedLecturerModal(lec)}
-                  className="bg-gradient-to-br from-[#800020] via-[#9B2C2C] to-red-950 text-white rounded-3xl p-5 shadow-lg border border-red-500/30 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between group"
-                >
-                  <div className="flex items-start gap-4">
-                    <img 
-                      src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
-                      alt={lec.name} 
-                      className="w-16 sm:w-20 aspect-[3/4] rounded-xl object-cover object-top border-2 border-amber-300/80 shadow-md shrink-0 group-hover:rotate-1 transition-transform"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <h4 className="font-extrabold text-sm text-white line-clamp-1 group-hover:text-amber-300 transition-colors">
-                        {lec.name}
-                      </h4>
-                      <p className="text-xs text-red-100/90 font-medium">{lec.title}</p>
-                      {lec.jabatan && (
-                        <span className="mt-1 inline-block px-2 py-0.5 rounded text-[10px] font-black bg-amber-400 text-slate-950">
-                          💼 {lec.jabatan}
-                        </span>
-                      )}
-                      <p className="text-[10px] font-mono text-amber-200 mt-0.5">NIDN: {lec.nidn}</p>
+            <motion.div key={`grid-maroon-${currentPageValid}`} layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              <AnimatePresence mode="popLayout">
+                {displayed.map((lec, idx) => (
+                  <motion.div 
+                    layout
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    key={lec.id || lec.nidn || `lec-maroon-${idx}`} 
+                    onClick={() => setSelectedLecturerModal(lec)}
+                    className="bg-gradient-to-br from-[#800020] via-[#9B2C2C] to-red-950 text-white rounded-3xl p-5 shadow-lg border border-red-500/30 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 cursor-pointer flex flex-col justify-between group"
+                  >
+                    <div className="flex items-start gap-4">
+                      <img 
+                        src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
+                        alt={lec.name} 
+                        className="w-16 sm:w-20 aspect-[3/4] rounded-xl object-cover object-top border-2 border-amber-300/80 shadow-md shrink-0 group-hover:rotate-1 transition-transform"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <h4 className="font-extrabold text-sm text-white line-clamp-1 group-hover:text-amber-300 transition-colors">
+                          {lec.name}
+                        </h4>
+                        <p className="text-xs text-red-100/90 font-medium">{lec.title}</p>
+                        {lec.jabatan && (
+                          <span className="mt-1 inline-block px-2 py-0.5 rounded text-[10px] font-black bg-amber-400 text-slate-950">
+                            💼 {lec.jabatan}
+                          </span>
+                        )}
+                        <p className="text-[10px] font-mono text-amber-200 mt-0.5">NIDN: {lec.nidn}</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-[11px] text-red-100 font-semibold">
-                    <span className="truncate">{lec.email}</span>
-                    <span className="font-bold text-amber-300 group-hover:translate-x-1 transition-transform">Detail →</span>
-                  </div>
-                </motion.div>
-              ))}
+                    <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-[11px] text-red-100 font-semibold">
+                      <span className="truncate">{lec.email}</span>
+                      <span className="font-bold text-amber-300 group-hover:translate-x-1 transition-transform">Detail →</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </motion.div>
           )}
 
           {/* CARD STYLE 4: COMPACT LIST BAR */}
           {cardStyle === 'compact-list' && (
-            <motion.div layout className="space-y-2.5">
-              {displayed.map(lec => (
-                <motion.div 
-                  layout
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  key={lec.id} 
-                  onClick={() => setSelectedLecturerModal(lec)}
-                  className="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs hover:border-[#800020] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-wrap items-center justify-between gap-3 group"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <img 
-                      src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
-                      alt={lec.name} 
-                      className="w-12 aspect-[3/4] rounded-lg object-cover object-top border border-slate-200 dark:border-slate-700 shrink-0"
-                    />
-                    <div className="min-w-0">
-                      <h4 className="font-extrabold text-xs text-slate-900 dark:text-white truncate group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                        {lec.name}
-                      </h4>
-                      <p className="text-[10px] text-slate-500 font-mono">NIDN: {lec.nidn} • {lec.title}</p>
+            <motion.div key={`compact-list-${currentPageValid}`} layout className="space-y-2.5">
+              <AnimatePresence mode="popLayout">
+                {displayed.map((lec, idx) => (
+                  <motion.div 
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    key={lec.id || lec.nidn || `lec-compact-${idx}`} 
+                    onClick={() => setSelectedLecturerModal(lec)}
+                    className="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs hover:border-[#800020] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-wrap items-center justify-between gap-3 group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <img 
+                        src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
+                        alt={lec.name} 
+                        className="w-12 aspect-[3/4] rounded-lg object-cover object-top border border-slate-200 dark:border-slate-700 shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <h4 className="font-extrabold text-xs text-slate-900 dark:text-white truncate group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                          {lec.name}
+                        </h4>
+                        <p className="text-[10px] text-slate-500 font-mono">NIDN: {lec.nidn} • {lec.title}</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-2">
-                    {lec.jabatan && (
-                      <span className="px-2 py-0.5 rounded text-[10px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300">
-                        💼 {lec.jabatan}
+                    <div className="flex items-center gap-2">
+                      {lec.jabatan && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300">
+                          💼 {lec.jabatan}
+                        </span>
+                      )}
+                      <span className="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-700 text-[#800020] dark:text-red-300 font-bold text-[11px] group-hover:bg-[#800020] group-hover:text-white transition-colors">
+                        Buka Profil
                       </span>
-                    )}
-                    <span className="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-700 text-[#800020] dark:text-red-300 font-bold text-[11px] group-hover:bg-[#800020] group-hover:text-white transition-colors">
-                      Buka Profil
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </motion.div>
           )}
 
           {/* CARD STYLE 5: CENTERED AVATAR BADGE */}
           {cardStyle === 'avatar-badge' && (
-            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {displayed.map(lec => (
-                <motion.div 
-                  layout
-                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
-                  key={lec.id} 
-                  onClick={() => setSelectedLecturerModal(lec)}
-                  className="bg-slate-50 dark:bg-slate-800/90 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 text-center shadow-sm hover:shadow-xl hover:border-amber-400 transition-all duration-300 cursor-pointer group flex flex-col justify-between hover:-translate-y-1"
-                >
-                  <div>
-                    <div className="relative w-20 aspect-[3/4] mx-auto mb-3 overflow-hidden rounded-2xl border-2 border-white dark:border-slate-700 shadow-md bg-slate-100 dark:bg-slate-900 group-hover:scale-105 transition-transform duration-300">
-                      <img 
-                        src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
-                        alt={lec.name} 
-                        className="w-full h-full object-cover object-top"
-                      />
+            <motion.div key={`avatar-badge-${currentPageValid}`} layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <AnimatePresence mode="popLayout">
+                {displayed.map((lec, idx) => (
+                  <motion.div 
+                    layout
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    key={lec.id || lec.nidn || `lec-badge-${idx}`} 
+                    onClick={() => setSelectedLecturerModal(lec)}
+                    className="bg-slate-50 dark:bg-slate-800/90 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 text-center shadow-sm hover:shadow-xl hover:border-amber-400 transition-all duration-300 cursor-pointer group flex flex-col justify-between hover:-translate-y-1"
+                  >
+                    <div>
+                      <div className="relative w-20 aspect-[3/4] mx-auto mb-3 overflow-hidden rounded-2xl border-2 border-white dark:border-slate-700 shadow-md bg-slate-100 dark:bg-slate-900 group-hover:scale-105 transition-transform duration-300">
+                        <img 
+                          src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
+                          alt={lec.name} 
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
+
+                      <h4 className="font-black text-sm text-slate-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                        {lec.name}
+                      </h4>
+                      <p className="text-xs text-slate-500 font-medium mt-0.5">{lec.title}</p>
+
+                      {lec.jabatan && (
+                        <div className="mt-2">
+                          <span className="px-3 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 border border-amber-300 inline-block shadow-xs">
+                            💼 {lec.jabatan}
+                          </span>
+                        </div>
+                      )}
+
+                      <p className="text-[10px] font-mono text-slate-400 mt-1">NIDN: {lec.nidn}</p>
                     </div>
 
-                    <h4 className="font-black text-sm text-slate-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                      {lec.name}
-                    </h4>
-                    <p className="text-xs text-slate-500 font-medium mt-0.5">{lec.title}</p>
-
-                    {lec.jabatan && (
-                      <div className="mt-2">
-                        <span className="px-3 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 border border-amber-300 inline-block shadow-xs">
-                          💼 {lec.jabatan}
-                        </span>
-                      </div>
-                    )}
-
-                    <p className="text-[10px] font-mono text-slate-400 mt-1">NIDN: {lec.nidn}</p>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="mt-5 w-full py-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 font-extrabold text-xs text-slate-700 dark:text-slate-200 group-hover:bg-[#800020] group-hover:text-white group-hover:border-[#800020] transition-colors shadow-xs"
-                  >
-                    Lihat Detail Dosen
-                  </button>
-                </motion.div>
-              ))}
+                    <button
+                      type="button"
+                      className="mt-5 w-full py-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 font-extrabold text-xs text-slate-700 dark:text-slate-200 group-hover:bg-[#800020] group-hover:text-white group-hover:border-[#800020] transition-colors shadow-xs"
+                    >
+                      Lihat Detail Dosen
+                    </button>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </motion.div>
           )}
 
@@ -1885,7 +1895,7 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
               onPageChange={handlePageChange}
             />
           )}
-        </AnimatePresence>
+        </>
       )}
 
       {/* LECTURER DETAIL MODAL */}
