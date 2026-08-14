@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Puck, Render, Config, Data, usePuck } from '@measured/puck';
 import '@measured/puck/puck.css';
 import { api } from '../services/api';
@@ -1485,6 +1485,17 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
   const [selectedProdi, setSelectedProdi] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  useEffect(() => {
+    if (selectedLecturerModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedLecturerModal]);
+
   const fetchLecturers = async () => {
     setLoading(true);
     try {
@@ -1839,149 +1850,165 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
       )}
 
       {/* LECTURER DETAIL MODAL */}
-      {selectedLecturerModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-            
-            {/* Header Modal */}
-            <div className="flex items-start justify-between">
-              <div className="flex items-start gap-4">
-                <div className="w-24 sm:w-28 aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#800020]/30 shadow-md bg-slate-100 dark:bg-slate-800 shrink-0">
-                  <img
-                    src={selectedLecturerModal.photo || selectedLecturerModal.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
-                    alt={selectedLecturerModal.name}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-lg font-black text-slate-900 dark:text-white">
-                    {selectedLecturerModal.name}
-                  </h3>
-                  <p className="text-xs text-[#800020] dark:text-red-400 font-extrabold">
-                    {selectedLecturerModal.title}
-                  </p>
-                  {selectedLecturerModal.jabatan && (
-                    <div className="mt-1">
-                      <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black bg-amber-400 text-slate-950 shadow-xs border border-amber-300 inline-block">
-                        💼 {selectedLecturerModal.jabatan}
-                      </span>
-                    </div>
-                  )}
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono">
-                    NIDN: {selectedLecturerModal.nidn} • {selectedLecturerModal.lab || 'Lab FTI'}
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedLecturerModal(null)}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Riwayat Pendidikan */}
-            <div>
-              <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
-                <GraduationCap className="w-4 h-4 text-purple-500" />
-                Riwayat Pendidikan Akademik:
-              </h4>
-              <div className="space-y-1.5">
-                {Array.isArray(selectedLecturerModal.education) 
-                  ? selectedLecturerModal.education.map((edu: any, idx: number) => (
-                      <div key={idx} className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700/60">
-                        🎓 {edu}
+      <AnimatePresence>
+        {selectedLecturerModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setSelectedLecturerModal(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto"
+            >
+              
+              {/* Header Modal */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-start gap-4">
+                  <div className="w-24 sm:w-28 aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#800020]/30 shadow-md bg-slate-100 dark:bg-slate-800 shrink-0">
+                    <img
+                      src={selectedLecturerModal.photo || selectedLecturerModal.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                      alt={selectedLecturerModal.name}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-slate-900 dark:text-white">
+                      {selectedLecturerModal.name}
+                    </h3>
+                    <p className="text-xs text-[#800020] dark:text-red-400 font-extrabold">
+                      {selectedLecturerModal.title}
+                    </p>
+                    {selectedLecturerModal.jabatan && (
+                      <div className="mt-1">
+                        <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black bg-amber-400 text-slate-950 shadow-xs border border-amber-300 inline-block">
+                          💼 {selectedLecturerModal.jabatan}
+                        </span>
                       </div>
-                    ))
-                  : (
-                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700/60">
-                      🎓 {selectedLecturerModal.education || 'S1 Komputer, S2 Komputer'}
-                    </div>
-                  )}
-              </div>
-            </div>
-
-            {/* Mata Kuliah Yang Diampu */}
-            <div>
-              <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
-                <BookOpen className="w-4 h-4 text-blue-500" />
-                Mata Kuliah Yang Diampu:
-              </h4>
-              <div className="flex flex-wrap gap-1.5">
-                {Array.isArray(selectedLecturerModal.coursesTaught)
-                  ? selectedLecturerModal.coursesTaught.map((course: any, idx: number) => (
-                      <span key={idx} className="px-3 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 rounded-xl text-xs font-bold border border-blue-200 dark:border-blue-800">
-                        {course}
-                      </span>
-                    ))
-                  : (
-                    <span className="px-3 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 rounded-xl text-xs font-bold border border-blue-200 dark:border-blue-800">
-                      {selectedLecturerModal.coursesTaught || 'Algoritma & Pemrograman'}
-                    </span>
-                  )}
-              </div>
-            </div>
-
-            {/* Tautan Profil Riset & Kontak */}
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
-              <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-amber-500" />
-                Tautan Profil Riset & Publikasi Ilmiah:
-              </h4>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2 text-xs">
-                  {selectedLecturerModal.googleScholar && (
-                    <a
-                      href={selectedLecturerModal.googleScholar.startsWith('http') ? selectedLecturerModal.googleScholar : `https://${selectedLecturerModal.googleScholar}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900 border border-blue-200 dark:border-blue-800 font-extrabold flex items-center gap-1.5 transition-colors"
-                    >
-                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                      <span>Google Scholar</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                  {selectedLecturerModal.scopus && (
-                    <a
-                      href={selectedLecturerModal.scopus.startsWith('http') ? selectedLecturerModal.scopus : `https://www.scopus.com/authid/detail.uri?authorId=${selectedLecturerModal.scopus}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900 border border-amber-200 dark:border-amber-800 font-extrabold flex items-center gap-1.5 transition-colors"
-                    >
-                      <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                      <span>Scopus ID</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                  {selectedLecturerModal.sinta && (
-                    <a
-                      href={selectedLecturerModal.sinta.startsWith('http') ? selectedLecturerModal.sinta : `https://sinta.kemdikbud.go.id/authors/profile/${selectedLecturerModal.sinta}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-200 dark:border-emerald-800 font-extrabold flex items-center gap-1.5 transition-colors"
-                    >
-                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                      <span>SINTA Kemdikbud</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
+                    )}
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono">
+                      NIDN: {selectedLecturerModal.nidn} • {selectedLecturerModal.lab || 'Lab FTI'}
+                    </p>
+                  </div>
                 </div>
-
-                <a
-                  href={`mailto:${selectedLecturerModal.email}`}
-                  className="px-4 py-2 bg-[#9B2C2C] hover:bg-[#800020] text-white font-extrabold rounded-xl text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                <button
+                  type="button"
+                  onClick={() => setSelectedLecturerModal(null)}
+                  className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Kirim Email</span>
-                </a>
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-            </div>
 
-          </div>
-        </div>
-      )}
+              {/* Riwayat Pendidikan */}
+              <div>
+                <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                  <GraduationCap className="w-4 h-4 text-purple-500" />
+                  Riwayat Pendidikan Akademik:
+                </h4>
+                <div className="space-y-1.5">
+                  {Array.isArray(selectedLecturerModal.education)
+                    ? selectedLecturerModal.education.map((edu: any, idx: number) => (
+                        <div key={idx} className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700/60">
+                          🎓 {edu}
+                        </div>
+                      ))
+                    : (
+                      <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700/60">
+                        🎓 {selectedLecturerModal.education || 'S1 Komputer, S2 Komputer'}
+                      </div>
+                    )}
+                </div>
+              </div>
+
+              {/* Mata Kuliah Yang Diampu */}
+              <div>
+                <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                  <BookOpen className="w-4 h-4 text-blue-500" />
+                  Mata Kuliah Yang Diampu:
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {Array.isArray(selectedLecturerModal.coursesTaught)
+                    ? selectedLecturerModal.coursesTaught.map((course: any, idx: number) => (
+                        <span key={idx} className="px-3 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 rounded-xl text-xs font-bold border border-blue-200 dark:border-blue-800">
+                          {course}
+                        </span>
+                      ))
+                    : (
+                      <span className="px-3 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 rounded-xl text-xs font-bold border border-blue-200 dark:border-blue-800">
+                        {selectedLecturerModal.coursesTaught || 'Algoritma & Pemrograman'}
+                      </span>
+                    )}
+                </div>
+              </div>
+
+              {/* Tautan Profil Riset & Kontak */}
+              <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <Award className="w-4 h-4 text-amber-500" />
+                  Tautan Profil Riset & Publikasi Ilmiah:
+                </h4>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex flex-wrap items-center gap-2 text-xs">
+                    {selectedLecturerModal.googleScholar && (
+                      <a
+                        href={selectedLecturerModal.googleScholar.startsWith('http') ? selectedLecturerModal.googleScholar : `https://${selectedLecturerModal.googleScholar}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900 border border-blue-200 dark:border-blue-800 font-extrabold flex items-center gap-1.5 transition-colors"
+                      >
+                        <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                        <span>Google Scholar</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                    {selectedLecturerModal.scopus && (
+                      <a
+                        href={selectedLecturerModal.scopus.startsWith('http') ? selectedLecturerModal.scopus : `https://www.scopus.com/authid/detail.uri?authorId=${selectedLecturerModal.scopus}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900 border border-amber-200 dark:border-amber-800 font-extrabold flex items-center gap-1.5 transition-colors"
+                      >
+                        <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                        <span>Scopus ID</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                    {selectedLecturerModal.sinta && (
+                      <a
+                        href={selectedLecturerModal.sinta.startsWith('http') ? selectedLecturerModal.sinta : `https://sinta.kemdikbud.go.id/authors/profile/${selectedLecturerModal.sinta}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-200 dark:border-emerald-800 font-extrabold flex items-center gap-1.5 transition-colors"
+                      >
+                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span>SINTA Kemdikbud</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+
+                  <a
+                    href={`mailto:${selectedLecturerModal.email}`}
+                    className="px-4 py-2 bg-[#9B2C2C] hover:bg-[#800020] text-white font-extrabold rounded-xl text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Kirim Email</span>
+                  </a>
+                </div>
+              </div>
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
