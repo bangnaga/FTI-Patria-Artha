@@ -19,7 +19,7 @@ export interface PageBannerProps {
   customGradient?: string;
   overlayOpacity?: '30' | '50' | '70' | '85' | '95';
   gradientType?: 'dark-bottom' | 'dark-top' | 'dark-full' | 'radial-center' | 'dark-left';
-  bannerHeight?: 'compact' | 'medium' | 'tall';
+  bannerHeight?: 'compact' | 'medium' | 'tall' | 'h150';
   textAlign?: 'left' | 'center' | 'right';
   accentColor?: 'maroon' | 'amber' | 'emerald' | 'blue' | 'purple';
 }
@@ -32,9 +32,10 @@ const getYoutubeId = (urlOrId?: string) => {
 };
 
 const HEIGHT_CLASSES = {
-  compact: 'py-10 sm:py-14 min-h-[220px]',
-  medium: 'py-16 sm:py-24 min-h-[320px]',
-  tall: 'py-24 sm:py-36 min-h-[420px]',
+  compact: 'py-3 sm:py-4 h-[150px] min-h-[150px]',
+  h150: 'py-3 sm:py-4 h-[150px] min-h-[150px]',
+  medium: 'py-8 sm:py-12 min-h-[220px]',
+  tall: 'py-14 sm:py-20 min-h-[320px]',
 };
 
 const OVERLAY_CLASSES = {
@@ -84,11 +85,11 @@ export default function PageBanner({
   customGradient = '',
   overlayOpacity = '70',
   gradientType = 'dark-bottom',
-  bannerHeight = 'medium',
+  bannerHeight = 'compact',
   textAlign = 'left',
   accentColor = 'maroon',
 }: PageBannerProps) {
-  const heightClass = HEIGHT_CLASSES[bannerHeight] || HEIGHT_CLASSES.medium;
+  const heightClass = HEIGHT_CLASSES[bannerHeight] || HEIGHT_CLASSES.compact;
   const overlayClass = OVERLAY_CLASSES[overlayOpacity] || OVERLAY_CLASSES['70'];
   const gradientClass = GRADIENT_CLASSES[gradientType] || GRADIENT_CLASSES['dark-bottom'];
   const accentGradient = ACCENT_BORDER[accentColor] || ACCENT_BORDER.maroon;

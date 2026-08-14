@@ -3772,9 +3772,9 @@ export const puckConfig: Config<Props> = {
         bannerHeight: {
           type: 'select', label: '📏 Tinggi Banner',
           options: [
-            { label: 'Ringkas (Compact - 220px)', value: 'compact' },
-            { label: 'Sedang (Medium - 320px)', value: 'medium' },
-            { label: 'Tinggi (Tall - 420px)', value: 'tall' },
+            { label: 'Ringkas (150px)', value: 'compact' },
+            { label: 'Sedang (Medium - 220px)', value: 'medium' },
+            { label: 'Tinggi (Tall - 320px)', value: 'tall' },
           ],
         },
         textAlign: {
@@ -3811,7 +3811,7 @@ export const puckConfig: Config<Props> = {
         customGradient: 'bg-gradient-to-br from-[#800020] via-red-950 to-slate-950',
         overlayOpacity: '70',
         gradientType: 'dark-bottom',
-        bannerHeight: 'medium',
+        bannerHeight: 'compact',
         textAlign: 'left',
         accentColor: 'maroon',
       },
