@@ -41,7 +41,7 @@ export interface Course {
   rpsUrl?: string;
 }
 
-export type UserRole = 'superadmin' | 'admin' | 'editor';
+export type UserRole = 'superadmin' | 'admin' | 'editor' | 'Superadmin' | 'Admin' | 'Editor' | 'Dosen';
 
 export interface User {
   id: string;
@@ -51,7 +51,9 @@ export interface User {
   password?: string;
   role: UserRole | string;
   avatar?: string;
-  status?: 'active' | 'suspended';
+  avatarUrl?: string;
+  department?: string;
+  status?: 'active' | 'suspended' | 'Active' | 'Inactive';
   createdAt?: string;
   lastLogin?: string;
 }
@@ -293,17 +295,4 @@ export interface QuickLink {
   url: string;
   iconName: string;
   badge?: string;
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  password?: string;
-  role: 'Superadmin' | 'Admin' | 'Editor' | 'Dosen';
-  avatarUrl?: string;
-  department?: string;
-  createdAt?: string;
-  lastLogin?: string;
-  status?: 'Active' | 'Inactive';
 }

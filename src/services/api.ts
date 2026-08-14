@@ -548,12 +548,6 @@ export const api = {
   },
 
   // Navigation Menu API
-  async getMenuItems() {
-    const res = await fetch('/api/menu-items');
-    if (!res.ok) throw new Error('Failed to fetch menu items');
-    return await res.json();
-  },
-
   async saveMenuItems(menuItems: any[]) {
     const res = await fetch('/api/menu-items/bulk', {
       method: 'PUT',

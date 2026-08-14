@@ -19,10 +19,13 @@ import {
   FileText
 } from 'lucide-react';
 
+import Link from 'next/link';
+
 export interface BreadcrumbProps {
   activeSection?: string;
   setActiveSection?: (sectionId: string) => void;
   onOpenSearch?: () => void;
+  items?: { label: string; href?: string }[];
 }
 
 interface SectionMapping {
@@ -148,8 +151,39 @@ const ALL_NAV_SECTIONS = [
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   activeSection = 'profil',
   setActiveSection,
-  onOpenSearch
+  onOpenSearch,
+  items,
 }) => {
+  if (items && items.length > 0) {
+    return (
+      <nav aria-label="Breadcrumb Navigation" className="sticky top-16 sm:top-20 z-30 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 transition-colors shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none py-0.5 text-xs text-slate-600 dark:text-slate-400 font-medium whitespace-nowrap">
+            {items.map((item, idx) => {
+              const isLast = idx === items.length - 1;
+              return (
+                <React.Fragment key={idx}>
+                  {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />}
+                  {isLast ? (
+                    <span className="px-2.5 py-1 rounded-lg bg-red-50 dark:bg-red-950/60 text-[#9B2C2C] dark:text-red-300 font-extrabold border border-red-200/80 dark:border-red-900/60">
+                      {item.label}
+                    </span>
+                  ) : item.href ? (
+                    <Link href={item.href} className="px-2 py-1 rounded-lg hover:bg-slate-200/70 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold transition-colors">
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <span className="px-2 py-1 text-slate-500 font-semibold">{item.label}</span>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
   const [currentSectionId, setCurrentSectionId] = useState<string>(activeSection);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);

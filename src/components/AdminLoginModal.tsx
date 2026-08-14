@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Lock, User, Key, CheckCircle2, AlertCircle, X, Sparkles, ArrowRight } from 'lucide-react';
 import { UpaLogo } from './UpaLogo';
+import { User as UserType } from '../types';
 
 interface AdminLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLoginSuccess: (user: { name: string; role: string; email: string }) => void;
+  onLoginSuccess: (user: UserType) => void;
 }
 
 export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({

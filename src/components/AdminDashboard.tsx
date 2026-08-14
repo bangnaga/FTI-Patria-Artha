@@ -222,7 +222,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   };
 
   // Tab State
-  const [activeTab, setActiveTab] = useState<'overview' | 'berita' | 'dosen' | 'prodi' | 'kurikulum' | 'custom-page' | 'menu' | 'media' | 'tema' | 'pengaturan' | 'kalender' | 'testimoni' | 'pengguna'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'berita' | 'dosen' | 'prodi' | 'kurikulum' | 'custom-page' | 'menu' | 'media' | 'tema' | 'pengaturan' | 'kalender' | 'testimoni' | 'pengguna' | 'footer-editor'>('overview');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Search and Filter States
@@ -437,7 +437,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [userForm, setUserForm] = useState<Partial<User>>({
-    name: '', email: '', password: '', role: 'Admin', status: 'Active', avatarUrl: ''
+    name: '', email: '', password: '', role: 'Admin', status: 'active', avatarUrl: ''
   });
   const [showUserPassword, setShowUserPassword] = useState(false);
   const [visiblePasswords, setVisiblePasswords] = useState<Record<string, boolean>>({});
@@ -553,7 +553,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           email: cleanEmail,
           password: cleanPassword || 'UPA2026!',
           role: userForm.role || 'Admin',
-          status: userForm.status || 'Active',
+          status: (userForm.status || 'active') as any,
           avatar: userForm.avatarUrl || userForm.avatar || ''
         };
 
@@ -577,7 +577,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       setIsUserModalOpen(false);
       setEditingUser(null);
-      setUserForm({ name: '', email: '', password: '', role: 'Admin', status: 'Active', avatarUrl: '' });
+      setUserForm({ name: '', email: '', password: '', role: 'Admin', status: 'active', avatarUrl: '' });
       setShowUserPassword(false);
     } catch (err: any) {
       console.error('Save user error:', err);
@@ -2009,7 +2009,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {/* Workspace Body */}
         <div className="p-4 sm:p-8 max-w-7xl mx-auto w-full">
           {/* Default Password Warning Security Banner */}
-          {(activeUser?.isDefaultPassword || (usersList.find(u => u.email === activeUser?.email)?.password === 'admin*123') || activeUser?.email === 'admin@local.lan') && (
+          {((activeUser as any)?.isDefaultPassword || (usersList.find(u => u.email === activeUser?.email)?.password === 'admin*123') || activeUser?.email === 'admin@local.lan') && (
             <div className="mb-6 p-4.5 rounded-3xl bg-amber-500/10 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-700/80 text-amber-900 dark:text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-md">
               <div className="flex items-start gap-3">
                 <div className="p-2.5 rounded-2xl bg-amber-500 text-slate-950 font-black shrink-0 mt-0.5 sm:mt-0 shadow-xs">
@@ -2033,7 +2033,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     email: activeUser?.email || 'admin@local.lan',
                     password: 'admin*123',
                     role: 'Superadmin',
-                    status: 'Active'
+                    status: 'active'
                   };
                   setEditingUser(currentObj as User);
                   setUserForm({
@@ -2041,8 +2041,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     email: currentObj.email,
                     password: '',
                     role: (currentObj.role as any) || 'Superadmin',
-                    status: (currentObj.status as any) || 'Active',
-                    avatarUrl: currentObj.avatarUrl || ''
+                    status: (currentObj.status as any) || 'active',
+                    avatarUrl: (currentObj as any).avatarUrl || ''
                   });
                   setShowUserPassword(false);
                   setIsUserModalOpen(true);
@@ -5043,7 +5043,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               )}
 
               {/* ─── 👥 MANAJEMEN PENGGUNA & LEVEL AKSES TAB ───────────────────── */}
-              {activeTab === 'pengguna' && (
+              {(activeTab as string) === 'pengguna' && (
                 <div className="space-y-6">
                   {/* Top Bar Header & Action */}
                   <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-wrap items-center justify-between gap-4">
@@ -5063,7 +5063,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       type="button"
                       onClick={() => {
                         setEditingUser(null);
-                        setUserForm({ name: '', email: '', password: '', role: 'Admin', status: 'Active', department: 'Teknik Informatika', avatarUrl: '' });
+                        setUserForm({ name: '', email: '', password: '', role: 'Admin', status: 'active', department: 'Teknik Informatika', avatarUrl: '' });
                         setShowUserPassword(false);
                         setIsUserModalOpen(true);
                       }}
@@ -5159,11 +5159,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
                                 <td className="p-4">
                                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black ${
-                                    userItem.status === 'Active' || userItem.status === 'active' || !userItem.status
+                                    userItem.status === 'active' || (userItem.status as string) === 'Active' || !userItem.status
                                       ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200'
                                       : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300'
                                   }`}>
-                                    {userItem.status === 'Active' || userItem.status === 'active' || !userItem.status ? '● Aktif' : '○ Nonaktif'}
+                                    {userItem.status === 'active' || (userItem.status as string) === 'Active' || !userItem.status ? '● Aktif' : '○ Nonaktif'}
                                   </span>
                                 </td>
 
@@ -5178,7 +5178,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                           email: userItem.email,
                                           password: userItem.password || '',
                                           role: userItem.role || 'Admin',
-                                          status: userItem.status || 'Active',
+                                          status: (userItem.status || 'active') as any,
                                           avatarUrl: userItem.avatarUrl || ''
                                         });
                                         setShowUserPassword(false);
