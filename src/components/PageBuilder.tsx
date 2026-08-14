@@ -3452,6 +3452,9 @@ type Props = {
 };
 
 export const puckConfig: Config<Props> = {
+  root: {
+    render: ({ children }) => <div className="w-full overflow-x-hidden">{children}</div>,
+  },
   categories: {
     databaseLive: {
       title: '🗄️ Database Live Blocks',
