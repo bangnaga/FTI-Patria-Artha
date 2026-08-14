@@ -208,7 +208,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       return pathname === '/' || pathname === '';
     }
     if (pathname) {
+      const cleanPath = normalizeSlug(pathname);
+      if (cleanPath === cleanItem) return true;
       if (pathname === `/${cleanItem}`) return true;
+      if (pathname === `/halaman/${cleanItem}`) return true;
       if (pathname.endsWith(`/${cleanItem}`)) return true;
       if (cleanItem.startsWith('prodi-') && pathname.includes('/prodi')) return true;
     }
@@ -222,23 +225,31 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleNavClick = (targetUrl: string) => {
     if (!targetUrl) return;
 
-    // Handle external links
+    setMobileMenuOpen(false);
+    setOpenDropdown(null);
+
+    // Handle external links (http:// or https:// outside local domain)
     if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
-      if (!targetUrl.includes(window.location.hostname) && !targetUrl.includes('/halaman/')) {
+      try {
+        const urlObj = new URL(targetUrl);
+        if (urlObj.hostname !== window.location.hostname && !targetUrl.includes('/halaman/')) {
+          window.open(targetUrl, '_blank');
+          return;
+        }
+        targetUrl = urlObj.pathname;
+      } catch {
         window.open(targetUrl, '_blank');
         return;
       }
     }
 
-    const cleanSlug = normalizeSlug(targetUrl);
-    setMobileMenuOpen(false);
-    setOpenDropdown(null);
-
     if (setActiveSection) {
       setActiveSection(targetUrl);
     }
 
-    if (cleanSlug === 'hero' || targetUrl === 'hero') {
+    const cleanSlug = normalizeSlug(targetUrl);
+
+    if (!cleanSlug || cleanSlug === 'hero' || targetUrl === '/' || targetUrl === 'hero') {
       router.push('/');
       return;
     }
@@ -251,19 +262,39 @@ export const Navbar: React.FC<NavbarProps> = ({
       'dosen': '/dosen',
       'prodi': '/prodi',
       'prodi-tif': '/prodi/prodi-tif',
+      'prodi/prodi-tif': '/prodi/prodi-tif',
       'prodi-te': '/prodi/prodi-te',
+      'prodi/prodi-te': '/prodi/prodi-te',
       'prodi-tm': '/prodi/prodi-tm',
+      'prodi/prodi-tm': '/prodi/prodi-tm',
       'berita': '/berita',
       'laboratorium': '/laboratorium',
       'kontak': '/kontak',
+      'admin': '/admin',
     };
 
     if (routeMap[cleanSlug]) {
       router.push(routeMap[cleanSlug]);
-    } else {
-      const path = cleanSlug.startsWith('halaman/') ? `/${cleanSlug}` : `/halaman/${cleanSlug}`;
-      router.push(path);
+      return;
     }
+
+    if (targetUrl.startsWith('/halaman/')) {
+      router.push(targetUrl);
+      return;
+    }
+
+    if (targetUrl.startsWith('/')) {
+      const firstSegment = targetUrl.replace(/^\//, '').split('/')[0];
+      if (['profil', 'visi-misi', 'organisasi', 'sambutan', 'dosen', 'prodi', 'berita', 'kontak', 'admin'].includes(firstSegment)) {
+        router.push(targetUrl);
+        return;
+      }
+      const slugWithoutSlash = targetUrl.replace(/^\//, '');
+      router.push(`/halaman/${slugWithoutSlash}`);
+      return;
+    }
+
+    router.push(`/halaman/${cleanSlug}`);
   };
 
   const renderMenuIcon = (iconName?: string, className: string = "w-4 h-4") => {
