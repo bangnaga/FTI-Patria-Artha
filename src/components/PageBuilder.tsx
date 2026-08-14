@@ -20,6 +20,7 @@ import MetricsCounter from './ui/metrics-counter';
 import DarkCta from './ui/dark-cta';
 import HeroSlider, { type HeroSliderProps, type HeroSlide, type HeroStat, type HeroSpecTag } from './ui/hero-slider';
 import PageBanner, { type PageBannerProps } from './ui/page-banner';
+import ModernSvgBanner, { type ModernSvgBannerProps } from './ui/modern-svg-banner';
 import { MediaManager } from './MediaManager';
 
 import { 
@@ -3089,6 +3090,7 @@ const advancedStyleFields = {
 
 type Props = {
   PageBannerBlock: PageBannerProps;
+  ModernSvgBannerBlock: ModernSvgBannerProps;
   HeroSliderBlock: HeroSliderProps;
   Hero10Block: Omit<Hero10Props, 'images' | 'imageAlts'> & {
     images?: { url: string }[];
@@ -3529,7 +3531,7 @@ export const puckConfig: Config<Props> = {
     },
     hero: {
       title: '🚀 Hero & Banner Utama',
-      components: ['HeroSlideshowBlock', 'PageBannerBlock', 'HeroSliderBlock', 'Hero10Block', 'LogoCloudBlock', 'AboutAppsBlock', 'GalleryGridBlock', 'HeroBlock', 'DeanWelcomeBlock', 'AlertBannerBlock', 'SubMenuGridBlock'],
+      components: ['ModernSvgBannerBlock', 'HeroSlideshowBlock', 'PageBannerBlock', 'HeroSliderBlock', 'Hero10Block', 'LogoCloudBlock', 'AboutAppsBlock', 'GalleryGridBlock', 'HeroBlock', 'DeanWelcomeBlock', 'AlertBannerBlock', 'SubMenuGridBlock'],
     },
     content: {
       title: '📝 Konten & Teks',
@@ -3883,6 +3885,59 @@ export const puckConfig: Config<Props> = {
         accentColor: 'maroon',
       },
       render: (props) => <PageBanner {...props} />,
+    },
+
+    // ─── 📐 MODERN SVG BANNER BLOCK (REFERENSI GEOMETRIC SLASH) ───────────
+    ModernSvgBannerBlock: {
+      fields: {
+        titleTop: { type: 'text', label: '📌 Judul Atas (mis: BANNER / FAKULTAS TEKNIK)' },
+        titleBottom: { type: 'text', label: '📌 Judul Bawah (mis: Template / INFORMATIKA)' },
+        subtitle: { type: 'textarea', label: '📝 Sub-judul / Deskripsi' },
+        badgeText: { type: 'text', label: '🏷️ Teks Badge (opsional)' },
+        ctaText: { type: 'text', label: '🔘 Teks Tombol CTA (opsional)' },
+        ctaLink: { type: 'text', label: '🔗 Link Tombol CTA' },
+        accentColor: {
+          type: 'select', label: '🎨 Warna Garis Aksen Geometric',
+          options: [
+            { label: 'Orange / Kuning Emas (Sesuai Referensi)', value: 'orange' },
+            { label: 'Maroon / Merah UPA', value: 'maroon' },
+            { label: 'Amber / Yellow', value: 'amber' },
+            { label: 'Emerald / Hijau', value: 'emerald' },
+            { label: 'Blue / Biru', value: 'blue' },
+          ],
+        },
+        rightTheme: {
+          type: 'select', label: '🌌 Tema Warna Sisi Kanan (Gelap)',
+          options: [
+            { label: 'Dark Navy (Sesuai Referensi)', value: 'dark-navy' },
+            { label: 'Maroon Dark (Khas UPA)', value: 'maroon-dark' },
+            { label: 'Emerald Dark', value: 'emerald-dark' },
+            { label: 'Slate Dark', value: 'slate-dark' },
+          ],
+        },
+        height: {
+          type: 'select', label: '📏 Tinggi Banner',
+          options: [
+            { label: 'Kompak (150px)', value: 'compact' },
+            { label: 'Sedang (220px)', value: 'medium' },
+            { label: 'Tinggi (300px)', value: 'tall' },
+          ],
+        },
+        breadcrumb: { type: 'text', label: '🗺️ Breadcrumb Navigasi' },
+      },
+      defaultProps: {
+        titleTop: 'BANNER',
+        titleBottom: 'Template',
+        subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        badgeText: 'FAKULTAS UNGGUL',
+        ctaText: '',
+        ctaLink: '#',
+        accentColor: 'orange',
+        rightTheme: 'dark-navy',
+        height: 'compact',
+        breadcrumb: 'Beranda / Informasi',
+      },
+      render: (props) => <ModernSvgBanner {...props} />,
     },
 
     // ─── 🎠 HERO SLIDER BLOCK ─────────────────────────────────────────────

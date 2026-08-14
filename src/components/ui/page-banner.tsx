@@ -4,6 +4,8 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight, Home, Calendar, User, Eye, Sparkles } from 'lucide-react';
 
+import ModernSvgBanner from './modern-svg-banner';
+
 export interface PageBannerProps {
   badge?: string;
   badgeColor?: 'blue' | 'maroon' | 'amber' | 'emerald' | 'purple';
@@ -13,7 +15,7 @@ export interface PageBannerProps {
   date?: string;
   author?: string;
   views?: string;
-  bgType?: 'image' | 'gradient' | 'youtube';
+  bgType?: 'image' | 'gradient' | 'youtube' | 'svg-slash';
   bgImageUrl?: string;
   youtubeUrl?: string;
   customGradient?: string;
@@ -89,6 +91,25 @@ export default function PageBanner({
   textAlign = 'left',
   accentColor = 'maroon',
 }: PageBannerProps) {
+  if (bgType === 'svg-slash') {
+    const titleWords = title ? title.split(' ') : ['BANNER', 'TEMPLATE'];
+    const titleTop = titleWords.length > 1 ? titleWords.slice(0, Math.ceil(titleWords.length / 2)).join(' ') : title;
+    const titleBottom = titleWords.length > 1 ? titleWords.slice(Math.ceil(titleWords.length / 2)).join(' ') : '';
+
+    return (
+      <ModernSvgBanner
+        titleTop={titleTop || 'BANNER'}
+        titleBottom={titleBottom || 'Template'}
+        subtitle={subtitle || 'Fakultas Teknik & Informatika Universitas Patria Artha'}
+        badgeText={badge}
+        breadcrumb={breadcrumb}
+        accentColor={accentColor === 'maroon' ? 'maroon' : accentColor === 'emerald' ? 'emerald' : accentColor === 'blue' ? 'blue' : 'orange'}
+        rightTheme={accentColor === 'maroon' ? 'maroon-dark' : accentColor === 'emerald' ? 'emerald-dark' : 'dark-navy'}
+        height={bannerHeight === 'tall' ? 'tall' : bannerHeight === 'medium' ? 'medium' : 'compact'}
+      />
+    );
+  }
+
   const heightClass = HEIGHT_CLASSES[bannerHeight] || HEIGHT_CLASSES.compact;
   const overlayClass = OVERLAY_CLASSES[overlayOpacity] || OVERLAY_CLASSES['70'];
   const gradientClass = GRADIENT_CLASSES[gradientType] || GRADIENT_CLASSES['dark-bottom'];
