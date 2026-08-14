@@ -49,25 +49,29 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-[#9B2C2C] selection:text-white transition-colors duration-200 flex flex-col justify-between">
       <div>
-        <Navbar
-          theme={theme}
-          onToggleTheme={toggleTheme}
-          onOpenSearch={() => setIsSearchOpen(true)}
-          onOpenAIAssistant={() => setIsAiChatOpen(true)}
-          onOpenAdminLogin={handleOpenAdminLogin}
-          isAdminLoggedIn={!!adminUser}
-          customMenuItems={menuItemsList}
-        />
+        {!isVisualBuilder && (
+          <Navbar
+            theme={theme}
+            onToggleTheme={toggleTheme}
+            onOpenSearch={() => setIsSearchOpen(true)}
+            onOpenAIAssistant={() => setIsAiChatOpen(true)}
+            onOpenAdminLogin={handleOpenAdminLogin}
+            isAdminLoggedIn={!!adminUser}
+            customMenuItems={menuItemsList}
+          />
+        )}
 
         <main>{children}</main>
       </div>
 
       {!isVisualBuilder && <Footer />}
 
-      <AiChatWidget
-        isOpen={isAiChatOpen}
-        onClose={() => setIsAiChatOpen(false)}
-      />
+      {!isVisualBuilder && (
+        <AiChatWidget
+          isOpen={isAiChatOpen}
+          onClose={() => setIsAiChatOpen(false)}
+        />
+      )}
 
       <GlobalSearchModal
         isOpen={isSearchOpen}
