@@ -1481,6 +1481,8 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLecturerModal, setSelectedLecturerModal] = useState<Lecturer | null>(null);
+  const [selectedProdi, setSelectedProdi] = useState<string>('ALL');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const fetchLecturers = async () => {
     setLoading(true);
@@ -1498,25 +1500,42 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
     fetchLecturers();
   }, []);
 
+  const filteredLecturers = lecturers.filter((lec) => {
+    const matchesProdi = selectedProdi === 'ALL' ||
+                         (lec.studyProgram && lec.studyProgram.toLowerCase().includes(selectedProdi.toLowerCase())) ||
+                         (selectedProdi === 'Teknik Informatika' && (!lec.studyProgram || lec.studyProgram.includes('Informatika')));
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = !searchQuery ||
+                          lec.name.toLowerCase().includes(searchLower) ||
+                          (lec.nidn && lec.nidn.includes(searchQuery)) ||
+                          (lec.title && lec.title.toLowerCase().includes(searchLower)) ||
+                          (lec.jabatan && lec.jabatan.toLowerCase().includes(searchLower)) ||
+                          (lec.studyProgram && lec.studyProgram.toLowerCase().includes(searchLower)) ||
+                          (lec.email && lec.email.toLowerCase().includes(searchLower)) ||
+                          (lec.lab && lec.lab.toLowerCase().includes(searchLower)) ||
+                          (lec.expertise && String(lec.expertise).toLowerCase().includes(searchLower));
+    return matchesProdi && matchesSearch;
+  });
+
   const isPaginationActive = props.enablePagination !== 'false';
   const pageSize = Number(props.itemsPerPage) || Number(props.limit) || 6;
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [props.limit, props.itemsPerPage, props.enablePagination, lecturers.length]);
+  }, [props.limit, props.itemsPerPage, props.enablePagination, filteredLecturers.length, selectedProdi, searchQuery]);
 
-  const totalPages = isPaginationActive ? Math.max(1, Math.ceil(lecturers.length / pageSize)) : 1;
+  const totalPages = isPaginationActive ? Math.max(1, Math.ceil(filteredLecturers.length / pageSize)) : 1;
   const currentPageValid = Math.min(currentPage, totalPages);
 
   const displayed = isPaginationActive
-    ? lecturers.slice((currentPageValid - 1) * pageSize, currentPageValid * pageSize)
-    : (props.limit ? lecturers.slice(0, Number(props.limit)) : lecturers);
+    ? filteredLecturers.slice((currentPageValid - 1) * pageSize, currentPageValid * pageSize)
+    : (props.limit ? filteredLecturers.slice(0, Number(props.limit)) : filteredLecturers);
 
   const cardStyle = props.cardStyle || 'grid-classic';
 
   return (
     <div className={styleClass}>
-      <div className="flex items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
@@ -1530,11 +1549,56 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
         <button
           onClick={fetchLecturers}
           type="button"
-          className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
+          className="self-start sm:self-auto px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>Sync DB</span>
         </button>
+      </div>
+
+      {/* Filter & Search Bar */}
+      <div className="bg-slate-50 dark:bg-slate-800/80 rounded-2xl p-4 border border-slate-200 dark:border-slate-700 mb-6 flex flex-col lg:flex-row items-center justify-between gap-3">
+        {/* Search Bar */}
+        <div className="relative w-full lg:w-80">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Cari nama dosen, NIDN, jabatan, kepakaran..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-9 pr-8 py-2 text-xs font-medium rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-[#800020] transition-all"
+          />
+          {searchQuery && (
+            <button 
+              onClick={() => setSearchQuery('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-white"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        {/* Filter Prodi Buttons */}
+        <div className="flex flex-wrap items-center gap-1.5 w-full lg:w-auto">
+          {[
+            { id: 'ALL', label: '🎓 Semua Prodi' },
+            { id: 'Teknik Informatika', label: '💻 S1 Informatika' },
+            { id: 'Teknik Elektro', label: '⚡ S1 Elektro' },
+            { id: 'Teknik Mesin', label: '⚙️ S1 Mesin' }
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setSelectedProdi(item.id)}
+              className={`px-3 py-1.5 text-xs font-extrabold rounded-xl border transition-all cursor-pointer ${
+                selectedProdi === item.id
+                  ? 'bg-[#800020] text-white border-[#800020] shadow-sm'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading ? (
@@ -1543,39 +1607,41 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
             <div key={i} className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 animate-pulse h-36" />
           ))}
         </div>
-      ) : lecturers.length === 0 ? (
+      ) : filteredLecturers.length === 0 ? (
         <div className="p-8 text-center text-slate-400 text-xs border border-dashed rounded-2xl">
-          Belum ada data Dosen di database.
+          {searchQuery || selectedProdi !== 'ALL' ? 'Dosen tidak ditemukan untuk filter ini.' : 'Belum ada data Dosen di database.'}
         </div>
       ) : (
         <>
-          {/* CARD STYLE 1: GRID CLASSIC */}
+          {/* CARD STYLE 1: GRID CLASSIC (PAS FOTO PORTRAIT RATIO) */}
           {cardStyle === 'grid-classic' && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {displayed.map(lec => (
                 <div 
                   key={lec.id} 
                   onClick={() => setSelectedLecturerModal(lec)}
-                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-start gap-3 hover:border-[#800020] hover:shadow-md transition-all cursor-pointer group"
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-start gap-3.5 hover:border-[#800020] hover:shadow-md transition-all cursor-pointer group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-[#800020] text-white flex items-center justify-center font-bold text-sm shrink-0 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
+                  <div className="w-16 sm:w-20 aspect-[3/4] rounded-xl bg-slate-100 dark:bg-slate-900 overflow-hidden shrink-0 shadow-xs border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
                     {(lec.avatar || lec.photo) ? (
-                      <img src={lec.avatar || lec.photo} alt={lec.name} className="w-full h-full object-cover" />
+                      <img src={lec.avatar || lec.photo} alt={lec.name} className="w-full h-full object-cover object-top" />
                     ) : (
-                      <Users className="w-6 h-6" />
+                      <div className="w-full h-full bg-[#800020] text-white flex items-center justify-center font-bold">
+                        <Users className="w-6 h-6" />
+                      </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-extrabold text-xs text-slate-900 dark:text-white truncate group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                    <h4 className="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                       {lec.name}
                     </h4>
-                    <p className="text-[10px] text-slate-500 font-semibold">{lec.title || 'Dosen Pengajar'}</p>
+                    <p className="text-[10px] text-slate-500 font-semibold mt-0.5">{lec.title || 'Dosen Pengajar'}</p>
                     {lec.jabatan && (
-                      <span className="mt-0.5 inline-block px-1.5 py-0.2 rounded text-[9px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
+                      <span className="mt-1 inline-block px-1.5 py-0.2 rounded text-[9px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
                         💼 {lec.jabatan}
                       </span>
                     )}
-                    <p className="text-[10px] font-mono text-slate-400 mt-0.5">NIDN: {lec.nidn}</p>
+                    <p className="text-[10px] font-mono text-slate-400 mt-1">NIDN: {lec.nidn}</p>
                     {lec.expertise && (
                       <span className="inline-block mt-2 px-2 py-0.5 rounded text-[9px] font-extrabold bg-red-100 dark:bg-red-950 text-[#800020] dark:text-red-300">
                         {Array.isArray(lec.expertise) ? lec.expertise.join(', ') : String(lec.expertise)}
@@ -1587,7 +1653,7 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
             </div>
           )}
 
-          {/* CARD STYLE 2: GRID MODERN (PORTRAIT PHOTO BANNER) */}
+          {/* CARD STYLE 2: GRID MODERN (PORTRAIT PAS FOTO BANNER) */}
           {cardStyle === 'grid-modern' && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {displayed.map(lec => (
@@ -1596,11 +1662,11 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                   onClick={() => setSelectedLecturerModal(lec)}
                   className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-red-500/50 transition-all cursor-pointer flex flex-col justify-between group"
                 >
-                  <div className="relative h-48 overflow-hidden bg-slate-900">
+                  <div className="relative aspect-[3/4] max-h-64 overflow-hidden bg-slate-900">
                     <img 
                       src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
                       alt={lec.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300 opacity-95"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
                     {lec.studyProgram && (
@@ -1651,7 +1717,7 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                     <img 
                       src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
                       alt={lec.name} 
-                      className="w-16 h-16 rounded-2xl object-cover border-2 border-amber-300/80 shadow-md shrink-0 group-hover:rotate-1 transition-transform"
+                      className="w-16 sm:w-20 aspect-[3/4] rounded-xl object-cover object-top border-2 border-amber-300/80 shadow-md shrink-0 group-hover:rotate-1 transition-transform"
                     />
                     <div className="min-w-0 flex-1">
                       <h4 className="font-extrabold text-sm text-white line-clamp-1 group-hover:text-amber-300 transition-colors">
@@ -1689,7 +1755,7 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                     <img 
                       src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
                       alt={lec.name} 
-                      className="w-10 h-10 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shrink-0"
+                      className="w-12 aspect-[3/4] rounded-lg object-cover object-top border border-slate-200 dark:border-slate-700 shrink-0"
                     />
                     <div className="min-w-0">
                       <h4 className="font-extrabold text-xs text-slate-900 dark:text-white truncate group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
@@ -1724,13 +1790,12 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
                   className="bg-slate-50 dark:bg-slate-800/90 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 text-center shadow-sm hover:shadow-xl hover:border-amber-400 transition-all cursor-pointer group flex flex-col justify-between"
                 >
                   <div>
-                    <div className="relative w-20 h-20 mx-auto mb-3">
+                    <div className="relative w-20 aspect-[3/4] mx-auto mb-3 overflow-hidden rounded-2xl border-2 border-white dark:border-slate-700 shadow-md bg-slate-100 dark:bg-slate-900">
                       <img 
                         src={lec.photo || lec.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'} 
                         alt={lec.name} 
-                        className="w-full h-full rounded-full object-cover border-4 border-white dark:border-slate-700 shadow-md group-hover:scale-105 transition-transform"
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
                       />
-                      <span className="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full" title="Aktif" />
                     </div>
 
                     <h4 className="font-black text-sm text-slate-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
@@ -1764,7 +1829,7 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
             <PaginationControl
               currentPage={currentPageValid}
               totalPages={totalPages}
-              totalItems={lecturers.length}
+              totalItems={filteredLecturers.length}
               pageSize={pageSize}
               onPageChange={setCurrentPage}
             />
@@ -1779,12 +1844,14 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
             
             {/* Header Modal */}
             <div className="flex items-start justify-between">
-              <div className="flex items-center gap-4">
-                <img
-                  src={selectedLecturerModal.photo || selectedLecturerModal.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
-                  alt={selectedLecturerModal.name}
-                  className="w-20 h-20 rounded-2xl object-cover border-2 border-red-500/40 shadow-md"
-                />
+              <div className="flex items-start gap-4">
+                <div className="w-24 sm:w-28 aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#800020]/30 shadow-md bg-slate-100 dark:bg-slate-800 shrink-0">
+                  <img
+                    src={selectedLecturerModal.photo || selectedLecturerModal.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                    alt={selectedLecturerModal.name}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
                 <div>
                   <h3 className="text-lg font-black text-slate-900 dark:text-white">
                     {selectedLecturerModal.name}
