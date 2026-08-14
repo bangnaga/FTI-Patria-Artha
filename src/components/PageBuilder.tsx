@@ -1190,7 +1190,7 @@ const DbCurriculumBlockRender: React.FC<Props['DbCurriculumBlock']> = (props) =>
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProdi, setSelectedProdi] = useState<string>(
-    props.prodiFilter && props.prodiFilter !== 'Semua' ? props.prodiFilter : 'Teknik Informatika'
+    props.prodiFilter && props.prodiFilter !== 'Semua' ? props.prodiFilter : 'ALL'
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -1227,12 +1227,17 @@ const DbCurriculumBlockRender: React.FC<Props['DbCurriculumBlock']> = (props) =>
     }
   }, [props.prodiFilter]);
 
-  const defaultProdis = ['Teknik Informatika', 'Sistem Informasi', 'Teknik Elektro', 'Teknik Mesin', 'Rekayasa Perangkat Lunak'];
+  const defaultProdis = ['ALL', 'Teknik Informatika', 'Sistem Informasi', 'Teknik Elektro', 'Teknik Mesin', 'Rekayasa Perangkat Lunak'];
   const dynamicProdis = Array.from(new Set(courses.map(c => c.studyProgram).filter(p => Boolean(p) && p !== 'Semua' && p !== 'Semua Prodi')));
   const allProdis = Array.from(new Set([...defaultProdis, ...dynamicProdis]));
 
+  const isLockedSingleProdi = props.showProdiTabs === 'false' && props.prodiFilter && props.prodiFilter !== 'ALL' && props.prodiFilter !== 'Semua';
+  const activeProdiFilter = isLockedSingleProdi ? props.prodiFilter : selectedProdi;
+
   const filtered = courses.filter(c => {
-    const matchesProdi = c.studyProgram === selectedProdi || c.studyProgram === 'Semua Prodi' || !c.studyProgram;
+    const matchesProdi = activeProdiFilter === 'ALL' || activeProdiFilter === 'Semua'
+      ? true
+      : (c.studyProgram === activeProdiFilter || c.studyProgram === 'Semua Prodi' || !c.studyProgram);
     const matchesSearch = !searchQuery || 
       c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
       c.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1288,35 +1293,54 @@ const DbCurriculumBlockRender: React.FC<Props['DbCurriculumBlock']> = (props) =>
 
       {/* Program Studi Filter Bar & Search */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-5 p-3 rounded-2xl bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 max-w-full">
-          <span className="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1 shrink-0">
-            <Filter className="w-3.5 h-3.5 text-[#800020] dark:text-red-400" />
-            <span>Prodi:</span>
-          </span>
-          {allProdis.map(prodi => {
-            const count = courses.filter(c => c.studyProgram === prodi || c.studyProgram === 'Semua Prodi' || !c.studyProgram).length;
-            const isSelected = selectedProdi === prodi;
-            return (
-              <button
-                key={prodi}
-                type="button"
-                onClick={() => setSelectedProdi(prodi)}
-                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
-                  isSelected
-                    ? 'bg-[#800020] text-white shadow-sm'
-                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
-                }`}
-              >
-                <span>{prodi}</span>
-                <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-black ${
-                  isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
-                }`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        {isLockedSingleProdi ? (
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-extrabold text-slate-500 dark:text-slate-400 flex items-center gap-1">
+              <Filter className="w-3.5 h-3.5 text-[#800020] dark:text-red-400" />
+              <span>Program Studi:</span>
+            </span>
+            <span className="px-3.5 py-1 bg-[#800020] text-white font-extrabold rounded-xl text-xs shadow-sm flex items-center gap-2 border border-red-900">
+              <span>🎓 {props.prodiFilter}</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-white/20 text-white">
+                {filtered.length} Mata Kuliah
+              </span>
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 max-w-full">
+            <span className="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1 shrink-0">
+              <Filter className="w-3.5 h-3.5 text-[#800020] dark:text-red-400" />
+              <span>Prodi:</span>
+            </span>
+            {allProdis.map(prodi => {
+              const isAll = prodi === 'ALL' || prodi === 'Semua';
+              const label = isAll ? 'Semua Prodi' : prodi;
+              const count = isAll 
+                ? courses.length 
+                : courses.filter(c => c.studyProgram === prodi || c.studyProgram === 'Semua Prodi' || !c.studyProgram).length;
+              const isSelected = selectedProdi === prodi;
+              return (
+                <button
+                  key={prodi}
+                  type="button"
+                  onClick={() => setSelectedProdi(prodi)}
+                  className={`px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#800020] text-white shadow-sm'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+                  }`}
+                >
+                  <span>{label}</span>
+                  <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-black ${
+                    isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Quick Search inside Curriculum */}
         <div className="relative min-w-[200px] flex-1 sm:flex-none">
@@ -3445,6 +3469,7 @@ type Props = {
     heading: string;
     subheading: string;
     prodiFilter: string;
+    showProdiTabs?: string;
     enablePagination?: string;
     itemsPerPage?: string;
   } & AdvancedStyleProps;
@@ -6964,13 +6989,22 @@ export const puckConfig: Config<Props> = {
         subheading: { type: 'text', label: 'Sub-judul' },
         prodiFilter: {
           type: 'select',
-          label: 'Filter Program Studi',
+          label: '🎓 Filter Program Studi',
           options: [
-            { label: 'Teknik Informatika', value: 'Teknik Informatika' },
-            { label: 'Sistem Informasi', value: 'Sistem Informasi' },
-            { label: 'Teknik Elektro', value: 'Teknik Elektro' },
-            { label: 'Teknik Mesin', value: 'Teknik Mesin' },
-            { label: 'Rekayasa Perangkat Lunak', value: 'Rekayasa Perangkat Lunak' },
+            { label: '🌐 Semua Program Studi (Bisa Pilih Tab)', value: 'ALL' },
+            { label: '💻 S1 Teknik Informatika', value: 'Teknik Informatika' },
+            { label: '📊 S1 Sistem Informasi', value: 'Sistem Informasi' },
+            { label: '⚡ S1 Teknik Elektro', value: 'Teknik Elektro' },
+            { label: '⚙️ S1 Teknik Mesin', value: 'Teknik Mesin' },
+            { label: '💻 S1 Rekayasa Perangkat Lunak', value: 'Rekayasa Perangkat Lunak' },
+          ],
+        },
+        showProdiTabs: {
+          type: 'select',
+          label: '🎛️ Mode Tampilan Tab Filter Prodi',
+          options: [
+            { label: '🔒 Sembunyikan Tab (Tampilkan Khusus Prodi Yang Difilter Saja)', value: 'false' },
+            { label: '👁️ Tampilkan Bar Tab Filter Semua Prodi', value: 'true' },
           ],
         },
         ...commonPaginationFields,
@@ -6980,6 +7014,7 @@ export const puckConfig: Config<Props> = {
         heading: '📚 Kurikulum & Mata Kuliah (Database)',
         subheading: 'Daftar mata kuliah dan bobot SKS terdaftar di Database',
         prodiFilter: 'Teknik Informatika',
+        showProdiTabs: 'false',
         enablePagination: 'true',
         itemsPerPage: '5',
         bgStyle: 'white',
