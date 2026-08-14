@@ -1,0 +1,8 @@
+{
+  "name": "Fakultas Teknik UPA",
+  "description": "Portal Resmi Fakultas Teknik dan Informatika Universitas Patria Artha - Informasi Program Studi, Kurikulum, Laboratorium, Riset, dan PMB.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

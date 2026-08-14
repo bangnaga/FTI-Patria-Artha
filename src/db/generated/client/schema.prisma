@@ -1,0 +1,311 @@
+// Prisma Schema for Fakultas Teknik & Informatika UPA Portal
+// Provider: mysql (TiDB Cloud / MySQL Server)
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/db/generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String?  @db.Text
+  role      String   @default("admin") // superadmin, admin, operator
+  status    String   @default("active")
+  avatar    String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model News {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  category  String // Berita, Pengumuman, Agenda, Prestasi
+  date      String
+  author    String
+  thumbnail String   @db.Text
+  summary   String   @db.Text
+  content   String   @db.Text
+  tags      String   @db.Text // Stored as JSON string array e.g. '["AI","Seminar"]'
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lecturer {
+  id                String   @id @default(uuid())
+  name              String
+  nidn              String   @unique
+  title             String
+  photo             String   @db.Text
+  expertise         String   @db.Text // Stored as JSON string array e.g. '["AI","DataScience"]'
+  expertiseTags     String   @db.Text // Stored as JSON string array
+  email             String
+  lab               String
+  education         String   @db.Text // Stored as JSON string array
+  googleScholar     String?  @db.Text
+  scopus            String?  @db.Text
+  sinta             String?  @db.Text
+  orcid             String?  @db.Text
+  researchGate      String?  @db.Text
+  coursesTaught     String   @db.Text // Stored as JSON string array
+  publicationsCount Int      @default(0)
+  studyProgram      String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StudyProgram {
+  id               String   @id @default(uuid())
+  code             String   @unique
+  name             String
+  degree           String // S1, S2, D3
+  accreditation    String
+  headOfProgram    String
+  headOfProdi      String?
+  headOfProdiNidn  String?
+  headOfProdiPhoto String?  @db.Text
+  description      String   @db.Text
+  totalSks         Int      @default(144)
+  activeStudents   Int      @default(0)
+  capacity         Int      @default(100)
+  vision           String   @db.Text
+  logoUrl          String?  @db.Text
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Course {
+  id             String   @id @default(uuid())
+  code           String   @unique
+  name           String
+  sks            Int
+  semester       Int
+  category       String // Wajib Prodi, Wajib Universitas, Mata Kuliah Pilihan
+  specialization String? // AI, RPL, CyberSecurity, IoT, DataScience
+  studyProgram   String?
+  description    String   @db.Text
+  prerequisites  String   @db.Text // Stored as JSON string array
+  syllabusTopic  String   @db.Text // Stored as JSON string array
+  rpsUrl         String?  @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model StudentOrg {
+  id             String   @id @default("default_org")
+  name           String
+  abbreviation   String
+  logo           String   @db.Text
+  description    String   @db.Text
+  cabinetName    String
+  cabinetYear    String
+  leaderName     String
+  leaderPhoto    String   @db.Text
+  viceLeaderName String
+  divisions      String   @db.Text // Stored as JSON string array
+  upcomingEvents String   @db.Text // Stored as JSON string array
+  updatedAt      DateTime @updatedAt
+}
+
+model MediaFile {
+  id           String   @id @default(uuid())
+  fileName     String
+  originalName String
+  sizeBytes    Int
+  type         String
+  url          String   @db.Text
+  uploadedAt   String
+  dimensions   String? // Stored as JSON string e.g. '{"width": 800, "height": 600}'
+  folderId     String?
+  createdAt    DateTime @default(now())
+}
+
+model MenuItem {
+  id           String   @id @default(uuid())
+  label        String
+  url          String
+  isExternal   Boolean  @default(false)
+  isVisible    Boolean  @default(true)
+  badge        String?
+  order        Int      @default(0)
+  parentId     String?
+  icon         String?  @db.Text
+  line1        String?  @db.Text
+  line2        String?  @db.Text
+  childrenData String?  @db.Text // Stored as JSON string for nested items
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Laboratory {
+  id                String   @id @default(uuid())
+  code              String   @unique
+  name              String
+  shortDesc         String   @db.Text
+  headOfLab         String
+  headPhoto         String   @db.Text
+  labAssistants     String   @db.Text
+  image             String   @db.Text
+  location          String
+  capacity          Int
+  specifications    String   @db.Text
+  equipmentList     String   @db.Text
+  softwareInstalled String   @db.Text
+  virtualTour360Url String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model ResearchGroup {
+  id           String   @id @default(uuid())
+  code         String   @unique
+  name         String
+  leadLecturer String
+  membersCount Int
+  description  String   @db.Text
+  topics       String   @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Publication {
+  id             String   @id @default(uuid())
+  title          String
+  authors        String   @db.Text
+  year           Int
+  publisher      String
+  type           String
+  pdfUrl         String?  @db.Text
+  doi            String?
+  specialization String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model InnovationProduct {
+  id          String   @id @default(uuid())
+  title       String
+  developer   String
+  category    String
+  year        Int
+  thumbnail   String   @db.Text
+  description String   @db.Text
+  techStack   String   @db.Text
+  demoUrl     String?  @db.Text
+  githubUrl   String?  @db.Text
+  award       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model StudentAchievement {
+  id             String   @id @default(uuid())
+  competition    String
+  title          String
+  rank           String
+  level          String
+  year           Int
+  studentNames   String   @db.Text
+  mentorLecturer String
+  image          String   @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model AlumniTestimonial {
+  id          String   @id @default(uuid())
+  name        String
+  gradYear    Int
+  role        String
+  company     String
+  companyLogo String   @db.Text
+  photo       String   @db.Text
+  quote       String   @db.Text
+  linkedinUrl String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model JobVacancy {
+  id             String   @id @default(uuid())
+  title          String
+  company        String
+  logo           String   @db.Text
+  location       String
+  type           String
+  specialization String?
+  postedDate     String
+  applyDeadline  String
+  requirements   String   @db.Text
+  applyLink      String   @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model PMBTrack {
+  id           String   @id @default(uuid())
+  code         String   @unique
+  name         String
+  description  String   @db.Text
+  capacity     Int
+  period       String
+  requirements String   @db.Text
+  benefits     String   @db.Text
+  feeEstimate  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AcademicCalendarItem {
+  id        String   @id @default(uuid())
+  title     String
+  startDate String
+  endDate   String
+  category  String
+  semester  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FAQItem {
+  id        String   @id @default(uuid())
+  category  String
+  question  String   @db.Text
+  answer    String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QuickLink {
+  id        String   @id @default(uuid())
+  name      String
+  desc      String   @db.Text
+  url       String   @db.Text
+  iconName  String
+  badge     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteData {
+  key       String   @id
+  value     String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaFolder {
+  id        String   @id @default(uuid())
+  name      String
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

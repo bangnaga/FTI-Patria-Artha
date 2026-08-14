@@ -1,0 +1,105 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Colors */
+  --header-bg: #800020;
+  --header-text: #FFF5F5;
+  --body-bg: #FFFFFF;
+  --main-text: #1E293B;
+  --heading-text: #0F172A;
+  --primary-accent: #9B2C2C;
+  --secondary-accent: #EDF2F7;
+  --accent-color: #F59E0B;
+  --card-bg: #FFFFFF;
+  --border-divider: #E2E8F0;
+
+  /* Typography */
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --base-font-size: 18px;
+  --heading-font-weight: 800;
+  --letter-spacing-heading: normal;
+
+  /* Spacing & Borders */
+  --global-border-radius: 12px;
+  --section-spacing-y: 3.5rem;
+  --container-max-width: 1280px;
+  --card-inner-padding: 1.5rem;
+}
+
+html {
+  font-size: var(--base-font-size, 18px);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--body-bg, #FFFFFF);
+  color: var(--main-text, #1E293B);
+  font-family: var(--font-body);
+  font-size: var(--base-font-size, 18px);
+  line-height: 1.65;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: var(--letter-spacing-heading);
+}
+
+.rounded-global {
+  border-radius: var(--global-border-radius, 12px);
+}
+
+.section-spacing-y {
+  padding-top: var(--section-spacing-y, 3.5rem);
+  padding-bottom: var(--section-spacing-y, 3.5rem);
+}
+
+.card-padding-global {
+  padding: var(--card-inner-padding, 1.5rem);
+}
+
+@layer utilities {
+  .bg-burgundy {
+    background-color: var(--header-bg, #800020);
+  }
+  .text-soft-red-white {
+    color: var(--header-text, #FFF5F5);
+  }
+  .bg-warm-white {
+    background-color: var(--body-bg, #FFFFFF);
+  }
+  .text-charcoal {
+    color: var(--main-text, #1E293B);
+  }
+  .bg-dark-cherry {
+    background-color: var(--primary-accent, #9B2C2C);
+  }
+  .text-dark-cherry {
+    color: var(--primary-accent, #9B2C2C);
+  }
+  .border-dark-cherry {
+    border-color: var(--primary-accent, #9B2C2C);
+  }
+  .bg-neutral-gray {
+    background-color: var(--secondary-accent, #EDF2F7);
+  }
+  .border-soft-divider {
+    border-color: var(--border-divider, #E2E8F0);
+  }
+  
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
