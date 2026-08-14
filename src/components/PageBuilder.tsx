@@ -491,10 +491,6 @@ const DbNewsBlockRender: React.FC<Props['DbNewsBlock']> = (props) => {
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              <Database className="w-3 h-3 animate-pulse" />
-              <span>LIVE DATABASE</span>
-            </span>
             <h3 className="text-xl font-black text-slate-900 dark:text-white">{props.heading}</h3>
           </div>
           {props.subheading && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{props.subheading}</p>}
@@ -1090,10 +1086,6 @@ const DbStudyProgramBlockRender: React.FC<Props['DbStudyProgramBlock']> = (props
       <div className="flex items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              <Database className="w-3 h-3 animate-pulse" />
-              <span>LIVE DATABASE</span>
-            </span>
             <h3 className="text-xl font-black text-slate-900 dark:text-white">{props.heading}</h3>
           </div>
           {props.subheading && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{props.subheading}</p>}
@@ -1264,10 +1256,6 @@ const DbCurriculumBlockRender: React.FC<Props['DbCurriculumBlock']> = (props) =>
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              <Database className="w-3 h-3 animate-pulse" />
-              <span>LIVE DATABASE</span>
-            </span>
             <h3 className="text-xl font-black text-slate-900 dark:text-white">{props.heading}</h3>
           </div>
           {props.subheading && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{props.subheading}</p>}
@@ -1580,10 +1568,6 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              <Database className="w-3 h-3 animate-pulse" />
-              <span>LIVE DATABASE</span>
-            </span>
             <h3 className="text-xl font-black text-slate-900 dark:text-white">{props.heading}</h3>
           </div>
           {props.subheading && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{props.subheading}</p>}
@@ -2109,10 +2093,6 @@ const DbAcademicCalendarBlockRender: React.FC<Props['DbAcademicCalendarBlock']> 
       <div className="flex items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              <Database className="w-3 h-3 animate-pulse" />
-              <span>LIVE DATABASE</span>
-            </span>
             <h3 className="text-xl font-black text-slate-900 dark:text-white">{props.heading}</h3>
           </div>
           {props.subheading && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{props.subheading}</p>}
