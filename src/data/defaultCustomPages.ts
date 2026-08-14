@@ -20,6 +20,19 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Sambutan Dekan FTI UPA' } },
       content: [
         {
+          type: 'PageBannerBlock',
+          props: {
+            id: 'banner-sambutan',
+            title: 'Sambutan Dekan Fakultas Teknik & Informatika',
+            subtitle: 'Komitmen menyelenggarakan pendidikan berkualitas global dan berintegritas.',
+            badge: 'Sambutan Dekan',
+            breadcrumb: 'Beranda / Sambutan Dekan',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
+          }
+        },
+        {
           type: 'DeanWelcomeBlock',
           props: {
             id: 'dean-welcome-main',
@@ -55,6 +68,19 @@ export const defaultCustomPages: CustomPageItem[] = [
     content: {
       root: { props: { title: 'Detail Berita' } },
       content: [
+        {
+          type: 'PageBannerBlock',
+          props: {
+            id: 'banner-news-detail',
+            title: 'Detail Artikel & Berita Kampus',
+            subtitle: 'Informasi resmi dari Redaksi Humas Fakultas Teknik & Informatika.',
+            badge: 'Berita FTI',
+            breadcrumb: 'Beranda / Berita / Detail',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
+          }
+        },
         {
           type: 'DbNewsDetailBlock',
           props: {
@@ -163,19 +189,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Profil FTI UPA' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-profil',
-            title: 'Profil Fakultas Teknik & Informatika (FTI UPA)',
-            subtitle: 'Pusat keunggulan pendidikan tinggi di bidang sains komputasi, rekayasa perangkat lunak, kecerdasan buatan (AI), cyber security, dan otomasi industri.',
-            badgeText: '🏛️ Sejarah, Visi & Keunggulan Akademik',
-            ctaPrimaryText: 'Jelajahi Visi Misi 2035',
-            ctaSecondaryText: 'Struktur Organisasi & Pimpinan',
-            bgStyle: 'gradientDark',
-            fontFamily: 'sans',
-            textAlign: 'center',
-            paddingY: 'xl',
-            borderRadius: 'lg'
+            id: 'banner-profil',
+            title: 'Profil Fakultas Teknik & Informatika',
+            subtitle: 'Pusat keunggulan pendidikan tinggi di bidang sains komputasi, kecerdasan buatan, dan teknologi rekayasa.',
+            badge: 'Profil Fakultas',
+            breadcrumb: 'Beranda / Profil',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -255,29 +278,6 @@ export const defaultCustomPages: CustomPageItem[] = [
             bgStyle: 'white',
             paddingY: 'lg'
           }
-        },
-        {
-          type: 'SubMenuGridBlock',
-          props: {
-            id: 'subnav-profil',
-            heading: 'Jelajahi Informasi Profil Lainnya',
-            subheading: 'Halaman terkait profil kepemimpinan dan arah strategis FTI UPA',
-            item1Title: 'Visi, Misi & Sasaran 2035',
-            item1Desc: 'Rencana strategis dan pilar capaian akademik fakultas.',
-            item1Link: 'visi-misi',
-            item2Title: 'Struktur Organisasi',
-            item2Desc: 'Susunan Dekanat, Ketua Program Studi, dan Kepala Lab.',
-            item2Link: 'organisasi',
-            item3Title: 'Direktori Dosen & Peneliti',
-            item3Desc: 'Profil tenaga pendidik dan rekam jejak riset.',
-            item3Link: 'dosen',
-            item4Title: 'Kontak & Lokasi Kampus',
-            item4Desc: 'Alamat kampus, email sekretariat, dan peta lokasi.',
-            item4Link: 'kontak',
-            bgStyle: 'maroon',
-            paddingY: 'lg',
-            borderRadius: 'lg'
-          }
         }
       ]
     }
@@ -293,18 +293,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Visi Misi FTI UPA' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-vm',
+            id: 'banner-vm',
             title: 'Visi, Misi & Sasaran Strategis',
-            subtitle: 'Arah pembangunan pendidikan dan riset Fakultas Teknik & Informatika Universitas Patria Artha hingga tahun 2035.',
-            badgeText: '🎯 Visi 2035: Leading Digital Faculty',
-            ctaPrimaryText: 'Lihat Program Unggulan',
-            ctaSecondaryText: 'Kembali ke Profil',
-            bgStyle: 'maroon',
-            fontFamily: 'sans',
-            textAlign: 'center',
-            paddingY: 'lg'
+            subtitle: 'Arah pembangunan pendidikan dan riset Fakultas Teknik & Informatika UPA hingga 2035.',
+            badge: 'Visi & Misi',
+            breadcrumb: 'Beranda / Profil / Visi Misi',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -354,16 +352,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Struktur Organisasi FTI' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-so',
+            id: 'banner-so',
             title: 'Struktur Organisasi FTI UPA',
-            subtitle: 'Jajaran pimpinan Dekanat, Ketua Program Studi, dan Penanggung Jawab Unit Operasional Akademik.',
-            badgeText: '👥 Governance & Leadership',
-            ctaPrimaryText: 'Lihat Direktori Dosen',
-            ctaSecondaryText: 'Hubungi Sekretariat',
-            bgStyle: 'gradientDark',
-            paddingY: 'lg'
+            subtitle: 'Jajaran pimpinan Dekanat, Ketua Program Studi, dan Unit Operasional Akademik.',
+            badge: 'Tata Kelola',
+            breadcrumb: 'Beranda / Profil / Organisasi',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -400,16 +398,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Direktori Dosen FTI UPA' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-dosen',
+            id: 'banner-dosen',
             title: 'Direktori Dosen & Peneliti FTI UPA',
-            subtitle: 'Tenaga pendidik profesional bergelar Magister dan Doktor lulusan kampus ternama dalam & luar negeri.',
-            badgeText: '👨‍🏫 Tenaga Pendidik Berkualifikasi',
-            ctaPrimaryText: 'Cari Berdasarkan Kepakaran',
-            ctaSecondaryText: 'Publikasi Riset',
-            bgStyle: 'gradientDark',
-            paddingY: 'lg'
+            subtitle: 'Tenaga pendidik profesional bergelar Magister dan Doktor lulusan kampus ternama.',
+            badge: 'Direktori Dosen',
+            breadcrumb: 'Beranda / Dosen',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -446,16 +444,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Program Studi FTI UPA' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-prodi',
+            id: 'banner-prodi',
             title: 'Program Studi Sarjana (S1)',
-            subtitle: 'Tiga pilihan program studi terakreditasi dengan kurikulum mutakhir sesuai tren industri digital.',
-            badgeText: '🎓 Akreditasi Unggul & Baik Sekali',
-            ctaPrimaryText: 'Daftar Sekarang',
-            ctaSecondaryText: 'Bandingkan Prodi',
-            bgStyle: 'gradientDark',
-            paddingY: 'xl'
+            subtitle: 'Pilihan program studi terakreditasi dengan kurikulum mutakhir industri digital.',
+            badge: 'Program Studi',
+            breadcrumb: 'Beranda / Program Studi',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -526,16 +524,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'S1 Teknik Informatika' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-tif',
+            id: 'banner-tif',
             title: 'S1 Teknik Informatika',
             subtitle: 'Fokus Peminatan: Artificial Intelligence, Cyber Security, Software Engineering, dan Data Science.',
-            badgeText: '💻 Akreditasi UNGGUL LAM INFOKOM',
-            ctaPrimaryText: 'Daftar Prodi Informatika',
-            ctaSecondaryText: 'Lihat Kurikulum TIF',
-            bgStyle: 'maroon',
-            paddingY: 'xl'
+            badge: 'Prodi Informatika',
+            breadcrumb: 'Beranda / Prodi / Teknik Informatika',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -566,16 +564,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'S1 Teknik Elektro' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-te',
+            id: 'banner-te',
             title: 'S1 Teknik Elektro',
             subtitle: 'Menguasai Teknologi Internet of Things (IoT), Otomasi Industri, Microcontroller, & Smart Energy Grid.',
-            badgeText: '⚡ Akreditasi Baik Sekali (LAM Teknik)',
-            ctaPrimaryText: 'Daftar Elektro',
-            ctaSecondaryText: 'Fasilitas Lab Elektro',
-            bgStyle: 'gradientDark',
-            paddingY: 'xl'
+            badge: 'Prodi Elektro',
+            breadcrumb: 'Beranda / Prodi / Teknik Elektro',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -606,16 +604,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'S1 Teknik Mesin' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-tm',
+            id: 'banner-tm',
             title: 'S1 Teknik Mesin',
             subtitle: 'Keahlian Perancangan Mekanikal CAD/CAM, Konversi Energi, Otomotif, & Material Teknik.',
-            badgeText: '⚙️ Akreditasi Baik Sekali (LAM Teknik)',
-            ctaPrimaryText: 'Daftar Mesin',
-            ctaSecondaryText: 'Bengkel & Lab Mesin',
-            bgStyle: 'dark',
-            paddingY: 'xl'
+            badge: 'Prodi Mesin',
+            breadcrumb: 'Beranda / Prodi / Teknik Mesin',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -646,16 +644,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Berita & Event FTI UPA' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-berita',
+            id: 'banner-berita',
             title: 'Berita & Informasi Kegiatan FTI UPA',
             subtitle: 'Kabar terbaru prestasi mahasiswa, seminar nasional, kegiatan pengabdian, dan info akademik.',
-            badgeText: '📰 Media Publikasi Resmi',
-            ctaPrimaryText: 'Kirim Warta Berita',
-            ctaSecondaryText: 'Arsip Pengumuman',
-            bgStyle: 'gradientDark',
-            paddingY: 'lg'
+            badge: 'Berita Kampus',
+            breadcrumb: 'Beranda / Berita',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -692,16 +690,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Laboratorium FTI UPA' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-lab',
+            id: 'banner-lab',
             title: 'Laboratorium & Pusat Riset FTI UPA',
             subtitle: 'Fasilitas komputasi dan praktikum canggih untuk mendukung pembelajaran berbasis hands-on.',
-            badgeText: '🔬 State-of-the-art Facilities',
-            ctaPrimaryText: 'Jadwal Pemakaian Lab',
-            ctaSecondaryText: 'SOP Laboratorium',
-            bgStyle: 'maroon',
-            paddingY: 'lg'
+            badge: 'Fasilitas Riset',
+            breadcrumb: 'Beranda / Laboratorium',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
@@ -746,16 +744,16 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Kontak FTI UPA' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'PageBannerBlock',
           props: {
-            id: 'hero-kontak',
+            id: 'banner-kontak',
             title: 'Hubungi Kami (FTI UPA)',
             subtitle: 'Layanan informasi pendaftaran, admisi akademik, dan pimpinan Fakultas Teknik & Informatika.',
-            badgeText: '📞 Layanan Respon Cepat',
-            ctaPrimaryText: 'Kirim Email Admin',
-            ctaSecondaryText: 'Lokasi Google Maps',
-            bgStyle: 'gradientDark',
-            paddingY: 'lg'
+            badge: 'Layanan Kontak',
+            breadcrumb: 'Beranda / Kontak',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
           }
         },
         {
