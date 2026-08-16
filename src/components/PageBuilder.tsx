@@ -3332,6 +3332,11 @@ type Props = {
     logos?: { name: string; logoUrl?: string }[];
     images?: { url: string }[];
     theme?: 'light' | 'dark';
+    bgType?: 'solid' | 'gradient' | 'image' | 'video';
+    bgImageUrl?: string;
+    bgVideoUrl?: string;
+    bgOverlayOpacity?: number;
+    layoutStyle?: 'staggered' | 'bento' | 'floating-glass' | 'cinematic-center';
   } & AdvancedStyleProps;
   Hero10Block: Omit<Hero10Props, 'images' | 'imageAlts'> & {
     images?: { url: string }[];
@@ -4636,6 +4641,29 @@ export const puckConfig: Config<Props> = {
 
     Hero231Block: {
       fields: {
+        layoutStyle: {
+          type: 'select',
+          label: '📐 Style / Layout Alternatif',
+          options: [
+            { label: 'Standard 3D Staggered Cards (Shadcn 231)', value: 'staggered' },
+            { label: 'Bento Box Grid Gallery (Asimetris Modern)', value: 'bento' },
+            { label: 'Floating Glassmorphism (Efek Kaca & Neon)', value: 'floating-glass' },
+            { label: 'Cinematic Centered (Hero Tengah Vokal)', value: 'cinematic-center' },
+          ],
+        },
+        bgType: {
+          type: 'select',
+          label: '🎬 Tipe Background Hero',
+          options: [
+            { label: 'Solid Color (Tema Light/Dark)', value: 'solid' },
+            { label: 'Gradient Brand Red (Marun - Slate)', value: 'gradient' },
+            { label: 'Background Gambar (Foto)', value: 'image' },
+            { label: 'Background Video (Cinematic HTML5)', value: 'video' },
+          ],
+        },
+        bgImageUrl: makeImageField('🖼️ Gambar Background (jika Tipe = Gambar)') as any,
+        bgVideoUrl: { type: 'text', label: '🎥 URL Video MP4 (jika Tipe = Video)' },
+        bgOverlayOpacity: { type: 'number', label: '🌑 Opasitas Gelap Overlay (0 - 100%)' },
         badgeText: { type: 'text', label: '🏷️ Teks Badge' },
         title: { type: 'textarea', label: '📌 Judul Utama' },
         description: { type: 'textarea', label: '📝 Deskripsi Sub-judul' },
@@ -4645,7 +4673,7 @@ export const puckConfig: Config<Props> = {
         secondaryCtaHref: { type: 'text', label: 'Tombol Sekunder (Link)' },
         theme: {
           type: 'select',
-          label: '🎨 Tema Visual',
+          label: '🎨 Tema Warna Teks/Wadah',
           options: [
             { label: 'Light', value: 'light' },
             { label: 'Dark', value: 'dark' },
@@ -4671,6 +4699,11 @@ export const puckConfig: Config<Props> = {
         ...commonElementorFields,
       },
       defaultProps: {
+        layoutStyle: 'staggered',
+        bgType: 'solid',
+        bgImageUrl: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1600&q=80',
+        bgVideoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-41318-large.mp4',
+        bgOverlayOpacity: 75,
         badgeText: '● Flexible Plan customized for you',
         title: 'Blocks Built With Shadcn & Tailwind.',
         description: 'Pendidikan tinggi berkualitas berbasis Outcome-Based Education (OBE) yang mengintegrasikan Artificial Intelligence, Cloud Software, dan Cyber Security.',
@@ -4706,6 +4739,11 @@ export const puckConfig: Config<Props> = {
             logos={props.logos}
             images={imgList}
             theme={props.theme}
+            bgType={props.bgType}
+            bgImageUrl={props.bgImageUrl}
+            bgVideoUrl={props.bgVideoUrl}
+            bgOverlayOpacity={props.bgOverlayOpacity}
+            layoutStyle={props.layoutStyle}
           />
         );
       },
