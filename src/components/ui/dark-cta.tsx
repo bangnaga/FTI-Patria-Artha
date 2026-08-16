@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 
 export type CtaTheme = 'light' | 'dark';
 export type CtaAccent = 'red-orange' | 'blue-purple' | 'green-teal';
@@ -20,19 +21,19 @@ export interface DarkCtaProps {
 
 const ACCENT_STYLES: Record<CtaAccent, { gradient: string; glow: string; radial: string }> = {
   'red-orange': {
-    gradient: 'from-red-600 to-orange-500',
-    glow: 'shadow-red-500/40',
-    radial: 'radial-gradient(ellipse 70% 60% at 50% 110%, rgba(234,88,12,0.45), rgba(220,38,38,0.3), transparent 70%)',
+    gradient: 'from-red-600 via-rose-500 to-orange-500 hover:from-red-700 hover:to-orange-600',
+    glow: 'shadow-red-500/35',
+    radial: 'radial-gradient(ellipse 80% 55% at 50% 120%, rgba(255, 69, 0, 0.22), rgba(220, 38, 38, 0.12), transparent 75%)',
   },
   'blue-purple': {
-    gradient: 'from-blue-600 to-violet-600',
-    glow: 'shadow-blue-500/40',
-    radial: 'radial-gradient(ellipse 70% 60% at 50% 110%, rgba(37,99,235,0.45), rgba(124,58,237,0.3), transparent 70%)',
+    gradient: 'from-blue-600 via-indigo-500 to-violet-600 hover:from-blue-700 hover:to-violet-700',
+    glow: 'shadow-blue-500/35',
+    radial: 'radial-gradient(ellipse 80% 55% at 50% 120%, rgba(37, 99, 235, 0.22), rgba(124, 58, 237, 0.12), transparent 75%)',
   },
   'green-teal': {
-    gradient: 'from-emerald-600 to-teal-500',
-    glow: 'shadow-emerald-500/40',
-    radial: 'radial-gradient(ellipse 70% 60% at 50% 110%, rgba(5,150,105,0.45), rgba(13,148,136,0.3), transparent 70%)',
+    gradient: 'from-emerald-600 via-teal-500 to-cyan-500 hover:from-emerald-700 hover:to-cyan-600',
+    glow: 'shadow-emerald-500/35',
+    radial: 'radial-gradient(ellipse 80% 55% at 50% 120%, rgba(5, 150, 105, 0.22), rgba(13, 148, 136, 0.12), transparent 75%)',
   },
 };
 
@@ -40,7 +41,7 @@ export default function DarkCta({
   theme = 'light',
   title,
   description,
-  primaryCtaLabel = 'Daftar Sekarang',
+  primaryCtaLabel = 'Daftar SPMB Sekarang',
   primaryCtaHref = '#',
   secondaryCtaLabel,
   secondaryCtaHref = '#',
@@ -49,64 +50,56 @@ export default function DarkCta({
 }: DarkCtaProps) {
   const isDark = theme === 'dark';
   const accent = ACCENT_STYLES[accentColor];
-  const py = size === 'compact' ? 'py-16 sm:py-20' : 'py-24 sm:py-32';
+  const py = size === 'compact' ? 'py-16 sm:py-20' : 'py-20 sm:py-28';
 
-  // Light theme: white bg, coloured gradient blob bottom
-  // Dark theme: dark slate bg, same radial glow
   const sectionBg = isDark ? '#020617' : '#ffffff';
   const titleClass = isDark ? 'text-white' : 'text-slate-900';
-  const descClass = isDark ? 'text-slate-400' : 'text-slate-600';
+  const descClass = isDark ? 'text-slate-300' : 'text-slate-600';
   const secondaryBtnClass = isDark
-    ? 'border border-white/20 text-white hover:bg-white/10'
-    : 'border border-slate-300 text-slate-700 hover:bg-slate-100';
+    ? 'border border-slate-800 bg-slate-900/90 text-slate-100 hover:bg-slate-800/90'
+    : 'border border-slate-200/90 bg-white/90 text-slate-800 hover:bg-slate-50 shadow-xs';
 
   return (
     <section
       className={`relative overflow-hidden text-center ${py}`}
       style={{ backgroundColor: sectionBg }}
     >
-      {/* Radial glow decoration from bottom */}
+      {/* Soft Radial Ambient Glow decoration from bottom */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-0"
         aria-hidden="true"
         style={{ background: accent.radial }}
       />
-      {/* Top separator line */}
-      <div
-        className="pointer-events-none absolute top-0 left-0 right-0 h-px"
-        style={{
-          background: isDark
-            ? 'linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent)'
-            : 'linear-gradient(to right, transparent, rgba(0,0,0,0.08), transparent)',
-        }}
-      />
 
-      <div className="relative max-w-3xl mx-auto px-4">
-        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight ${titleClass}`}>
+      <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6">
+        {/* Modern Bold Heading */}
+        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.18] ${titleClass}`}>
           {title}
         </h2>
+
+        {/* Modern Subtitle / Description */}
         {description && (
-          <p className={`mt-4 text-base sm:text-lg max-w-xl mx-auto leading-relaxed ${descClass}`}>
+          <p className={`mt-5 text-base sm:text-lg max-w-2xl mx-auto font-normal leading-relaxed ${descClass}`}>
             {description}
           </p>
         )}
 
-        <div className="mt-8 flex flex-wrap gap-4 justify-center">
+        {/* Buttons Row */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5">
           <a
             href={primaryCtaHref}
-            className={`inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r ${accent.gradient} shadow-lg ${accent.glow} hover:opacity-90 transition-opacity`}
+            className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-extrabold text-base text-white bg-gradient-to-r ${accent.gradient} shadow-xl ${accent.glow} transition-all transform hover:-translate-y-0.5 active:translate-y-0`}
           >
-            {primaryCtaLabel}
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <span>{primaryCtaLabel}</span>
+            <ChevronRight className="w-5 h-5 stroke-[2.5]" />
           </a>
+
           {secondaryCtaLabel && (
             <a
               href={secondaryCtaHref}
-              className={`inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold transition-all ${secondaryBtnClass}`}
+              className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-bold text-base transition-all backdrop-blur-sm ${secondaryBtnClass}`}
             >
-              {secondaryCtaLabel}
+              <span>{secondaryCtaLabel}</span>
             </a>
           )}
         </div>
@@ -114,3 +107,4 @@ export default function DarkCta({
     </section>
   );
 }
+

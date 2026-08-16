@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -14,15 +15,15 @@
   --card-bg: #FFFFFF;
   --border-divider: #E2E8F0;
 
-  /* Typography */
+  /* Modern Typography System */
   --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --base-font-size: 18px;
   --heading-font-weight: 800;
-  --letter-spacing-heading: normal;
+  --letter-spacing-heading: -0.025em;
 
   /* Spacing & Borders */
-  --global-border-radius: 12px;
+  --global-border-radius: 16px;
   --section-spacing-y: 3.5rem;
   --container-max-width: 1280px;
   --card-inner-padding: 1.5rem;
