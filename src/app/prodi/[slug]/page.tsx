@@ -1,31 +1,70 @@
-"use client";
+import type { Metadata } from 'next';
+import ProdiSlugClient from './ProdiSlugClient';
+import { prisma } from '../../../db/prisma';
 
-import React from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { CustomPageViewer } from '../../../components/CustomPageViewer';
-import { useApp } from '../../../context/AppContext';
-import { defaultCustomPages } from '../../../data/defaultCustomPages';
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-export default function ProdiSlugPage() {
-  const params = useParams();
-  const router = useRouter();
-  const rawSlug = params?.slug as string || '';
-  const slug = Array.isArray(rawSlug) ? rawSlug[0] : rawSlug;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const slug = resolvedParams?.slug || '';
+  
+  let prodiTitle = slug.toUpperCase().replace(/-/g, ' ');
+  let prodiDesc = `Informasi kurikulum, silabus, prospek karir, dan profil Program Studi ${prodiTitle} Fakultas Teknik & Informatika Universitas Patria Artha.`;
 
-  const { customPagesList } = useApp();
-  const targetPage = 
-    customPagesList.find(p => p && (p.slug === slug || p.slug === `prodi-${slug}` || p.id === slug)) || 
-    defaultCustomPages.find(p => p && (p.slug === slug || p.slug === `prodi-${slug}` || p.id === slug));
-
-  if (targetPage) {
-    return (
-      <CustomPageViewer 
-        page={targetPage} 
-        onBackToHome={() => router.push('/')} 
-        onNavigateSection={(sec) => router.push(`/halaman/${sec}`)} 
-      />
-    );
+  try {
+    const dbProdi = await prisma.studyProgram.findFirst({
+      where: {
+        OR: [
+          { code: slug },
+          { name: { contains: slug } }
+        ]
+      }
+    });
+    if (dbProdi && dbProdi.name) {
+      prodiTitle = dbProdi.name;
+    }
+  } catch (e) {
+    // Keep formatted slug title fallback
   }
 
-  return null;
+  const fullTitle = `Program Studi ${prodiTitle} | FTI Universitas Patria Artha`;
+  const canonicalUrl = `https://fti.patria-artha.ac.id/prodi/${slug}`;
+
+  return {
+    title: fullTitle,
+    description: prodiDesc,
+    keywords: [prodiTitle, 'Program Studi', 'Teknik', 'Informatika', 'Universitas Patria Artha', 'FTI UPA Makassar'],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: fullTitle,
+      description: prodiDesc,
+      url: canonicalUrl,
+      siteName: 'Fakultas Teknik & Informatika UPA',
+      locale: 'id_ID',
+      type: 'article',
+      images: [
+        {
+          url: '/images/hero-bg.jpg',
+          width: 1200,
+          height: 630,
+          alt: fullTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: fullTitle,
+      description: prodiDesc,
+      images: ['/images/hero-bg.jpg'],
+    },
+  };
+}
+
+export default async function ProdiSlugPage({ params }: Props) {
+  const resolvedParams = await params;
+  return <ProdiSlugClient slug={resolvedParams?.slug || ''} />;
 }

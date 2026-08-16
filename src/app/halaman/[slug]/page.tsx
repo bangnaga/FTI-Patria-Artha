@@ -1,66 +1,68 @@
-"use client";
-
-import React from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { CustomPageViewer } from '../../../components/CustomPageViewer';
-import { useApp } from '../../../context/AppContext';
+import type { Metadata } from 'next';
+import CustomPageSlugClient from './CustomPageSlugClient';
 import { defaultCustomPages } from '../../../data/defaultCustomPages';
 
-export default function CustomSlugPage() {
-  const params = useParams();
-  const router = useRouter();
-  const rawSlug = params?.slug as string || '';
-  const slug = Array.isArray(rawSlug) ? rawSlug[0] : rawSlug;
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-  const { customPagesList } = useApp();
-
-  const cleanTargetSlug = slug
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const rawSlug = resolvedParams?.slug || '';
+  const cleanTargetSlug = rawSlug
     .replace(/^\/halaman\//i, '')
     .replace(/^halaman\//i, '')
     .replace(/^\//, '')
     .replace(/\/$/, '')
     .trim();
 
-  const targetPage = 
-    customPagesList.find(p => {
-      if (!p) return false;
-      const cleanP = (p.slug || '').replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim();
-      return cleanP === cleanTargetSlug || p.id === cleanTargetSlug;
-    }) ||
-    defaultCustomPages.find(p => {
-      if (!p) return false;
-      const cleanP = (p.slug || '').replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim();
-      return cleanP === cleanTargetSlug || p.id === cleanTargetSlug;
-    });
+  let pageTitle = cleanTargetSlug.charAt(0).toUpperCase() + cleanTargetSlug.slice(1).replace(/-/g, ' ');
+  let pageDesc = `Informasi resmi ${pageTitle} Fakultas Teknik & Informatika Universitas Patria Artha.`;
 
-  if (!targetPage) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-24 text-center">
-        <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-950 text-[#800020] dark:text-red-400 flex items-center justify-center mx-auto mb-4 text-2xl font-black">
-          404
-        </div>
-        <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Halaman Tidak Ditemukan</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-6">
-          Halaman dengan URL <code className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded font-mono text-xs">/halaman/{slug}</code> tidak ditemukan atau belum dipublikasikan.
-        </p>
-        <button
-          onClick={() => router.push('/')}
-          className="px-6 py-3 rounded-xl bg-[#800020] hover:bg-[#9B2C2C] text-white font-bold text-sm shadow-md transition-all"
-        >
-          ← Kembali ke Beranda Utama
-        </button>
-      </div>
-    );
+  const defaultPage = defaultCustomPages.find(p => p && (
+    (p.slug || '').replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim() === cleanTargetSlug ||
+    p.id === cleanTargetSlug
+  ));
+  if (defaultPage && defaultPage.title) {
+    pageTitle = defaultPage.title;
   }
 
-  return (
-    <CustomPageViewer
-      page={targetPage}
-      onBackToHome={() => router.push('/')}
-      onNavigateSection={(sec) => {
-        if (sec === 'hero') router.push('/');
-        else router.push(`/${sec}`);
-      }}
-    />
-  );
+  const fullTitle = `${pageTitle} | FTI Universitas Patria Artha`;
+  const canonicalUrl = `https://fti.patria-artha.ac.id/halaman/${cleanTargetSlug}`;
+
+  return {
+    title: fullTitle,
+    description: pageDesc,
+    keywords: [pageTitle, 'Fakultas Teknik', 'Informatika', 'Universitas Patria Artha', 'FTI UPA Makassar'],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: fullTitle,
+      description: pageDesc,
+      url: canonicalUrl,
+      siteName: 'Fakultas Teknik & Informatika UPA',
+      locale: 'id_ID',
+      type: 'article',
+      images: [
+        {
+          url: '/images/hero-bg.jpg',
+          width: 1200,
+          height: 630,
+          alt: fullTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: fullTitle,
+      description: pageDesc,
+      images: ['/images/hero-bg.jpg'],
+    },
+  };
+}
+
+export default async function CustomSlugPage({ params }: Props) {
+  const resolvedParams = await params;
+  return <CustomPageSlugClient slug={resolvedParams?.slug || ''} />;
 }
