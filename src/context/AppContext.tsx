@@ -112,7 +112,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           if (files && files.length > 0) setMediaFilesList(files);
           if (menus && menus.length > 0) setMenuItemsList(menus);
           if (pages && pages.length > 0) {
-            setCustomPagesList(pages);
+            const pageMap = new Map<string, CustomPageItem>();
+            defaultCustomPages.forEach(p => {
+              if (p) {
+                const key = (p.slug || p.id).replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim();
+                pageMap.set(key, p);
+              }
+            });
+            pages.forEach((p: CustomPageItem) => {
+              if (p) {
+                const key = (p.slug || p.id).replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim();
+                pageMap.set(key, p);
+              }
+            });
+            setCustomPagesList(Array.from(pageMap.values()));
           } else {
             setCustomPagesList(defaultCustomPages);
           }

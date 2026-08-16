@@ -105,22 +105,12 @@ export const defaultCustomPages: CustomPageItem[] = [
       root: { props: { title: 'Halaman Utama FTI UPA' } },
       content: [
         {
-          type: 'HeroBlock',
+          type: 'HeroSlideshowBlock',
           props: {
-            id: 'hero-1',
-            title: 'Fakultas Teknik & Informatika UPA',
-            subtitle: 'Mencetak Talenta Digital Unggul di Bidang AI, Cyber Security, Cloud Computing & Software Engineering Berstandar Internasional.',
-            badgeText: '✨ Terakreditasi Unggul LAM INFOKOM 2026-2031',
-            ctaPrimaryText: 'Daftar PMB 2027',
-            ctaSecondaryText: 'Lihat Kurikulum & SKS',
-            bgStyle: 'gradientDark',
-            fontFamily: 'sans',
-            textAlign: 'center',
-            paddingY: 'xl',
-            paddingX: 'lg',
-            borderRadius: 'lg',
-            boxShadow: 'lg',
-            motionEffect: 'zoomIn'
+            id: 'hero-slideshow-1',
+            autoPlay: true,
+            autoPlayIntervalMs: '6500',
+            heightPreset: 'large'
           }
         },
         {
