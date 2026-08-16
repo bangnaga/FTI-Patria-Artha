@@ -3384,6 +3384,13 @@ type Props = {
     imageUrl: string;
     imageStyle?: 'transparent' | 'card';
     enableFloatingAnimation?: boolean;
+    bgType?: 'solid' | 'gradient' | 'image' | 'slideshow';
+    bgImageUrl?: string;
+    bgSlideshowImages?: { url: string }[];
+    slideshowInterval?: number;
+    animatedTitles?: { word: string }[];
+    enableTextAnimation?: boolean;
+    enableParticles?: boolean;
     bgGradient: string;
     overlayOpacity?: string;
     minHeight?: string;
@@ -3801,6 +3808,232 @@ type Props = {
     borderStyle?: string;
     padding?: string;
   } & AdvancedStyleProps;
+};
+
+const HeroBlockRender: React.FC<Props['HeroBlock']> = (props) => {
+  const styleClass = getAdvancedStyleClasses(props);
+  const isCard = props.imageStyle === 'card';
+  const isFloat = props.enableFloatingAnimation !== false;
+
+  // Background slideshow logic
+  const bgSlideshowList = (props.bgSlideshowImages || []).map((img: any) => (typeof img === 'string' ? img : img?.url)).filter((u: any) => u && typeof u === 'string' && u.trim() !== '');
+  const isSlideshow = props.bgType === 'slideshow' && bgSlideshowList.length > 0;
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isSlideshow || bgSlideshowList.length <= 1) return;
+    const intervalMs = (props.slideshowInterval || 5) * 1000;
+    const timer = setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % bgSlideshowList.length);
+    }, intervalMs);
+    return () => clearInterval(timer);
+  }, [isSlideshow, bgSlideshowList.length, props.slideshowInterval]);
+
+  // Animated rotating titles logic
+  const titlesList = (props.animatedTitles || []).map((t: any) => (typeof t === 'string' ? t : t?.word)).filter((w: any) => w && typeof w === 'string' && w.trim() !== '');
+  const isTextAnim = props.enableTextAnimation !== false && titlesList.length > 0;
+  const [titleIdx, setTitleIdx] = useState(0);
+
+  useEffect(() => {
+    if (!isTextAnim || titlesList.length <= 1) return;
+    const timer = setInterval(() => {
+      setTitleIdx((prev) => (prev + 1) % titlesList.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [isTextAnim, titlesList.length]);
+
+  const activeHighlightText = isTextAnim ? titlesList[titleIdx] : (props.titleHighlight || 'Berdaya Saing Global');
+  const validImgSrc = props.imageUrl && props.imageUrl.trim() !== '' ? props.imageUrl : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80';
+  const enableParticles = props.enableParticles !== false;
+
+  return (
+    <div className={`relative overflow-hidden ${styleClass}`}>
+      {/* Background Slideshow Layer */}
+      {isSlideshow ? (
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          {bgSlideshowList.map((bgUrl, i) => (
+            <motion.div
+              key={i}
+              initial={false}
+              animate={{ opacity: slideIndex === i ? 1 : 0, scale: slideIndex === i ? 1.05 : 1 }}
+              transition={{ duration: 1.2, ease: 'easeInOut' }}
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url('${bgUrl}')` }}
+            />
+          ))}
+          {/* Dark Overlay over slideshow */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/60" />
+        </div>
+      ) : props.bgType === 'image' && props.bgImageUrl ? (
+        <div 
+          className="absolute inset-0 z-0 bg-cover bg-center"
+          style={{ backgroundImage: `url('${props.bgImageUrl}')` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/60" />
+        </div>
+      ) : (
+        /* Background Animated Floating Orbs & Light Glow */
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="absolute -top-24 -left-20 w-[500px] h-[500px] bg-[#9B2C2C]/25 rounded-full blur-[130px]" />
+          <div className="absolute top-1/2 -right-20 -translate-y-1/2 w-[450px] h-[450px] bg-red-600/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-1/3 w-[600px] h-[300px] bg-amber-500/10 rounded-full blur-[140px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
+        </div>
+      )}
+
+      {/* Floating Particles/StarDust Layer */}
+      {enableParticles && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
+          {Array.from({ length: 18 }).map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{
+                x: `${(i * 17) % 100}%`,
+                y: `${(i * 23) % 100}%`,
+                opacity: 0.2 + (i % 5) * 0.15,
+                scale: 0.6 + (i % 4) * 0.3,
+              }}
+              animate={{
+                y: [`${(i * 23) % 100}%`, `${((i * 23) % 100) - 15}%`, `${(i * 23) % 100}%`],
+                opacity: [0.2, 0.8, 0.2],
+              }}
+              transition={{
+                duration: 4 + (i % 6),
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: (i % 5) * 0.5,
+              }}
+              className="absolute w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.8)]"
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Hero Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          {/* Left Content Column */}
+          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+            {/* Badge Header */}
+            {props.badgeText && (
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 backdrop-blur-md shadow-sm">
+                <div className="p-1 rounded-full bg-emerald-500/20">
+                  <Award className="w-3.5 h-3.5 text-emerald-400" />
+                </div>
+                <span className="text-xs font-bold tracking-wide">{props.badgeText}</span>
+              </div>
+            )}
+
+            {/* Headline with Rotating Text Animation */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
+              {props.titlePrefix}{' '}
+              <span className="inline-block relative overflow-hidden align-bottom min-h-[1.2em]">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={activeHighlightText}
+                    initial={{ y: 25, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -25, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                    className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-rose-300 to-amber-300"
+                  >
+                    {activeHighlightText}
+                  </motion.span>
+                </AnimatePresence>
+              </span>{' '}
+              {props.titleSuffix}
+            </h1>
+
+            {/* Subtitle Description */}
+            <p className="text-slate-300 text-sm sm:text-base lg:text-lg font-normal max-w-2xl leading-relaxed mx-auto lg:mx-0">
+              {props.description}
+            </p>
+
+            {/* CTA Buttons Row */}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+              {props.ctaPrimaryText && (
+                <a
+                  href={props.ctaPrimaryLink || '#'}
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#9B2C2C] to-[#800020] hover:from-[#b33333] hover:to-[#990026] text-white font-extrabold text-sm shadow-xl shadow-red-950/50 transition-all flex items-center justify-center gap-2 group"
+                >
+                  <span>{props.ctaPrimaryText}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              )}
+              {props.ctaSecondaryText && (
+                <a
+                  href={props.ctaSecondaryLink || '#'}
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 text-slate-100 font-bold text-sm transition-all shadow-md backdrop-blur-sm flex items-center justify-center gap-2"
+                >
+                  <Code2 className="w-4 h-4 text-red-400" />
+                  <span>{props.ctaSecondaryText}</span>
+                </a>
+              )}
+            </div>
+
+            {/* Specialization Tags Row */}
+            <div className="pt-6 border-t border-slate-800/80">
+              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">
+                Peminatan Utama FTI
+              </p>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-200 text-xs font-semibold">
+                  <Brain className="w-3.5 h-3.5 text-red-400" /> AI & ML
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-200 text-xs font-semibold">
+                  <Code2 className="w-3.5 h-3.5 text-rose-400" /> Software & Cloud
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-200 text-xs font-semibold">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Cyber Security
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Media Showcase Column */}
+          <div className="lg:col-span-5 relative">
+            <div className={`relative mx-auto max-w-md lg:max-w-none ${isFloat ? 'animate-float' : ''}`}>
+              {isCard ? (
+                /* Card Bingkai Style */
+                <div className="relative rounded-3xl overflow-hidden border-2 border-slate-700/60 shadow-2xl bg-slate-900 aspect-[4/3] sm:aspect-[16/11]">
+                  <img
+                    src={validImgSrc}
+                    alt="Hero Media"
+                    className="w-full h-full object-cover object-center"
+                  />
+                  <div className={`absolute inset-0 bg-gradient-to-t ${props.bgGradient || 'from-[#800020]/90 via-[#9B2C2C]/80 to-slate-900'} opacity-60 mix-blend-multiply`} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
+
+                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-slate-950/80 backdrop-blur-md border border-slate-800/80 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-red-400 block">
+                        Universitas Patria Artha
+                      </span>
+                      <h4 className="text-xs font-extrabold text-white">
+                        Fakultas Teknik & Informatika
+                      </h4>
+                    </div>
+                    <div className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold">
+                      Akreditasi UNGGUL
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Transparent PNG Style (Tanpa Border Radius, Tanpa Bingkai Container) */
+                <div className="relative flex items-center justify-center p-2">
+                  <img
+                    src={validImgSrc}
+                    alt="Hero Media Transparan"
+                    className="w-full max-h-[500px] object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)] rounded-none border-none bg-transparent"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export const puckConfig: Config<Props> = {
@@ -5179,7 +5412,7 @@ export const puckConfig: Config<Props> = {
       fields: {
         badgeText: { type: 'text', label: '🏷️ Teks Badge (Atas)' },
         titlePrefix: { type: 'text', label: 'Teks Judul (Awal)' },
-        titleHighlight: { type: 'text', label: 'Teks Judul (Highlight Gradient)' },
+        titleHighlight: { type: 'text', label: 'Teks Judul (Highlight Gradient Default)' },
         titleSuffix: { type: 'text', label: 'Teks Judul (Akhir)' },
         description: { type: 'textarea', label: 'Sub-judul / Deskripsi' },
         ctaPrimaryText: { type: 'text', label: 'Teks Tombol Utama' },
@@ -5200,6 +5433,49 @@ export const puckConfig: Config<Props> = {
           label: '🎈 Aktifkan Animasi Floating (Melayang Halus)?',
           options: [
             { label: 'Ya (Melayang)', value: true },
+            { label: 'Tidak', value: false },
+          ],
+        },
+        bgType: {
+          type: 'select',
+          label: '🎬 Tipe Background Hero',
+          options: [
+            { label: 'Gradient Brand Red (Default)', value: 'gradient' },
+            { label: 'Background Slideshow (Foto Berganti)', value: 'slideshow' },
+            { label: 'Background Gambar (Foto Tunggal)', value: 'image' },
+          ],
+        },
+        bgImageUrl: makeImageField('🖼️ Foto Background (jika Tipe = Foto)') as any,
+        bgSlideshowImages: {
+          type: 'array',
+          label: '📸 Foto Slideshow Latar (jika Tipe = Slideshow)',
+          getItemSummary: (item, i) => item.url ? `Slide ${i + 1} ✓` : `Slide ${i + 1}`,
+          arrayFields: {
+            url: makeImageField('URL / Pilih Foto Slide') as any,
+          },
+        },
+        slideshowInterval: { type: 'number', label: '⏱️ Interval Waktu Slide (Detik)' },
+        animatedTitles: {
+          type: 'array',
+          label: '✨ Animasi Teks Berganti (Words Highlight)',
+          getItemSummary: (item) => item.word || 'Kata Highlight',
+          arrayFields: {
+            word: { type: 'text', label: 'Teks Highlight Berganti' },
+          },
+        },
+        enableTextAnimation: {
+          type: 'radio',
+          label: '🎬 Aktifkan Animasi Gerak Teks Berganti?',
+          options: [
+            { label: 'Ya', value: true },
+            { label: 'Tidak', value: false },
+          ],
+        },
+        enableParticles: {
+          type: 'radio',
+          label: '✨ Aktifkan Partikel / Bintang Melayang (StarDust)?',
+          options: [
+            { label: 'Ya (Aktifkan Partikel)', value: true },
             { label: 'Tidak', value: false },
           ],
         },
@@ -5245,6 +5521,21 @@ export const puckConfig: Config<Props> = {
         imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
         imageStyle: 'transparent',
         enableFloatingAnimation: true,
+        bgType: 'gradient',
+        bgSlideshowImages: [
+          { url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1600&q=80' },
+          { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80' },
+          { url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=80' },
+        ],
+        slideshowInterval: 5,
+        animatedTitles: [
+          { word: 'Berdaya Saing Global' },
+          { word: 'Mencetak Talenta AI' },
+          { word: 'Software Engineering' },
+          { word: 'Cyber Security' },
+        ],
+        enableTextAnimation: true,
+        enableParticles: true,
         bgGradient: 'from-[#800020]/90 via-[#9B2C2C]/80 to-slate-900',
         bgStyle: 'dark',
         fontFamily: 'sans',
@@ -5254,133 +5545,7 @@ export const puckConfig: Config<Props> = {
         borderRadius: 'none',
         boxShadow: 'none',
       },
-      render: (props) => {
-        const styleClass = getAdvancedStyleClasses(props);
-        const isCard = props.imageStyle === 'card';
-        const isFloat = props.enableFloatingAnimation !== false;
-        const validImgSrc = props.imageUrl && props.imageUrl.trim() !== '' ? props.imageUrl : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80';
-
-        return (
-          <div className={`relative overflow-hidden ${styleClass}`}>
-            {/* Background Animated Floating Orbs & Light Glow */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-              <div className="absolute -top-24 -left-20 w-[500px] h-[500px] bg-[#9B2C2C]/25 rounded-full blur-[130px]" />
-              <div className="absolute top-1/2 -right-20 -translate-y-1/2 w-[450px] h-[450px] bg-red-600/20 rounded-full blur-[120px]" />
-              <div className="absolute bottom-0 left-1/3 w-[600px] h-[300px] bg-amber-500/10 rounded-full blur-[140px]" />
-              {/* Grid pattern overlay */}
-              <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
-            </div>
-
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-                {/* Left Content Column */}
-                <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-                  {/* Badge Header */}
-                  {props.badgeText && (
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 backdrop-blur-md shadow-sm">
-                      <div className="p-1 rounded-full bg-emerald-500/20">
-                        <Award className="w-3.5 h-3.5 text-emerald-400" />
-                      </div>
-                      <span className="text-xs font-bold tracking-wide">
-                        {props.badgeText}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Headline */}
-                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-                    {props.titlePrefix}{' '}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-rose-300 to-amber-300">
-                      {props.titleHighlight}
-                    </span>{' '}
-                    {props.titleSuffix}
-                  </h1>
-
-                  {/* Subtitle Description */}
-                  <p className="text-slate-300 text-sm sm:text-base lg:text-lg font-normal max-w-2xl leading-relaxed mx-auto lg:mx-0">
-                    {props.description}
-                  </p>
-
-                  {/* CTA Buttons Row */}
-                  <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
-                    {props.ctaPrimaryText && (
-                      <button className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#9B2C2C] to-[#800020] hover:from-[#b33333] hover:to-[#990026] text-white font-extrabold text-sm shadow-xl shadow-red-950/50 transition-all flex items-center justify-center gap-2 group">
-                        <span>{props.ctaPrimaryText}</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </button>
-                    )}
-                    {props.ctaSecondaryText && (
-                      <button className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 text-slate-100 font-bold text-sm transition-all shadow-md backdrop-blur-sm flex items-center justify-center gap-2">
-                        <Code2 className="w-4 h-4 text-red-400" />
-                        <span>{props.ctaSecondaryText}</span>
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Specialization Tags Row */}
-                  <div className="pt-6 border-t border-slate-800/80">
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">
-                      Peminatan Utama FTI
-                    </p>
-                    <div className="flex flex-wrap justify-center lg:justify-start gap-2">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-200 text-xs font-semibold">
-                        <Brain className="w-3.5 h-3.5 text-red-400" /> AI & ML
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-200 text-xs font-semibold">
-                        <Code2 className="w-3.5 h-3.5 text-rose-400" /> Software & Cloud
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-200 text-xs font-semibold">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Cyber Security
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Media Showcase Column */}
-                <div className="lg:col-span-5 relative">
-                  <div className={`relative mx-auto max-w-md lg:max-w-none ${isFloat ? 'animate-float' : ''}`}>
-                    {isCard ? (
-                      /* Card Bingkai Style */
-                      <div className="relative rounded-3xl overflow-hidden border-2 border-slate-700/60 shadow-2xl bg-slate-900 aspect-[4/3] sm:aspect-[16/11]">
-                        <img
-                          src={validImgSrc}
-                          alt="Hero Media"
-                          className="w-full h-full object-cover object-center"
-                        />
-                        <div className={`absolute inset-0 bg-gradient-to-t ${props.bgGradient || 'from-[#800020]/90 via-[#9B2C2C]/80 to-slate-900'} opacity-60 mix-blend-multiply`} />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
-
-                        <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-slate-950/80 backdrop-blur-md border border-slate-800/80 flex items-center justify-between">
-                          <div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-red-400 block">
-                              Universitas Patria Artha
-                            </span>
-                            <h4 className="text-xs font-extrabold text-white">
-                              Fakultas Teknik & Informatika
-                            </h4>
-                          </div>
-                          <div className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold">
-                            Akreditasi UNGGUL
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      /* Transparent PNG Style (Tanpa Border Radius, Tanpa Bingkai Container) */
-                      <div className="relative flex items-center justify-center p-2">
-                        <img
-                          src={validImgSrc}
-                          alt="Hero Media Transparan"
-                          className="w-full max-h-[500px] object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)] rounded-none border-none bg-transparent"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      },
+      render: (props) => <HeroBlockRender {...props} />,
     },
 
     ProfileVisionBlock: {
