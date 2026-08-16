@@ -2,10 +2,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { UpaLogo } from './UpaLogo';
 
 export const Preloader: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [customLogoUrl, setCustomLogoUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('fti_website_settings');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.logoDarkUrl || parsed?.logoUrl) {
+          setCustomLogoUrl(parsed.logoDarkUrl || parsed.logoUrl);
+        }
+      }
+    } catch {
+      // fallback
+    }
+  }, []);
 
   useEffect(() => {
     // Fast animated progress fill
@@ -75,21 +91,27 @@ export const Preloader: React.FC = () => {
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-                className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-2 border-dashed border-red-500/40 p-1"
+                className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-dashed border-red-500/40 p-1"
               />
 
               {/* Glowing Pulse Accent Ring */}
               <motion.div
                 animate={{ scale: [0.95, 1.1, 0.95], opacity: [0.4, 0.8, 0.4] }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-[#800020] to-red-600 blur-md opacity-50"
+                className="absolute w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-tr from-[#800020] to-red-600 blur-md opacity-50"
               />
 
-              {/* Center Emblem Icon Box */}
-              <div className="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-900 border border-red-500/40 flex flex-col items-center justify-center shadow-2xl backdrop-blur-md">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#800020] to-[#9B2C2C] text-white flex items-center justify-center font-black text-xl shadow-md border border-white/10">
-                  UPA
-                </div>
+              {/* Header Transparent Logo Display */}
+              <div className="absolute flex items-center justify-center p-3 rounded-2xl bg-slate-900/60 border border-red-500/30 shadow-2xl backdrop-blur-md">
+                {customLogoUrl ? (
+                  <img 
+                    src={customLogoUrl} 
+                    alt="Logo FTI UPA" 
+                    className="h-16 object-contain max-w-[200px] drop-shadow-xl" 
+                  />
+                ) : (
+                  <UpaLogo size={76} />
+                )}
               </div>
             </div>
 
