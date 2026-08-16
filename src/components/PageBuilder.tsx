@@ -87,7 +87,10 @@ import {
   User,
   Tag,
   Quote,
-  Star
+  Star,
+  Box,
+  Maximize2,
+  LayoutTemplate
 } from 'lucide-react';
 
 // --- ELEMENTOR-STYLE ADVANCED STYLING UTILITIES ---
@@ -2824,6 +2827,8 @@ export type HeroSlideshowProps = {
   autoPlay?: boolean;
   autoPlayIntervalMs?: string;
   heightPreset?: 'screen' | 'large' | 'medium';
+  borderRadius?: 'none' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  containerMargin?: 'none' | 'medium' | 'floating';
   slides?: HeroSlideItem[];
 } & AdvancedStyleProps;
 
@@ -2892,6 +2897,23 @@ export const HeroSlideshowBlock: React.FC<HeroSlideshowProps> = (props) => {
       ? 'min-h-[520px] h-[55vh]' 
       : 'min-h-[640px] h-[75vh]';
 
+  // Border radius class
+  const borderRadiusClass = {
+    none: 'rounded-none',
+    md: 'rounded-xl',
+    lg: 'rounded-2xl',
+    xl: 'rounded-3xl',
+    '2xl': 'rounded-[2.5rem]',
+    full: 'rounded-[3.5rem]'
+  }[props.borderRadius || 'none'];
+
+  // Container margin class
+  const marginClass = {
+    none: '',
+    medium: 'my-4 mx-2 sm:mx-6 border border-slate-200/80 dark:border-slate-800 shadow-xl',
+    floating: 'my-6 sm:my-10 mx-3 sm:mx-12 border-2 border-white/20 dark:border-slate-800 shadow-2xl ring-4 ring-black/10'
+  }[props.containerMargin || 'none'];
+
   // Gradient Overlay Class generator
   const getGradientClass = (type?: string) => {
     switch (type) {
@@ -2912,7 +2934,7 @@ export const HeroSlideshowBlock: React.FC<HeroSlideshowProps> = (props) => {
   const styleClass = getAdvancedStyleClasses(props);
 
   return (
-    <div className={`relative overflow-hidden ${heightClass} ${styleClass}`}>
+    <div className={`relative overflow-hidden ${heightClass} ${borderRadiusClass} ${marginClass} ${styleClass} transition-all duration-300`}>
       {/* BACKGROUND IMAGE WITH KEN BURNS ANIMATED SLIDES */}
       {slides.map((slide, idx) => (
         <div
@@ -4036,9 +4058,76 @@ const HeroBlockRender: React.FC<Props['HeroBlock']> = (props) => {
   );
 };
 
-export const puckConfig: Config<Props> = {
+export type RootProps = {
+  title?: string;
+  layoutMode?: 'full' | 'boxed';
+  boxedWidth?: string;
+  boxedBg?: string;
+  boxedShadow?: string;
+};
+
+export const puckConfig: Config<Props, RootProps> = {
   root: {
-    render: ({ children }) => <div className="w-full overflow-x-hidden">{children}</div>,
+    fields: {
+      title: { type: 'text', label: '📌 Judul Halaman' },
+      layoutMode: {
+        type: 'select',
+        label: '📐 Tipe Layout Halaman (Global)',
+        options: [
+          { label: '🖥️ Full Width (100% Lebar Layar / Standard)', value: 'full' },
+          { label: '📦 Boxed Layout (Wadah Kontainer Terpusat)', value: 'boxed' }
+        ]
+      },
+      boxedWidth: {
+        type: 'select',
+        label: '📐 Maksimal Lebar Boxed Layout',
+        options: [
+          { label: 'Standar (max-w-7xl - 1280px)', value: 'max-w-7xl' },
+          { label: 'Sedang (max-w-6xl - 1152px)', value: 'max-w-6xl' },
+          { label: 'Ringkas (max-w-5xl - 1024px)', value: 'max-w-5xl' },
+          { label: 'Wide Screen (max-w-[1440px])', value: 'max-w-[1440px]' }
+        ]
+      },
+      boxedBg: {
+        type: 'select',
+        label: '🎨 Warna Background Luar Boxed',
+        options: [
+          { label: 'Soft Slate Gray / Dark Mode', value: 'bg-slate-100/90 dark:bg-slate-950' },
+          { label: 'Warm Cream / Dark Mode', value: 'bg-[#FDFBF7] dark:bg-slate-950' },
+          { label: 'Deep Crimson Pattern', value: 'bg-gradient-to-b from-[#5A0017] via-[#800020] to-slate-950' },
+          { label: 'Dark Navy Professional', value: 'bg-slate-900' }
+        ]
+      },
+      boxedShadow: {
+        type: 'select',
+        label: '✨ Gaya Frame & Shadow Boxed',
+        options: [
+          { label: 'Card Premium (Shadow 2XL + Rounded 3XL)', value: 'shadow-2xl rounded-3xl border border-slate-200/80 dark:border-slate-800' },
+          { label: 'Card Elegant (Shadow Large + Rounded 2XL)', value: 'shadow-xl rounded-2xl border border-slate-200 dark:border-slate-700' },
+          { label: 'Flat Card (Border Only + Rounded 2XL)', value: 'rounded-2xl border border-slate-300 dark:border-slate-800' }
+        ]
+      }
+    },
+    defaultProps: {
+      title: 'Halaman FTI UPA',
+      layoutMode: 'full',
+      boxedWidth: 'max-w-7xl',
+      boxedBg: 'bg-slate-100/90 dark:bg-slate-950',
+      boxedShadow: 'shadow-2xl rounded-3xl border border-slate-200/80 dark:border-slate-800'
+    },
+    render: ({ children, layoutMode, boxedWidth, boxedBg, boxedShadow }: any) => {
+      const isBoxed = layoutMode === 'boxed';
+      if (isBoxed) {
+        return (
+          <div className={`w-full ${boxedBg || 'bg-slate-100/90 dark:bg-slate-950'} min-h-screen py-4 sm:py-8 px-2 sm:px-6 transition-colors duration-300`}>
+            <div className={`w-full ${boxedWidth || 'max-w-7xl'} mx-auto bg-white dark:bg-slate-900 ${boxedShadow || 'shadow-2xl rounded-3xl border border-slate-200/80 dark:border-slate-800'} overflow-hidden transition-all duration-300`}>
+              {children}
+            </div>
+          </div>
+        );
+      }
+      return <div className="w-full overflow-x-hidden">{children}</div>;
+    }
   },
   categories: {
     layout: {
@@ -4252,6 +4341,25 @@ export const puckConfig: Config<Props> = {
             { label: 'Layar Penuh (100vh Fullscreen)', value: 'screen' },
             { label: 'Tinggi Standar (75vh / 640px)', value: 'large' },
             { label: 'Sedang (55vh / 520px)', value: 'medium' },
+          ],
+        },
+        borderRadius: {
+          type: 'select', label: '⭕ Border Radius / Sudut Melengkung (Rounded Corner)',
+          options: [
+            { label: 'Siku-Siku (Square / Flat 0px)', value: 'none' },
+            { label: 'Sedang (Rounded XL - 12px)', value: 'md' },
+            { label: 'Besar (Rounded 2XL - 16px)', value: 'lg' },
+            { label: 'Ekstra Besar (Rounded 3XL - 24px)', value: 'xl' },
+            { label: 'Super Rounded Card (Rounded 40px)', value: '2xl' },
+            { label: 'Super Oval / Capsule (Rounded Full)', value: 'full' },
+          ],
+        },
+        containerMargin: {
+          type: 'select', label: '📐 Margin & Frame Kontainer Slideshow',
+          options: [
+            { label: 'Tanpa Margin (Full Edge-to-Edge)', value: 'none' },
+            { label: 'Margin Sedang (Ringkas & Soft Shadow)', value: 'medium' },
+            { label: 'Card Melayang (Floating Shadow & Ring Border)', value: 'floating' },
           ],
         },
         slides: {
@@ -9222,6 +9330,47 @@ export const PageBuilder: React.FC<PageBuilderProps> = ({
           </div>
 
           <div className="h-5 w-[1px] bg-white/20 mx-1" />
+
+          {/* Quick Layout Mode Switcher (Full Width vs Boxed) */}
+          <button
+            onClick={() => {
+              const rootProps = (data?.root?.props || {}) as any;
+              const currentMode = rootProps.layoutMode || 'full';
+              const nextMode = currentMode === 'boxed' ? 'full' : 'boxed';
+              setData((prev) => ({
+                ...prev,
+                root: {
+                  ...prev.root,
+                  props: {
+                    ...((prev.root?.props || {}) as any),
+                    layoutMode: nextMode,
+                    boxedWidth: rootProps.boxedWidth || 'max-w-7xl',
+                    boxedBg: rootProps.boxedBg || 'bg-slate-100/90 dark:bg-slate-950',
+                    boxedShadow: rootProps.boxedShadow || 'shadow-2xl rounded-3xl border border-slate-200/80 dark:border-slate-800'
+                  }
+                }
+              }));
+              triggerNotification(`Layout halaman diubah ke: ${nextMode === 'boxed' ? '📦 Boxed Layout' : '🖥️ Full Width (100%)'}`);
+            }}
+            className={`px-3 py-1.5 text-xs font-extrabold rounded-xl flex items-center gap-1.5 transition-all border shadow-sm cursor-pointer ${
+              ((data?.root?.props || {}) as any).layoutMode === 'boxed'
+                ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-500/20'
+                : 'bg-black/30 hover:bg-black/50 text-white border-white/20'
+            }`}
+            title="Klik untuk beralih antara Full Width (100%) dan Boxed Layout (Wadah Kontainer)"
+          >
+            {((data?.root?.props || {}) as any).layoutMode === 'boxed' ? (
+              <>
+                <Box className="w-3.5 h-3.5 text-slate-950" />
+                <span>Layout: Boxed</span>
+              </>
+            ) : (
+              <>
+                <Maximize2 className="w-3.5 h-3.5 text-amber-300" />
+                <span>Layout: Full Width</span>
+              </>
+            )}
+          </button>
 
           <button
             onClick={() => handleSavePage()}
