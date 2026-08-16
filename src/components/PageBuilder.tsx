@@ -21,6 +21,7 @@ import DarkCta from './ui/dark-cta';
 import HeroSlider, { type HeroSliderProps, type HeroSlide, type HeroStat, type HeroSpecTag } from './ui/hero-slider';
 import PageBanner, { type PageBannerProps } from './ui/page-banner';
 import ModernSvgBanner, { type ModernSvgBannerProps } from './ui/modern-svg-banner';
+import Hero231, { type Hero231Props } from './ui/hero-231';
 import { MediaManager } from './MediaManager';
 import { Skeleton, NewsCardSkeleton, LecturerCardSkeleton, ProdiCardSkeleton } from './ui/Skeleton';
 
@@ -3320,6 +3321,18 @@ type Props = {
   PageBannerBlock: PageBannerProps;
   ModernSvgBannerBlock: ModernSvgBannerProps;
   HeroSliderBlock: HeroSliderProps;
+  Hero231Block: {
+    badgeText?: string;
+    title: string;
+    description: string;
+    primaryCtaLabel?: string;
+    primaryCtaHref?: string;
+    secondaryCtaLabel?: string;
+    secondaryCtaHref?: string;
+    logos?: { name: string; logoUrl?: string }[];
+    images?: { url: string }[];
+    theme?: 'light' | 'dark';
+  } & AdvancedStyleProps;
   Hero10Block: Omit<Hero10Props, 'images' | 'imageAlts'> & {
     images?: { url: string }[];
     imageAlts?: { alt: string }[];
@@ -3790,7 +3803,7 @@ export const puckConfig: Config<Props> = {
     },
     hero: {
       title: '🚀 Hero & Banner Utama',
-      components: ['ModernSvgBannerBlock', 'HeroSlideshowBlock', 'PageBannerBlock', 'HeroSliderBlock', 'Hero10Block', 'LogoCloudBlock', 'AboutAppsBlock', 'GalleryGridBlock', 'HeroBlock', 'DeanWelcomeBlock', 'AlertBannerBlock', 'SubMenuGridBlock'],
+      components: ['Hero231Block', 'ModernSvgBannerBlock', 'HeroSlideshowBlock', 'PageBannerBlock', 'HeroSliderBlock', 'Hero10Block', 'LogoCloudBlock', 'AboutAppsBlock', 'GalleryGridBlock', 'HeroBlock', 'DeanWelcomeBlock', 'AlertBannerBlock', 'SubMenuGridBlock'],
     },
     content: {
       title: '📝 Konten & Teks',
@@ -4616,6 +4629,83 @@ export const puckConfig: Config<Props> = {
             showSpecTags={(props.showSpecTags as any) !== 'false'}
             showStats={(props.showStats as any) !== 'false'}
             showFloatingCards={(props.showFloatingCards as any) !== 'false'}
+          />
+        );
+      },
+    },
+
+    Hero231Block: {
+      fields: {
+        badgeText: { type: 'text', label: '🏷️ Teks Badge' },
+        title: { type: 'textarea', label: '📌 Judul Utama' },
+        description: { type: 'textarea', label: '📝 Deskripsi Sub-judul' },
+        primaryCtaLabel: { type: 'text', label: 'Tombol Utama (Label)' },
+        primaryCtaHref: { type: 'text', label: 'Tombol Utama (Link)' },
+        secondaryCtaLabel: { type: 'text', label: 'Tombol Sekunder (Label)' },
+        secondaryCtaHref: { type: 'text', label: 'Tombol Sekunder (Link)' },
+        theme: {
+          type: 'select',
+          label: '🎨 Tema Visual',
+          options: [
+            { label: 'Light', value: 'light' },
+            { label: 'Dark', value: 'dark' },
+          ],
+        },
+        logos: {
+          type: 'array',
+          label: '🏷️ Logo Mitra / Akreditasi (Header Kanan)',
+          getItemSummary: (item) => item.name || 'Mitra',
+          arrayFields: {
+            name: { type: 'text', label: 'Nama Mitra' },
+            logoUrl: makeImageField('Logo (Media / URL)') as any,
+          },
+        },
+        images: {
+          type: 'array',
+          label: '🖼️ 3 Gambar Staggered Showcase (Kanan)',
+          getItemSummary: (item, i) => `Gambar ${i + 1}`,
+          arrayFields: {
+            url: makeImageField('URL Gambar') as any,
+          },
+        },
+        ...commonElementorFields,
+      },
+      defaultProps: {
+        badgeText: '● Flexible Plan customized for you',
+        title: 'Blocks Built With Shadcn & Tailwind.',
+        description: 'Pendidikan tinggi berkualitas berbasis Outcome-Based Education (OBE) yang mengintegrasikan Artificial Intelligence, Cloud Software, dan Cyber Security.',
+        primaryCtaLabel: 'Jelajahi Program Studi',
+        primaryCtaHref: '#prodi',
+        secondaryCtaLabel: 'Daftar SPMB Online',
+        secondaryCtaHref: '#spmb',
+        theme: 'light',
+        logos: [
+          { name: 'descript' },
+          { name: 'MERCURY' },
+          { name: 'ramp' },
+          { name: 'Retool' },
+          { name: 'Waterdrop' },
+        ],
+        images: [
+          { url: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80' },
+          { url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80' },
+          { url: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80' },
+        ],
+      },
+      render: (props) => {
+        const imgList = (props.images || []).map((img: any) => (typeof img === 'string' ? img : img?.url)).filter((u: any) => u && typeof u === 'string' && u.trim() !== '');
+        return (
+          <Hero231
+            badgeText={props.badgeText}
+            title={props.title}
+            description={props.description}
+            primaryCtaLabel={props.primaryCtaLabel}
+            primaryCtaHref={props.primaryCtaHref}
+            secondaryCtaLabel={props.secondaryCtaLabel}
+            secondaryCtaHref={props.secondaryCtaHref}
+            logos={props.logos}
+            images={imgList}
+            theme={props.theme}
           />
         );
       },
