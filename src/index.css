@@ -2,12 +2,16 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 :root {
   /* Colors */
   --header-bg: #800020;
   --header-text: #FFF5F5;
   --body-bg: #FFFFFF;
-  --main-text: #1E293B;
+  --main-text: lab(35.5623 -1.74978 -15.4316);
   --heading-text: #0F172A;
   --primary-accent: #9B2C2C;
   --secondary-accent: #EDF2F7;
@@ -15,10 +19,12 @@
   --card-bg: #FFFFFF;
   --border-divider: #E2E8F0;
 
-  /* Modern Typography System */
-  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --base-font-size: 18px;
+  /* Default Font Specification */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --base-font-size: 20px;
+  --base-line-height: 33px;
+  --base-font-weight: 400;
   --heading-font-weight: 800;
   --letter-spacing-heading: -0.025em;
 
@@ -30,17 +36,19 @@
 }
 
 html {
-  font-size: var(--base-font-size, 18px);
+  font-size: var(--base-font-size, 20px);
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   background-color: var(--body-bg, #FFFFFF);
-  color: var(--main-text, #1E293B);
+  color: var(--main-text, lab(35.5623 -1.74978 -15.4316));
   font-family: var(--font-body);
-  font-size: var(--base-font-size, 18px);
-  line-height: 1.65;
+  font-size: var(--base-font-size, 20px);
+  line-height: var(--base-line-height, 33px);
+  font-weight: var(--base-font-weight, 400);
+  font-style: normal;
 }
 
 h1, h2, h3, h4, h5, h6 {
