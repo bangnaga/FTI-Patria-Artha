@@ -82,7 +82,7 @@ export const ModernBookCover = ({
           }}
         >
           {/* Cover Image Background */}
-          {coverImageUrl && (
+          {Boolean(coverImageUrl && coverImageUrl.trim() !== "") && (
             <>
               <img
                 src={coverImageUrl}
@@ -127,7 +127,7 @@ export const ModernBookCover = ({
             boxShadow: "-10px 0 50px 10px var(--shadowColor)",
           }}
         >
-          {coverImageUrl && (
+          {Boolean(coverImageUrl && coverImageUrl.trim() !== "") && (
             <img
               src={coverImageUrl}
               alt="Back Cover Buku 3D"

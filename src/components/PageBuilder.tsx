@@ -4933,7 +4933,7 @@ export const puckConfig: Config<Props> = {
                   <div className="relative mx-auto max-w-md lg:max-w-none">
                     <div className="relative rounded-3xl overflow-hidden border-2 border-slate-700/60 shadow-2xl bg-slate-900 aspect-[4/3] sm:aspect-[16/11]">
                       <img
-                        src={props.imageUrl}
+                        src={props.imageUrl && props.imageUrl.trim() !== '' ? props.imageUrl : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'}
                         alt="Hero Media"
                         className="w-full h-full object-cover object-center"
                       />
