@@ -42,8 +42,9 @@ interface BookProps {
   size?: "sm" | "md" | "lg";
   color?: keyof typeof colorMap;
   isStatic?: boolean;
+  coverImageUrl?: string;
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export const ModernBookCover = ({
@@ -51,6 +52,7 @@ export const ModernBookCover = ({
   size = "md",
   color = "zinc",
   isStatic = false,
+  coverImageUrl = "",
   className = "",
   children,
 }: BookProps) => {
@@ -79,16 +81,29 @@ export const ModernBookCover = ({
             boxShadow: "5px 5px 20px var(--shadowColor)",
           }}
         >
+          {/* Cover Image Background */}
+          {coverImageUrl && (
+            <>
+              <img
+                src={coverImageUrl}
+                alt="Cover Buku 3D"
+                className="absolute inset-0 size-full object-cover object-center z-0"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent z-[1]" />
+            </>
+          )}
+
+          {/* Book Crease Shadow Overlay */}
           <div
-            className="absolute left-0 top-0 h-full"
+            className="absolute left-0 top-0 h-full z-[2]"
             style={{
               minWidth: "8.2%",
               background:
                 "linear-gradient(90deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0) 12%, hsla(0, 0%, 100%, .25) 29.25%, hsla(0, 0%, 100%, 0) 50.5%, hsla(0, 0%, 100%, 0) 75.25%, hsla(0, 0%, 100%, .25) 91%, hsla(0, 0%, 100%, 0)), linear-gradient(90deg, rgba(0, 0, 0, .03), rgba(0, 0, 0, .1) 12%, transparent 30%, rgba(0, 0, 0, .02) 50%, rgba(0, 0, 0, .2) 73.5%, rgba(0, 0, 0, .5) 75.25%, rgba(0, 0, 0, .15) 85.25%, transparent)",
-              opacity: 0.2,
+              opacity: 0.25,
             }}
           />
-          <div className="pl-1">{children}</div>
+          <div className="relative z-10 pl-1">{children}</div>
         </div>
 
         {/* Spine */}
@@ -111,7 +126,15 @@ export const ModernBookCover = ({
             transform: "translateZ(-25px)",
             boxShadow: "-10px 0 50px 10px var(--shadowColor)",
           }}
-        />
+        >
+          {coverImageUrl && (
+            <img
+              src={coverImageUrl}
+              alt="Back Cover Buku 3D"
+              className="absolute inset-0 size-full object-cover object-center z-0 opacity-40 blur-xs"
+            />
+          )}
+        </div>
       </div>
     </div>
   );

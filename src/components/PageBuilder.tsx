@@ -3342,6 +3342,7 @@ type Props = {
       color: 'slate' | 'neutral' | 'stone' | 'red' | 'amber' | 'emerald' | 'cyan' | 'blue' | 'indigo' | 'violet' | 'fuchsia' | 'rose';
       title: string;
       description: string;
+      coverImageUrl?: string;
     }[];
   } & AdvancedStyleProps;
   HeroBlock: {
@@ -5622,8 +5623,10 @@ export const puckConfig: Config<Props> = {
           arrayFields: {
             title: { type: 'text', label: 'Judul Buku' },
             description: { type: 'textarea', label: 'Deskripsi Buku' },
+            coverImageUrl: makeImageField('🖼️ Gambar Cover Buku 3D (URL / Media)') as any,
             size: {
               type: 'select',
+              label: '📐 Ukuran Buku 3D',
               options: [
                 { label: 'Small', value: 'sm' },
                 { label: 'Medium', value: 'md' },
@@ -5632,6 +5635,7 @@ export const puckConfig: Config<Props> = {
             },
             color: {
               type: 'select',
+              label: '🎨 Warna Latar Cover / Spine',
               options: [
                 { label: 'Neutral', value: 'neutral' },
                 { label: 'Amber', value: 'amber' },
@@ -5647,12 +5651,12 @@ export const puckConfig: Config<Props> = {
         ...commonElementorFields,
       },
       defaultProps: {
-        heading: 'Koleksi Buku Modern',
-        subheading: 'Jelajahi berbagai karya terbaik kami dengan visual yang menawan.',
+        heading: 'Koleksi Buku & Modul Pembelajaran FTI 3D',
+        subheading: 'Jelajahi berbagai karya ilmiah, modul praktikum, dan publikasi terbaik FTI UPA.',
         books: [
-          { size: 'sm', color: 'neutral', title: 'Cuicui CSS', description: 'Learn CSS, by the creator of the language.' },
-          { size: 'md', color: 'amber', title: 'React UI', description: 'Advanced UI patterns with Tailwind and React.' },
-          { size: 'lg', color: 'blue', title: 'Modul', description: 'The best all in one productivity tool' }
+          { size: 'sm', color: 'neutral', title: 'Cyber Security Handbook', description: 'Panduan Praktikum Network Defense & Ethical Hacking.', coverImageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80' },
+          { size: 'md', color: 'amber', title: 'Kecerdasan Buatan & AI', description: 'Konsep Dasar Machine Learning & Neural Networks.', coverImageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80' },
+          { size: 'lg', color: 'blue', title: 'Modul Software Engineering', description: 'Outcome-Based Education & Software Design Patterns.', coverImageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80' }
         ],
         bgStyle: 'white',
         borderRadius: 'lg',
@@ -5673,7 +5677,7 @@ export const puckConfig: Config<Props> = {
               )}
               <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-10">
                 {booksList.map((book, idx) => (
-                  <ModernBookCover key={idx} size={book.size as any} color={book.color as any}>
+                  <ModernBookCover key={idx} size={book.size as any} color={book.color as any} coverImageUrl={book.coverImageUrl}>
                     <BookHeader>
                       <Book className="w-5 h-5" />
                     </BookHeader>
