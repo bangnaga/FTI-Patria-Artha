@@ -3738,7 +3738,7 @@ type Props = {
     layout: 'left-tabs' | 'top-tabs';
     heading: string;
     subheading: string;
-    tabs?: { icon: string; title: string; description: string; badge: string }[];
+    tabs?: { icon: string; title: string; description: string; image?: string; badge: string }[];
   };
 
   GradientTileGridBlock: {
@@ -7796,6 +7796,7 @@ export const puckConfig: Config<Props> = {
             icon: { type: 'text', label: 'Emoji Icon Tab' },
             title: { type: 'text', label: 'Judul Tab' },
             description: { type: 'textarea', label: 'Konten Tab' },
+            image: makeImageField('🖼️ Gambar Media Tab (Media / URL)') as any,
             badge: { type: 'text', label: 'Badge (opsional, mis: S1, Riset)' },
           },
         },
@@ -7806,10 +7807,34 @@ export const puckConfig: Config<Props> = {
         heading: 'Apa yang Bisa Kamu Capai?',
         subheading: 'Temukan berbagai program dan kesempatan yang kami tawarkan untuk masa depanmu.',
         tabs: [
-          { icon: '🎓', title: 'Program Sarjana', description: 'Program S1 dirancang untuk mempersiapkan lulusan kompeten di bidang teknik dengan kurikulum berbasis industri dan penelitian terkini.', badge: 'S1' },
-          { icon: '🔬', title: 'Penelitian & Inovasi', description: 'Laboratorium penelitian modern mendukung riset mahasiswa dan dosen dalam menghasilkan karya ilmiah bermutu tinggi.', badge: 'Riset' },
-          { icon: '🤝', title: 'Kerjasama Industri', description: 'Jaringan mitra industri luas membuka peluang magang, proyek kolaborasi, dan rekrutmen langsung bagi lulusan terbaik kami.', badge: 'Mitra' },
-          { icon: '🌍', title: 'Pengabdian Masyarakat', description: 'Program KKN memberikan dampak nyata melalui teknologi dan keahlian teknik.', badge: 'KKN' },
+          { 
+            icon: '🎓', 
+            title: 'Program Sarjana', 
+            description: 'Program S1 dirancang untuk mempersiapkan lulusan kompeten di bidang teknik dengan kurikulum berbasis industri dan penelitian terkini.', 
+            image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+            badge: 'S1' 
+          },
+          { 
+            icon: '🔬', 
+            title: 'Penelitian & Inovasi', 
+            description: 'Laboratorium penelitian modern mendukung riset mahasiswa dan dosen dalam menghasilkan karya ilmiah bermutu tinggi.', 
+            image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80',
+            badge: 'Riset' 
+          },
+          { 
+            icon: '🤝', 
+            title: 'Kerjasama Industri', 
+            description: 'Jaringan mitra industri luas membuka peluang magang, proyek kolaborasi, dan rekrutmen langsung bagi lulusan terbaik kami.', 
+            image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+            badge: 'Mitra' 
+          },
+          { 
+            icon: '🌍', 
+            title: 'Pengabdian Masyarakat', 
+            description: 'Program KKN memberikan dampak nyata melalui teknologi dan keahlian teknik.', 
+            image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80',
+            badge: 'KKN' 
+          },
         ],
       },
       render: (props) => (
