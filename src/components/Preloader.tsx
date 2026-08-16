@@ -64,27 +64,27 @@ export const Preloader: React.FC = () => {
             filter: 'blur(10px)',
             transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } 
           }}
-          className="fixed inset-0 z-[9999999] flex flex-col items-center justify-center bg-slate-950 text-white select-none overflow-hidden"
+          className="fixed inset-0 z-[9999999] flex flex-col items-center justify-center bg-white text-slate-900 select-none overflow-hidden"
         >
-          {/* Ambient Glowing Background Orbs */}
+          {/* Ambient Glowing Background Orbs (Light Mode) */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
             <motion.div
               animate={{
                 scale: [1, 1.25, 1],
-                opacity: [0.3, 0.6, 0.3],
+                opacity: [0.4, 0.7, 0.4],
               }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-32 -left-32 w-[550px] h-[550px] bg-[#800020]/40 rounded-full blur-[140px]"
+              className="absolute -top-32 -left-32 w-[550px] h-[550px] bg-rose-200/60 rounded-full blur-[140px]"
             />
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],
-                opacity: [0.25, 0.5, 0.25],
+                opacity: [0.35, 0.6, 0.35],
               }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute -bottom-32 -right-32 w-[500px] h-[500px] bg-red-700/30 rounded-full blur-[140px]"
+              className="absolute -bottom-32 -right-32 w-[500px] h-[500px] bg-red-100/70 rounded-full blur-[140px]"
             />
-            <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
+            <div className="absolute inset-0 bg-[radial-gradient(rgba(0,0,0,0.04)_1px,transparent_1px)] [background-size:24px_24px] opacity-60" />
           </div>
 
           {/* Central Emblem & Loading Content */}
@@ -104,16 +104,16 @@ export const Preloader: React.FC = () => {
               <motion.div
                 animate={{ scale: [0.95, 1.1, 0.95], opacity: [0.4, 0.8, 0.4] }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-tr from-[#800020] to-red-600 blur-md opacity-50"
+                className="absolute w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-tr from-rose-300 to-red-500 blur-md opacity-40"
               />
 
               {/* Header Transparent Logo Display */}
-              <div className="absolute flex items-center justify-center p-3 rounded-2xl bg-slate-900/60 border border-red-500/30 shadow-2xl backdrop-blur-md">
+              <div className="absolute flex items-center justify-center p-3 rounded-2xl bg-white border border-slate-200/80 shadow-xl shadow-slate-200/80 backdrop-blur-md">
                 {customLogoUrl ? (
                   <img 
                     src={customLogoUrl} 
                     alt="Logo FTI UPA" 
-                    className="h-16 object-contain max-w-[200px] drop-shadow-xl" 
+                    className="h-16 object-contain max-w-[200px] drop-shadow-md" 
                   />
                 ) : (
                   <UpaLogo size={76} />
@@ -126,7 +126,7 @@ export const Preloader: React.FC = () => {
               <motion.h2
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-lg sm:text-xl font-black tracking-tight text-white"
+                className="text-lg sm:text-xl font-black tracking-tight text-slate-900"
               >
                 FAKULTAS TEKNIK & INFORMATIKA
               </motion.h2>
@@ -134,7 +134,7 @@ export const Preloader: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                className="text-xs font-semibold tracking-wider text-red-400 uppercase"
+                className="text-xs font-bold tracking-wider text-red-700 uppercase"
               >
                 Universitas Patria Artha
               </motion.p>
@@ -144,20 +144,20 @@ export const Preloader: React.FC = () => {
             <div className="w-full space-y-2 pt-2">
               
               {/* Progress Bar Container */}
-              <div className="relative w-full h-2 bg-slate-900 border border-slate-800 rounded-full overflow-hidden shadow-inner">
+              <div className="relative w-full h-2.5 bg-slate-100 border border-slate-200 rounded-full overflow-hidden shadow-inner">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-[#800020] via-red-600 to-amber-400 rounded-full shadow-lg shadow-red-500/50"
+                  className="h-full bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 rounded-full shadow-md shadow-red-500/25"
                   style={{ width: `${progress}%` }}
                   transition={{ duration: 0.15, ease: 'easeOut' }}
                 />
               </div>
 
               {/* Progress Detail Row */}
-              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 px-1">
-                <span className="font-sans text-slate-300 transition-all duration-300">
+              <div className="flex items-center justify-between text-[11px] font-mono text-slate-600 px-1">
+                <span className="font-sans text-slate-600 transition-all duration-300">
                   {getStatusText()}
                 </span>
-                <span className="font-bold text-red-400">{progress}%</span>
+                <span className="font-bold text-red-600">{progress}%</span>
               </div>
 
             </div>
@@ -166,7 +166,7 @@ export const Preloader: React.FC = () => {
 
           {/* Footer Copyright Note */}
           <div className="absolute bottom-6 text-center z-10">
-            <span className="text-[10px] font-medium text-slate-500 tracking-wide uppercase">
+            <span className="text-[10px] font-semibold text-slate-400 tracking-wide uppercase">
               © 2026 FTI Patria Artha • Cyber & Technology Campus
             </span>
           </div>
