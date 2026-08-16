@@ -9061,7 +9061,15 @@ export const PageBuilder: React.FC<PageBuilderProps> = ({
       }
 
       localStorage.setItem(`ti_puck_page_${pageMeta.id}`, JSON.stringify(finalData));
-      localStorage.setItem('ti_puck_page_data', JSON.stringify(finalData));
+      if (pageMeta.slug) {
+        localStorage.setItem(`ti_puck_page_${pageMeta.slug}`, JSON.stringify(finalData));
+      }
+
+      // Dispatch event to trigger real-time reactivity across all page viewers
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('fti_pages_updated'));
+      }
+
       triggerNotification(`🚀 Halaman "${pageMeta.title}" Berhasil Disimpan & Dipublikasikan!`);
     } catch (err) {
       alert(`Gagal menyimpan halaman: ${String(err)}`);
@@ -9073,7 +9081,14 @@ export const PageBuilder: React.FC<PageBuilderProps> = ({
   const handleResetDefault = () => {
     if (window.confirm('Apakah Anda yakin ingin mengembalikan tata letak ke standar awal?')) {
       setData(initialPuckData);
+      localStorage.removeItem(`ti_puck_page_${pageMeta.id}`);
+      if (pageMeta.slug) {
+        localStorage.removeItem(`ti_puck_page_${pageMeta.slug}`);
+      }
       localStorage.removeItem('ti_puck_page_data');
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('fti_pages_updated'));
+      }
       triggerNotification('🔄 Tata letak berhasil direset ke standar awal!');
     }
   };

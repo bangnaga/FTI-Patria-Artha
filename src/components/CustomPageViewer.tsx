@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Render } from '@measured/puck';
 import { puckConfig } from './PageBuilder';
 import { Sparkles } from 'lucide-react';
@@ -13,8 +13,31 @@ interface CustomPageViewerProps {
 export const CustomPageViewer: React.FC<CustomPageViewerProps> = ({
   page,
 }) => {
-  // Parse Puck data safely
+  const [, setTick] = useState(0);
+
+  // Listen for global page update events
+  useEffect(() => {
+    const handleUpdate = () => setTick(t => t + 1);
+    window.addEventListener('fti_pages_updated', handleUpdate);
+    return () => window.removeEventListener('fti_pages_updated', handleUpdate);
+  }, []);
+
+  // Parse Puck data safely with page-specific localStorage override if available
   let puckData = page.content;
+  if (typeof window !== 'undefined') {
+    const localOverride = localStorage.getItem(`ti_puck_page_${page.id}`) || localStorage.getItem(`ti_puck_page_${page.slug}`);
+    if (localOverride) {
+      try {
+        const parsedOverride = JSON.parse(localOverride);
+        if (parsedOverride && parsedOverride.content && Array.isArray(parsedOverride.content)) {
+          puckData = parsedOverride;
+        }
+      } catch {
+        // ignore
+      }
+    }
+  }
+
   if (typeof puckData === 'string') {
     try {
       puckData = JSON.parse(puckData);

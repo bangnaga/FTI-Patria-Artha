@@ -28,6 +28,7 @@ export default function AdminPage() {
     setMediaFilesList,
     studentOrgData,
     setStudentOrgData,
+    setCustomPagesList,
   } = useApp();
 
   const [viewMode, setViewMode] = useState<'dashboard' | 'builder'>('dashboard');
@@ -54,14 +55,36 @@ export default function AdminPage() {
         onBackToMainSite={() => setViewMode('dashboard')}
         onSavePage={async (pageObj) => {
           try {
+            let saved: any = null;
             if (editingCustomPage) {
-              await api.updateCustomPage(pageObj.id, pageObj);
+              saved = await api.updateCustomPage(pageObj.id, pageObj);
             } else {
               try {
-                await api.updateCustomPage(pageObj.id, pageObj);
+                saved = await api.updateCustomPage(pageObj.id, pageObj);
               } catch {
-                await api.createCustomPage(pageObj);
+                saved = await api.createCustomPage(pageObj);
               }
+            }
+
+            const updatedPageItem = saved || pageObj;
+
+            // Sync to AppContext state in real-time
+            setCustomPagesList((prev) => {
+              const idx = prev.findIndex(
+                (p) => p && (p.id === updatedPageItem.id || p.slug === updatedPageItem.slug)
+              );
+              if (idx >= 0) {
+                const nextList = [...prev];
+                nextList[idx] = { ...nextList[idx], ...updatedPageItem };
+                return nextList;
+              } else {
+                return [...prev, updatedPageItem];
+              }
+            });
+
+            // Dispatch global event for instant reactivity
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new Event('fti_pages_updated'));
             }
           } catch (err) {
             console.error('Failed to save custom page:', err);
