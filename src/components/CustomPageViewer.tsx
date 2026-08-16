@@ -13,24 +13,51 @@ interface CustomPageViewerProps {
 export const CustomPageViewer: React.FC<CustomPageViewerProps> = ({
   page,
 }) => {
+  const [mounted, setMounted] = useState(false);
   const [, setTick] = useState(0);
 
-  // Listen for global page update events
+  // Mark component as mounted on client side to avoid SSR hydration mismatch
   useEffect(() => {
+    setMounted(true);
     const handleUpdate = () => setTick(t => t + 1);
     window.addEventListener('fti_pages_updated', handleUpdate);
     return () => window.removeEventListener('fti_pages_updated', handleUpdate);
   }, []);
 
-  // Parse Puck data safely with page-specific localStorage override if available
-  let puckData = page.content;
-  if (typeof window !== 'undefined') {
+  // Helper to normalize puckData structure
+  const parsePuckData = (rawContent: any) => {
+    let puckData = rawContent;
+    if (typeof puckData === 'string') {
+      try {
+        puckData = JSON.parse(puckData);
+      } catch {
+        puckData = { root: { props: { title: page.title } }, content: [] };
+      }
+    }
+    if (!puckData || !puckData.content) {
+      puckData = { root: { props: { title: page.title } }, content: [] };
+    }
+    // Ensure non-home subpages do not render default giant HeroBlock
+    if (page.slug !== 'beranda' && page.slug !== 'home' && page.slug !== 'hero' && puckData && puckData.content && Array.isArray(puckData.content)) {
+      puckData = {
+        ...puckData,
+        content: puckData.content.filter((block: any) => block && block.type !== 'HeroBlock')
+      };
+    }
+    return puckData;
+  };
+
+  // During SSR & initial hydration, always use prop `page.content` for 100% hydration match
+  let activeContent = page.content;
+
+  // Only after client-side mount (mounted = true), check localStorage override
+  if (mounted && typeof window !== 'undefined') {
     const localOverride = localStorage.getItem(`ti_puck_page_${page.id}`) || localStorage.getItem(`ti_puck_page_${page.slug}`);
     if (localOverride) {
       try {
         const parsedOverride = JSON.parse(localOverride);
         if (parsedOverride && parsedOverride.content && Array.isArray(parsedOverride.content)) {
-          puckData = parsedOverride;
+          activeContent = parsedOverride;
         }
       } catch {
         // ignore
@@ -38,25 +65,7 @@ export const CustomPageViewer: React.FC<CustomPageViewerProps> = ({
     }
   }
 
-  if (typeof puckData === 'string') {
-    try {
-      puckData = JSON.parse(puckData);
-    } catch {
-      puckData = { root: { props: { title: page.title } }, content: [] };
-    }
-  }
-
-  if (!puckData || !puckData.content) {
-    puckData = { root: { props: { title: page.title } }, content: [] };
-  }
-
-  // Ensure non-home subpages do not render default giant HeroBlock
-  if (page.slug !== 'beranda' && page.slug !== 'home' && page.slug !== 'hero' && puckData && puckData.content && Array.isArray(puckData.content)) {
-    puckData = {
-      ...puckData,
-      content: puckData.content.filter((block: any) => block && block.type !== 'HeroBlock')
-    };
-  }
+  const puckData = parsePuckData(activeContent);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200 w-full overflow-x-hidden">
