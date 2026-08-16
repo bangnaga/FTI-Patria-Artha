@@ -7,6 +7,7 @@ import { Footer } from './Footer';
 import { AiChatWidget } from './AiChatWidget';
 import { GlobalSearchModal } from './GlobalSearchModal';
 import { AdminLoginModal } from './AdminLoginModal';
+import { Preloader } from './Preloader';
 import { useApp } from '../context/AppContext';
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -48,6 +49,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-[#9B2C2C] selection:text-white transition-colors duration-200 flex flex-col justify-between">
+      {!isVisualBuilder && <Preloader />}
       <div>
         {!isVisualBuilder && (
           <Navbar
