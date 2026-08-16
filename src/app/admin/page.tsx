@@ -70,9 +70,28 @@ export default function AdminPage() {
 
             // Sync to AppContext state in real-time
             setCustomPagesList((prev) => {
-              const idx = prev.findIndex(
-                (p) => p && (p.id === updatedPageItem.id || p.slug === updatedPageItem.slug)
-              );
+              const targetKey = (updatedPageItem.slug || updatedPageItem.id || '')
+                .toLowerCase()
+                .replace(/^cp_/i, '')
+                .replace(/^\/halaman\//i, '')
+                .replace(/^halaman\//i, '')
+                .replace(/^\//, '')
+                .replace(/\/$/, '')
+                .trim();
+
+              const idx = prev.findIndex((p) => {
+                if (!p) return false;
+                const pKey = (p.slug || p.id || '')
+                  .toLowerCase()
+                  .replace(/^cp_/i, '')
+                  .replace(/^\/halaman\//i, '')
+                  .replace(/^halaman\//i, '')
+                  .replace(/^\//, '')
+                  .replace(/\/$/, '')
+                  .trim();
+                return pKey === targetKey || p.id === updatedPageItem.id || p.slug === updatedPageItem.slug;
+              });
+
               if (idx >= 0) {
                 const nextList = [...prev];
                 nextList[idx] = { ...nextList[idx], ...updatedPageItem };

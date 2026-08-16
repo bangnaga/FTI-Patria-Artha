@@ -37,8 +37,11 @@ export const CustomPageViewer: React.FC<CustomPageViewerProps> = ({
     if (!puckData || !puckData.content) {
       puckData = { root: { props: { title: page.title } }, content: [] };
     }
+    const normalizedSlug = (page.slug || page.id || '').toLowerCase().replace(/^cp_/i, '');
+    const isHome = normalizedSlug === 'beranda' || normalizedSlug === 'home' || normalizedSlug === 'hero';
+
     // Ensure non-home subpages do not render default giant HeroBlock
-    if (page.slug !== 'beranda' && page.slug !== 'home' && page.slug !== 'hero' && puckData && puckData.content && Array.isArray(puckData.content)) {
+    if (!isHome && puckData && puckData.content && Array.isArray(puckData.content)) {
       puckData = {
         ...puckData,
         content: puckData.content.filter((block: any) => block && block.type !== 'HeroBlock')
@@ -52,7 +55,13 @@ export const CustomPageViewer: React.FC<CustomPageViewerProps> = ({
 
   // Only after client-side mount (mounted = true), check localStorage override
   if (mounted && typeof window !== 'undefined') {
-    const localOverride = localStorage.getItem(`ti_puck_page_${page.id}`) || localStorage.getItem(`ti_puck_page_${page.slug}`);
+    const normalizedSlug = (page.slug || page.id || '').toLowerCase().replace(/^cp_/i, '');
+    const localOverride =
+      localStorage.getItem(`ti_puck_page_${page.id}`) ||
+      localStorage.getItem(`ti_puck_page_${page.slug}`) ||
+      localStorage.getItem(`ti_puck_page_cp_${normalizedSlug}`) ||
+      localStorage.getItem(`ti_puck_page_${normalizedSlug}`);
+
     if (localOverride) {
       try {
         const parsedOverride = JSON.parse(localOverride);

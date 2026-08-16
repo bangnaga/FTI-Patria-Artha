@@ -117,13 +117,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             const pageMap = new Map<string, CustomPageItem>();
             defaultCustomPages.forEach(p => {
               if (p) {
-                const key = (p.slug || p.id).replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim();
+                const raw = p.slug || p.id || '';
+                const key = raw.toLowerCase().replace(/^cp_/i, '').replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim();
                 pageMap.set(key, p);
               }
             });
             pages.forEach((p: CustomPageItem) => {
               if (p) {
-                const key = (p.slug || p.id).replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim();
+                const raw = p.slug || p.id || '';
+                const key = raw.toLowerCase().replace(/^cp_/i, '').replace(/^\/halaman\//i, '').replace(/^halaman\//i, '').replace(/^\//, '').replace(/\/$/, '').trim();
                 pageMap.set(key, p);
               }
             });

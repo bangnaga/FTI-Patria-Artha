@@ -27,7 +27,18 @@ export default function HomePage() {
     customPagesList
   } = useApp();
 
-  const customBeranda = customPagesList.find(p => p && (p.slug === 'beranda' || p.slug === 'home'));
+  const customBeranda = customPagesList.find((p) => {
+    if (!p) return false;
+    const key = (p.slug || p.id || '')
+      .toLowerCase()
+      .replace(/^cp_/i, '')
+      .replace(/^\/halaman\//i, '')
+      .replace(/^halaman\//i, '')
+      .replace(/^\//, '')
+      .replace(/\/$/, '')
+      .trim();
+    return key === 'beranda' || key === 'home';
+  });
 
   if (customBeranda) {
     return (
