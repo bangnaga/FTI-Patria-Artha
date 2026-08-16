@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
-import { ArrowRight, ChevronRight, Sparkles, Play } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ChevronRight, Sparkles } from 'lucide-react';
 
-export type HeroBgType = 'solid' | 'gradient' | 'image' | 'video';
+export type HeroBgType = 'solid' | 'gradient' | 'image' | 'video' | 'slideshow';
 export type HeroLayoutStyle = 'staggered' | 'bento' | 'floating-glass' | 'cinematic-center';
 
 export interface Hero231Props {
@@ -17,13 +18,17 @@ export interface Hero231Props {
   logos?: { name: string; logoUrl?: string }[];
   images?: string[];
   theme?: 'light' | 'dark';
-  // New Background Properties
+  // Background Properties
   bgType?: HeroBgType;
   bgImageUrl?: string;
   bgVideoUrl?: string;
+  bgSlideshowImages?: string[];
+  slideshowInterval?: number; // In seconds
   bgOverlayOpacity?: number; // 0 - 100
-  // New Style Properties
+  // Style & Animation Properties
   layoutStyle?: HeroLayoutStyle;
+  animatedTitles?: string[]; // Rotating word highlights
+  enableTextAnimation?: boolean;
 }
 
 const DEFAULT_LOGOS = [
@@ -40,8 +45,14 @@ const DEFAULT_IMAGES = [
   'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80',
 ];
 
+const DEFAULT_SLIDESHOW = [
+  'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=80',
+];
+
 export default function Hero231({
-  badgeText = 'Flexible Plan customized for you',
+  badgeText = '● PMB FTI UPA 2026/2027',
   title = 'Blocks Built With Shadcn & Tailwind.',
   description = 'Pendidikan tinggi berkualitas berbasis Outcome-Based Education (OBE) yang mengintegrasikan Artificial Intelligence, Cloud Software, dan Cyber Security.',
   primaryCtaLabel = 'Jelajahi Program Studi',
@@ -54,13 +65,39 @@ export default function Hero231({
   bgType = 'solid',
   bgImageUrl = '',
   bgVideoUrl = '',
+  bgSlideshowImages = DEFAULT_SLIDESHOW,
+  slideshowInterval = 5,
   bgOverlayOpacity = 75,
   layoutStyle = 'staggered',
+  animatedTitles = ['Mencetak Talenta AI', 'Software Engineering', 'Cyber Security'],
+  enableTextAnimation = true,
 }: Hero231Props) {
-  const isDark = theme === 'dark' || bgType === 'video' || (bgType === 'image' && bgOverlayOpacity > 40);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [titleIndex, setTitleIndex] = useState(0);
+
+  const slideshowList = bgSlideshowImages.length ? bgSlideshowImages : DEFAULT_SLIDESHOW;
+  const isDark = theme === 'dark' || bgType === 'video' || bgType === 'slideshow' || (bgType === 'image' && bgOverlayOpacity > 40);
   const imgList = images.length ? images : DEFAULT_IMAGES;
 
-  // Background Styling Resolver
+  // Background Slideshow Timer
+  useEffect(() => {
+    if (bgType !== 'slideshow' || slideshowList.length <= 1) return;
+    const interval = setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % slideshowList.length);
+    }, (slideshowInterval || 5) * 1000);
+    return () => clearInterval(interval);
+  }, [bgType, slideshowList, slideshowInterval]);
+
+  // Rotating Text Highlight Timer
+  useEffect(() => {
+    if (!animatedTitles || animatedTitles.length <= 1) return;
+    const interval = setInterval(() => {
+      setTitleIndex((prev) => (prev + 1) % animatedTitles.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [animatedTitles]);
+
+  // Background Style Resolver
   const getBgStyleClasses = () => {
     if (bgType === 'gradient') {
       return isDark 
@@ -85,7 +122,6 @@ export default function Hero231({
           >
             <source src={bgVideoUrl} type="video/mp4" />
           </video>
-          {/* Overlay Darkening */}
           <div 
             className="absolute inset-0 bg-slate-950" 
             style={{ opacity: bgOverlayOpacity / 100 }} 
@@ -110,7 +146,44 @@ export default function Hero231({
         </div>
       )}
 
-      {/* 3. Ambient Mesh / Radial Glow for Modern Touch */}
+      {/* 3. Background Slideshow Layer */}
+      {bgType === 'slideshow' && slideshowList.length > 0 && (
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={slideIndex}
+              src={slideshowList[slideIndex]}
+              alt={`Hero Slide ${slideIndex + 1}`}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: 'easeInOut' }}
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
+          </AnimatePresence>
+          <div 
+            className="absolute inset-0 bg-slate-950" 
+            style={{ opacity: bgOverlayOpacity / 100 }} 
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+          
+          {/* Slideshow Indicator Dots */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+            {slideshowList.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setSlideIndex(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-300 pointer-events-auto ${
+                  idx === slideIndex ? 'w-8 bg-red-500' : 'w-2 bg-white/40 hover:bg-white/70'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Ambient Mesh Glow */}
       <div 
         className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-red-600/10 blur-[140px] rounded-full z-0"
         aria-hidden="true"
@@ -120,7 +193,12 @@ export default function Hero231({
         
         {/* Top Header Row: Partner / Accreditation Logos */}
         {logos && logos.length > 0 && (
-          <div className="flex flex-wrap items-center justify-end gap-6 sm:gap-10 mb-12 sm:mb-16 opacity-75">
+          <motion.div
+            initial={enableTextAnimation ? { opacity: 0, y: -10 } : false}
+            animate={enableTextAnimation ? { opacity: 1, y: 0 } : false}
+            transition={{ duration: 0.6 }}
+            className="flex flex-wrap items-center justify-end gap-6 sm:gap-10 mb-12 sm:mb-16 opacity-75"
+          >
             {logos.map((logo, idx) => (
               <div key={idx} className="flex items-center gap-2 text-slate-400 font-bold text-xs sm:text-sm tracking-wider uppercase">
                 {logo.logoUrl ? (
@@ -130,16 +208,20 @@ export default function Hero231({
                 )}
               </div>
             ))}
-          </div>
+          </motion.div>
         )}
 
-        {/* --- LAYOUT VARIANT 1 & 2 & 3: SPLIT GRID (Staggered, Bento, Floating-Glass) --- */}
+        {/* --- SPLIT GRID (Staggered, Bento, Floating-Glass) --- */}
         {layoutStyle !== 'cinematic-center' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
             {/* Left Column: Badge, Typography Title, Subtitle & Buttons */}
-            <div className="lg:col-span-6 flex flex-col items-start space-y-6">
-              
+            <motion.div 
+              initial={enableTextAnimation ? { opacity: 0, x: -20 } : false}
+              animate={enableTextAnimation ? { opacity: 1, x: 0 } : false}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="lg:col-span-6 flex flex-col items-start space-y-6"
+            >
               {/* Pill Badge */}
               {badgeText && (
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 dark:bg-slate-800/80 border border-slate-200/40 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100 backdrop-blur-md shadow-2xs">
@@ -148,9 +230,25 @@ export default function Hero231({
                 </div>
               )}
 
-              {/* Giant Modern Title */}
+              {/* Giant Modern Title with Animated Text Highlight Option */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08]">
-                {title}
+                <span>{title} </span>
+                {animatedTitles && animatedTitles.length > 0 && (
+                  <span className="block sm:inline-block relative">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={titleIndex}
+                        initial={{ y: 20, opacity: 0, filter: 'blur(4px)' }}
+                        animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+                        exit={{ y: -20, opacity: 0, filter: 'blur(4px)' }}
+                        transition={{ duration: 0.45, ease: 'easeOut' }}
+                        className="inline-block bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 bg-clip-text text-transparent"
+                      >
+                        {animatedTitles[titleIndex]}
+                      </motion.span>
+                    </AnimatePresence>
+                  </span>
+                )}
               </h1>
 
               {/* Description Paragraph */}
@@ -182,12 +280,17 @@ export default function Hero231({
                   )}
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Right Column: Media Gallery Showcase */}
-            <div className="lg:col-span-6 relative pt-4 lg:pt-0">
+            <motion.div 
+              initial={enableTextAnimation ? { opacity: 0, scale: 0.95 } : false}
+              animate={enableTextAnimation ? { opacity: 1, scale: 1 } : false}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="lg:col-span-6 relative pt-4 lg:pt-0"
+            >
               
-              {/* STYLE A: STAGGERED CARDS (Default Shadcn 231) */}
+              {/* STYLE A: STAGGERED CARDS */}
               {layoutStyle === 'staggered' && (
                 <div className="flex items-center justify-center lg:justify-end gap-3 sm:gap-4 overflow-visible">
                   {imgList[0] && (
@@ -242,8 +345,6 @@ export default function Hero231({
                   <div className="absolute -inset-4 bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 rounded-[36px] opacity-30 blur-2xl animate-pulse" />
                   <div className="relative rounded-3xl overflow-hidden border border-white/20 dark:border-slate-800 bg-white/10 dark:bg-slate-900/80 backdrop-blur-2xl shadow-2xl p-3">
                     <img src={imgList[1] || imgList[0]} alt="Glass Showcase" className="w-full aspect-[16/10] object-cover rounded-2xl" />
-                    
-                    {/* Floating Overlay Badge */}
                     <div className="mt-3 p-4 rounded-2xl bg-slate-950/80 border border-slate-800 backdrop-blur-md flex items-center justify-between">
                       <div>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-rose-400 block">Kurikulum Industri OBE</span>
@@ -257,14 +358,19 @@ export default function Hero231({
                 </div>
               )}
 
-            </div>
+            </motion.div>
 
           </div>
         )}
 
         {/* --- LAYOUT VARIANT 4: CINEMATIC CENTERED --- */}
         {layoutStyle === 'cinematic-center' && (
-          <div className="flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto">
+          <motion.div 
+            initial={enableTextAnimation ? { opacity: 0, y: 20 } : false}
+            animate={enableTextAnimation ? { opacity: 1, y: 0 } : false}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto"
+          >
             {badgeText && (
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 dark:bg-slate-800/80 border border-slate-200/40 dark:border-slate-700/80 text-xs sm:text-sm font-semibold backdrop-blur-md shadow-2xs">
                 <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
@@ -273,7 +379,23 @@ export default function Hero231({
             )}
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08]">
-              {title}
+              <span>{title} </span>
+              {animatedTitles && animatedTitles.length > 0 && (
+                <span className="block sm:inline-block relative">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={titleIndex}
+                      initial={{ y: 20, opacity: 0, filter: 'blur(4px)' }}
+                      animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+                      exit={{ y: -20, opacity: 0, filter: 'blur(4px)' }}
+                      transition={{ duration: 0.45, ease: 'easeOut' }}
+                      className="inline-block bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 bg-clip-text text-transparent"
+                    >
+                      {animatedTitles[titleIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              )}
             </h1>
 
             {description && (
@@ -313,7 +435,7 @@ export default function Hero231({
                 </div>
               </div>
             )}
-          </div>
+          </motion.div>
         )}
 
       </div>

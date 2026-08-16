@@ -3332,11 +3332,15 @@ type Props = {
     logos?: { name: string; logoUrl?: string }[];
     images?: { url: string }[];
     theme?: 'light' | 'dark';
-    bgType?: 'solid' | 'gradient' | 'image' | 'video';
+    bgType?: 'solid' | 'gradient' | 'image' | 'video' | 'slideshow';
     bgImageUrl?: string;
     bgVideoUrl?: string;
+    bgSlideshowImages?: { url: string }[];
+    slideshowInterval?: number;
     bgOverlayOpacity?: number;
     layoutStyle?: 'staggered' | 'bento' | 'floating-glass' | 'cinematic-center';
+    animatedTitles?: { word: string }[];
+    enableTextAnimation?: boolean;
   } & AdvancedStyleProps;
   Hero10Block: Omit<Hero10Props, 'images' | 'imageAlts'> & {
     images?: { url: string }[];
@@ -4659,11 +4663,37 @@ export const puckConfig: Config<Props> = {
             { label: 'Gradient Brand Red (Marun - Slate)', value: 'gradient' },
             { label: 'Background Gambar (Foto)', value: 'image' },
             { label: 'Background Video (Cinematic HTML5)', value: 'video' },
+            { label: 'Background Slideshow (Foto Berganti)', value: 'slideshow' },
           ],
         },
         bgImageUrl: makeImageField('🖼️ Gambar Background (jika Tipe = Gambar)') as any,
         bgVideoUrl: { type: 'text', label: '🎥 URL Video MP4 (jika Tipe = Video)' },
+        bgSlideshowImages: {
+          type: 'array',
+          label: '📸 Gambar Slideshow Latar (jika Tipe = Slideshow)',
+          getItemSummary: (item, i) => item.url ? `Slide ${i + 1} ✓` : `Slide ${i + 1}`,
+          arrayFields: {
+            url: makeImageField('URL Gambar Slide') as any,
+          },
+        },
+        slideshowInterval: { type: 'number', label: '⏱️ Interval Waktu Slide (Detik)' },
         bgOverlayOpacity: { type: 'number', label: '🌑 Opasitas Gelap Overlay (0 - 100%)' },
+        animatedTitles: {
+          type: 'array',
+          label: '✨ Animasi Teks Berganti (Words Highlight)',
+          getItemSummary: (item) => item.word || 'Kata Highlight',
+          arrayFields: {
+            word: { type: 'text', label: 'Teks Highlight Berganti' },
+          },
+        },
+        enableTextAnimation: {
+          type: 'radio',
+          label: '🎬 Aktifkan Animasi Gerak Teks & Masuk?',
+          options: [
+            { label: 'Ya', value: true },
+            { label: 'Tidak', value: false },
+          ],
+        },
         badgeText: { type: 'text', label: '🏷️ Teks Badge' },
         title: { type: 'textarea', label: '📌 Judul Utama' },
         description: { type: 'textarea', label: '📝 Deskripsi Sub-judul' },
@@ -4703,9 +4733,21 @@ export const puckConfig: Config<Props> = {
         bgType: 'solid',
         bgImageUrl: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1600&q=80',
         bgVideoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-41318-large.mp4',
+        bgSlideshowImages: [
+          { url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1600&q=80' },
+          { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80' },
+          { url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=80' },
+        ],
+        slideshowInterval: 5,
         bgOverlayOpacity: 75,
-        badgeText: '● Flexible Plan customized for you',
-        title: 'Blocks Built With Shadcn & Tailwind.',
+        animatedTitles: [
+          { word: 'Mencetak Talenta AI' },
+          { word: 'Software Engineering' },
+          { word: 'Cyber Security' },
+        ],
+        enableTextAnimation: true,
+        badgeText: '● PMB FTI UPA 2026/2027',
+        title: 'Fakultas Teknik & Informatika UPA',
         description: 'Pendidikan tinggi berkualitas berbasis Outcome-Based Education (OBE) yang mengintegrasikan Artificial Intelligence, Cloud Software, dan Cyber Security.',
         primaryCtaLabel: 'Jelajahi Program Studi',
         primaryCtaHref: '#prodi',
@@ -4713,11 +4755,11 @@ export const puckConfig: Config<Props> = {
         secondaryCtaHref: '#spmb',
         theme: 'light',
         logos: [
-          { name: 'descript' },
-          { name: 'MERCURY' },
-          { name: 'ramp' },
-          { name: 'Retool' },
-          { name: 'Waterdrop' },
+          { name: 'BAN-PT UNGGUL' },
+          { name: 'LAM INFOKOM' },
+          { name: 'AWS ACADEMY' },
+          { name: 'MICROSOFT' },
+          { name: 'CISCO ACADEMY' },
         ],
         images: [
           { url: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80' },
@@ -4727,6 +4769,8 @@ export const puckConfig: Config<Props> = {
       },
       render: (props) => {
         const imgList = (props.images || []).map((img: any) => (typeof img === 'string' ? img : img?.url)).filter((u: any) => u && typeof u === 'string' && u.trim() !== '');
+        const bgSlideshowList = (props.bgSlideshowImages || []).map((img: any) => (typeof img === 'string' ? img : img?.url)).filter((u: any) => u && typeof u === 'string' && u.trim() !== '');
+        const titlesList = (props.animatedTitles || []).map((t: any) => (typeof t === 'string' ? t : t?.word)).filter((w: any) => w && typeof w === 'string' && w.trim() !== '');
         return (
           <Hero231
             badgeText={props.badgeText}
@@ -4742,8 +4786,12 @@ export const puckConfig: Config<Props> = {
             bgType={props.bgType}
             bgImageUrl={props.bgImageUrl}
             bgVideoUrl={props.bgVideoUrl}
+            bgSlideshowImages={bgSlideshowList}
+            slideshowInterval={props.slideshowInterval}
             bgOverlayOpacity={props.bgOverlayOpacity}
             layoutStyle={props.layoutStyle}
+            animatedTitles={titlesList}
+            enableTextAnimation={props.enableTextAnimation}
           />
         );
       },
