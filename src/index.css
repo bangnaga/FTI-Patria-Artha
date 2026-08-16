@@ -112,4 +112,17 @@ html {
   }
 }
 
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+.animate-float {
+  animation: floatAnimation 5s ease-in-out infinite;
+}
+
 

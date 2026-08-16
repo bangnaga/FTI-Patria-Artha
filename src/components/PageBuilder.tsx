@@ -3378,6 +3378,8 @@ type Props = {
     ctaSecondaryText: string;
     ctaSecondaryLink?: string;
     imageUrl: string;
+    imageStyle?: 'transparent' | 'card';
+    enableFloatingAnimation?: boolean;
     bgGradient: string;
     overlayOpacity?: string;
     minHeight?: string;
@@ -4976,7 +4978,23 @@ export const puckConfig: Config<Props> = {
         ctaPrimaryLink: { type: 'text', label: '🔗 Link Tombol Utama' },
         ctaSecondaryText: { type: 'text', label: 'Teks Tombol Sekunder' },
         ctaSecondaryLink: { type: 'text', label: '🔗 Link Tombol Sekunder' },
-        imageUrl: makeImageField('🖼️ Gambar Background Hero') as any,
+        imageUrl: makeImageField('🖼️ Gambar Media Hero (PNG Transparan / Foto)') as any,
+        imageStyle: {
+          type: 'select',
+          label: '🖼️ Format Gambar Hero',
+          options: [
+            { label: 'Transparan PNG (Tanpa Lengkungan/Border Radius & Tanpa Bingkai)', value: 'transparent' },
+            { label: 'Card Bingkai (Dengan Border Radius & Badge)', value: 'card' },
+          ],
+        },
+        enableFloatingAnimation: {
+          type: 'radio',
+          label: '🎈 Aktifkan Animasi Floating (Melayang Halus)?',
+          options: [
+            { label: 'Ya (Melayang)', value: true },
+            { label: 'Tidak', value: false },
+          ],
+        },
         overlayOpacity: {
           type: 'select', label: '🌫️ Kegelapan Overlay',
           options: [
@@ -5017,6 +5035,8 @@ export const puckConfig: Config<Props> = {
         ctaPrimaryText: 'Daftar PMB Patria Artha',
         ctaSecondaryText: 'Jelajahi Kurikulum & SKS',
         imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
+        imageStyle: 'transparent',
+        enableFloatingAnimation: true,
         bgGradient: 'from-[#800020]/90 via-[#9B2C2C]/80 to-slate-900',
         bgStyle: 'dark',
         fontFamily: 'sans',
@@ -5028,6 +5048,10 @@ export const puckConfig: Config<Props> = {
       },
       render: (props) => {
         const styleClass = getAdvancedStyleClasses(props);
+        const isCard = props.imageStyle === 'card';
+        const isFloat = props.enableFloatingAnimation !== false;
+        const validImgSrc = props.imageUrl && props.imageUrl.trim() !== '' ? props.imageUrl : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80';
+
         return (
           <div className={`relative overflow-hidden ${styleClass}`}>
             {/* Background Animated Floating Orbs & Light Glow */}
@@ -5106,30 +5130,42 @@ export const puckConfig: Config<Props> = {
 
                 {/* Right Media Showcase Column */}
                 <div className="lg:col-span-5 relative">
-                  <div className="relative mx-auto max-w-md lg:max-w-none">
-                    <div className="relative rounded-3xl overflow-hidden border-2 border-slate-700/60 shadow-2xl bg-slate-900 aspect-[4/3] sm:aspect-[16/11]">
-                      <img
-                        src={props.imageUrl && props.imageUrl.trim() !== '' ? props.imageUrl : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'}
-                        alt="Hero Media"
-                        className="w-full h-full object-cover object-center"
-                      />
-                      <div className={`absolute inset-0 bg-gradient-to-t ${props.bgGradient || 'from-[#800020]/90 via-[#9B2C2C]/80 to-slate-900'} opacity-60 mix-blend-multiply`} />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
+                  <div className={`relative mx-auto max-w-md lg:max-w-none ${isFloat ? 'animate-float' : ''}`}>
+                    {isCard ? (
+                      /* Card Bingkai Style */
+                      <div className="relative rounded-3xl overflow-hidden border-2 border-slate-700/60 shadow-2xl bg-slate-900 aspect-[4/3] sm:aspect-[16/11]">
+                        <img
+                          src={validImgSrc}
+                          alt="Hero Media"
+                          className="w-full h-full object-cover object-center"
+                        />
+                        <div className={`absolute inset-0 bg-gradient-to-t ${props.bgGradient || 'from-[#800020]/90 via-[#9B2C2C]/80 to-slate-900'} opacity-60 mix-blend-multiply`} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
 
-                      <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-slate-950/80 backdrop-blur-md border border-slate-800/80 flex items-center justify-between">
-                        <div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-red-400 block">
-                            Universitas Patria Artha
-                          </span>
-                          <h4 className="text-xs font-extrabold text-white">
-                            Fakultas Teknik & Informatika
-                          </h4>
-                        </div>
-                        <div className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold">
-                          Akreditasi UNGGUL
+                        <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-slate-950/80 backdrop-blur-md border border-slate-800/80 flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-red-400 block">
+                              Universitas Patria Artha
+                            </span>
+                            <h4 className="text-xs font-extrabold text-white">
+                              Fakultas Teknik & Informatika
+                            </h4>
+                          </div>
+                          <div className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold">
+                            Akreditasi UNGGUL
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      /* Transparent PNG Style (Tanpa Border Radius, Tanpa Bingkai Container) */
+                      <div className="relative flex items-center justify-center p-2">
+                        <img
+                          src={validImgSrc}
+                          alt="Hero Media Transparan"
+                          className="w-full max-h-[500px] object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)] rounded-none border-none bg-transparent"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
