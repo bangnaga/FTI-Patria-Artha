@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { UpaLogo } from './UpaLogo';
+import { useApp } from '../context/AppContext';
 
 export const Preloader: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [customLogoUrl, setCustomLogoUrl] = useState<string | null>(null);
+  const { isDataLoaded } = useApp();
 
   useEffect(() => {
     try {
@@ -24,22 +26,26 @@ export const Preloader: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Fast animated progress fill
+    // Fast animated progress fill synchronized with real data loading
     const interval = setInterval(() => {
       setProgress((prev) => {
+        // If data is still loading from backend API, hold progress at 92% until ready
+        if (prev >= 92 && !isDataLoaded) {
+          return 92;
+        }
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(() => setLoading(false), 300);
+          setTimeout(() => setLoading(false), 350);
           return 100;
         }
-        // Random increment for realistic feel
-        const diff = Math.floor(Math.random() * 15) + 10;
-        return Math.min(prev + diff, 100);
+        // Random smooth increment
+        const diff = Math.floor(Math.random() * 12) + 8;
+        return Math.min(prev + diff, isDataLoaded ? 100 : 92);
       });
-    }, 100);
+    }, 80);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isDataLoaded]);
 
   const getStatusText = () => {
     if (progress < 35) return 'Memuat sistem & komponen...';

@@ -43,6 +43,7 @@ interface AppContextType {
   setStudentOrgData: React.Dispatch<React.SetStateAction<StudentOrg>>;
   customPagesList: CustomPageItem[];
   setCustomPagesList: React.Dispatch<React.SetStateAction<CustomPageItem[]>>;
+  isDataLoaded: boolean;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -53,6 +54,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useState(false);
   const [adminUser, setAdminUser] = useState<User | null>(null);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const [newsList, setNewsList] = useState<NewsItem[]>([]);
   const [lecturersList, setLecturersList] = useState<Lecturer[]>([]);
@@ -147,6 +149,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       } catch (e) {
         console.warn('Backend API load error:', e);
+      } finally {
+        if (isMounted) {
+          setIsDataLoaded(true);
+        }
       }
     }
     loadBackendData();
@@ -249,6 +255,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setStudentOrgData,
         customPagesList,
         setCustomPagesList,
+        isDataLoaded,
       }}
     >
       {children}
