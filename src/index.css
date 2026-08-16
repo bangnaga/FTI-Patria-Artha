@@ -102,4 +102,13 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 

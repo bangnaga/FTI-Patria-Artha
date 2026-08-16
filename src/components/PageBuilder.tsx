@@ -22,6 +22,7 @@ import HeroSlider, { type HeroSliderProps, type HeroSlide, type HeroStat, type H
 import PageBanner, { type PageBannerProps } from './ui/page-banner';
 import ModernSvgBanner, { type ModernSvgBannerProps } from './ui/modern-svg-banner';
 import { MediaManager } from './MediaManager';
+import { Skeleton, NewsCardSkeleton, LecturerCardSkeleton, ProdiCardSkeleton } from './ui/Skeleton';
 
 import { 
   Sparkles, 
@@ -550,7 +551,7 @@ const DbNewsBlockRender: React.FC<Props['DbNewsBlock']> = (props) => {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 animate-pulse h-40" />
+            <NewsCardSkeleton key={i} />
           ))}
         </div>
       ) : error ? (
@@ -1103,7 +1104,7 @@ const DbStudyProgramBlockRender: React.FC<Props['DbStudyProgramBlock']> = (props
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[1, 2].map(i => (
-            <div key={i} className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 animate-pulse h-48" />
+            <ProdiCardSkeleton key={i} />
           ))}
         </div>
       ) : prodis.length === 0 ? (
@@ -1630,7 +1631,7 @@ const DbLecturerBlockRender: React.FC<Props['DbLecturerBlock']> = (props) => {
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 animate-pulse h-36" />
+            <LecturerCardSkeleton key={i} />
           ))}
         </div>
       ) : filteredLecturers.length === 0 ? (
