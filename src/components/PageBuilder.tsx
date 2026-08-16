@@ -22,6 +22,8 @@ import HeroSlider, { type HeroSliderProps, type HeroSlide, type HeroStat, type H
 import PageBanner, { type PageBannerProps } from './ui/page-banner';
 import ModernSvgBanner, { type ModernSvgBannerProps } from './ui/modern-svg-banner';
 import Hero231, { type Hero231Props } from './ui/hero-231';
+import AlgoliaHero, { type AlgoliaHeroProps } from './ui/algolia-hero';
+import AlgoliaSolutions, { type AlgoliaSolutionsProps } from './ui/algolia-solutions';
 import { MediaManager } from './MediaManager';
 import { Skeleton, NewsCardSkeleton, LecturerCardSkeleton, ProdiCardSkeleton } from './ui/Skeleton';
 
@@ -3318,6 +3320,8 @@ const GridLayoutBlockRender: React.FC<Props['GridLayoutBlock']> = (props) => {
 };
 
 type Props = {
+  AlgoliaHeroBlock: AlgoliaHeroProps & AdvancedStyleProps;
+  AlgoliaSolutionsBlock: AlgoliaSolutionsProps & AdvancedStyleProps;
   PageBannerBlock: PageBannerProps;
   ModernSvgBannerBlock: ModernSvgBannerProps;
   HeroSliderBlock: HeroSliderProps;
@@ -3814,11 +3818,11 @@ export const puckConfig: Config<Props> = {
     },
     hero: {
       title: '🚀 Hero & Banner Utama',
-      components: ['Hero231Block', 'ModernSvgBannerBlock', 'HeroSlideshowBlock', 'PageBannerBlock', 'HeroSliderBlock', 'Hero10Block', 'LogoCloudBlock', 'AboutAppsBlock', 'GalleryGridBlock', 'HeroBlock', 'DeanWelcomeBlock', 'AlertBannerBlock', 'SubMenuGridBlock'],
+      components: ['AlgoliaHeroBlock', 'Hero231Block', 'ModernSvgBannerBlock', 'HeroSlideshowBlock', 'PageBannerBlock', 'HeroSliderBlock', 'Hero10Block', 'LogoCloudBlock', 'AboutAppsBlock', 'GalleryGridBlock', 'HeroBlock', 'DeanWelcomeBlock', 'AlertBannerBlock', 'SubMenuGridBlock'],
     },
     content: {
       title: '📝 Konten & Teks',
-      components: ['RichTextBlock', 'AccordionFaqBlock', 'TestimonialBlock', 'ProfileVisionBlock', 'ProfileHeaderBlock', 'AccreditationBlock', 'VisionMissionBlock', 'FocusAreasBlock', 'CtaBoxBlock', 'ModernBookCoverGridBlock'],
+      components: ['AlgoliaSolutionsBlock', 'RichTextBlock', 'AccordionFaqBlock', 'TestimonialBlock', 'ProfileVisionBlock', 'ProfileHeaderBlock', 'AccreditationBlock', 'VisionMissionBlock', 'FocusAreasBlock', 'CtaBoxBlock', 'ModernBookCoverGridBlock'],
     },
     dataAndMedia: {
       title: '📊 Statistik & Media',
@@ -3834,7 +3838,7 @@ export const puckConfig: Config<Props> = {
     },
     n8nBlocks: {
       title: '⚡ n8n-Style Blocks',
-      components: ['DarkHeroBlock', 'IntegrationMarqueeBlock', 'FeatureTabsBlock', 'GradientTileGridBlock', 'MetricsCounterBlock', 'DarkCtaBlock'],
+      components: ['AlgoliaHeroBlock', 'AlgoliaSolutionsBlock', 'DarkHeroBlock', 'IntegrationMarqueeBlock', 'FeatureTabsBlock', 'GradientTileGridBlock', 'MetricsCounterBlock', 'DarkCtaBlock'],
     },
   },
   components: {
@@ -4643,6 +4647,210 @@ export const puckConfig: Config<Props> = {
           />
         );
       },
+    },
+
+    AlgoliaHeroBlock: {
+      fields: {
+        badgeText: { type: 'text', label: '🏷️ Teks Badge Top' },
+        titlePrefix: { type: 'text', label: 'Judul Utama (Awal)' },
+        titleHighlight: { type: 'text', label: 'Judul Utama (Highlight Gradien)' },
+        titleSuffix: { type: 'text', label: 'Judul Utama (Akhir)' },
+        description: { type: 'textarea', label: 'Deskripsi Sub-judul' },
+        searchPlaceholder: { type: 'text', label: 'Placeholder Input Pencarian' },
+        primaryCtaText: { type: 'text', label: 'Tombol Utama (Label)' },
+        primaryCtaLink: { type: 'text', label: 'Tombol Utama (Link)' },
+        secondaryCtaText: { type: 'text', label: 'Tombol Sekunder (Label)' },
+        secondaryCtaLink: { type: 'text', label: 'Tombol Sekunder (Link)' },
+        suggestedQueries: {
+          type: 'array',
+          label: '✨ Chip Pencarian Populer',
+          getItemSummary: (item: any) => item.text || 'Query',
+          arrayFields: {
+            text: { type: 'text', label: 'Kata Kunci Chip' },
+          },
+        },
+        searchDataset: {
+          type: 'array',
+          label: '⚡ Live Search Items Dataset (Instant Filter)',
+          getItemSummary: (item: any) => item.title || 'Item',
+          arrayFields: {
+            title: { type: 'text', label: 'Judul Item / Prodi / Lab' },
+            category: { type: 'text', label: 'Kategori (mis: Program Studi, Riset, PMB)' },
+            description: { type: 'textarea', label: 'Deskripsi Penjelasan' },
+            badge: { type: 'text', label: 'Badge Status (mis: Akreditasi UNGGUL)' },
+            icon: {
+              type: 'select',
+              label: 'Icon Minimalis',
+              options: [
+                { label: 'Code (Coding/Koding)', value: 'Code' },
+                { label: 'Cpu (Hardware/AI)', value: 'Cpu' },
+                { label: 'BookOpen (Studi/Kurikulum)', value: 'BookOpen' },
+                { label: 'Zap (Petir/Inovasi)', value: 'Zap' },
+                { label: 'Award (Prestasi/Akreditasi)', value: 'Award' },
+                { label: 'ShieldCheck (Keamanan/Cyber)', value: 'ShieldCheck' },
+              ],
+            },
+            link: { type: 'text', label: 'Link Tujuan' },
+          },
+        },
+        ...commonElementorFields,
+      },
+      defaultProps: {
+        badgeText: '✨ Platform AI & Digital Campus FTI UPA',
+        titlePrefix: 'Mencetak Talenta AI & Tech',
+        titleHighlight: 'Berdaya Saing Global',
+        titleSuffix: 'Siap Kerja',
+        description: 'Cari dan jelajahi program studi, laboratorium riset, kurikulum OBE, serta beasiswa unggulan FTI Universitas Patria Artha secara cepat & instan.',
+        searchPlaceholder: 'Cari prodi, dosen, lab AI, atau beasiswa...',
+        primaryCtaText: 'Daftar PMB 2026',
+        primaryCtaLink: '#spmb',
+        secondaryCtaText: 'Jelajahi Kurikulum & SKS',
+        secondaryCtaLink: '#prodi',
+        suggestedQueries: [
+          { text: 'Teknik Informatika' },
+          { text: 'Sistem Informasi' },
+          { text: 'Beasiswa PMB' },
+          { text: 'Lab AI & GPU' },
+          { text: 'Teknik Sipil' },
+        ],
+        searchDataset: [
+          {
+            title: 'S1 Teknik Informatika',
+            category: 'Program Studi',
+            description: 'Fokus pada Software Engineering, AI & Machine Learning, Cloud Architecture, dan Mobile App Development.',
+            badge: 'Akreditasi UNGGUL',
+            icon: 'Code',
+            link: '/prodi/teknik-informatika',
+          },
+          {
+            title: 'S1 Sistem Informasi',
+            category: 'Program Studi',
+            description: 'Mengintegrasikan IT Governance, Business Intelligence, Data Analytics, dan Technopreneurship.',
+            badge: 'S1 Terfavorit',
+            icon: 'Cpu',
+            link: '/prodi/sistem-informasi',
+          },
+          {
+            title: 'S1 Teknik Sipil',
+            category: 'Program Studi',
+            description: 'Rekayasa Struktur, Smart Building Infrastructure, Manajemen Konstruksi Digital & Green Building.',
+            badge: 'S1 Unggulan',
+            icon: 'BookOpen',
+            link: '/prodi/teknik-sipil',
+          },
+          {
+            title: 'Laboratorium HPC & Artificial Intelligence',
+            category: 'Fasilitas Riset',
+            description: 'Dilengkapi GPU Server NVIDIA A100 untuk riset Deep Learning, Computer Vision, dan NLP.',
+            badge: 'Lab Riset',
+            icon: 'Zap',
+            link: '/fasilitas',
+          },
+          {
+            title: 'Beasiswa PMB Patria Artha 2026',
+            category: 'Pendaftaran',
+            description: 'Potongan UKT hingga 100% untuk jalur prestasi akademik, hafidz Qur\'an, dan talenta teknologi.',
+            badge: 'PMB 2026',
+            icon: 'Award',
+            link: '#spmb',
+          },
+          {
+            title: 'Sertifikasi AWS & Cisco Academy',
+            category: 'Sertifikasi',
+            description: 'Program sertifikasi kompetensi internasional resmi AWS Certified Solutions Architect & CCNA Networking.',
+            badge: 'Sertifikasi Global',
+            icon: 'ShieldCheck',
+            link: '/profil',
+          },
+        ],
+      },
+      render: (props) => <AlgoliaHero {...props} />,
+    },
+
+    AlgoliaSolutionsBlock: {
+      fields: {
+        bgImageUrl: makeImageField('🖼️ Gambar Background Latar (opsional)') as any,
+        bgOverlayOpacity: { type: 'number', label: '🌑 Opasitas Overlay Gelap (0 - 100%)' },
+        headingPosition: {
+          type: 'select',
+          label: '📐 Posisi Judul Section',
+          options: [
+            { label: 'Kanan (Right Align)', value: 'right' },
+            { label: 'Tengah (Center)', value: 'center' },
+            { label: 'Kiri (Left Align)', value: 'left' },
+          ],
+        },
+        heading: { type: 'text', label: 'Judul Section' },
+        subheading: { type: 'textarea', label: 'Sub-judul Deskripsi' },
+        cards: {
+          type: 'array',
+          label: '🃏 Kartu Solusi Teaser (Floating Lift Animation)',
+          getItemSummary: (item: any) => item.title || 'Kartu Solusi',
+          arrayFields: {
+            title: { type: 'text', label: 'Judul Kartu' },
+            description: { type: 'textarea', label: 'Deskripsi Singkat' },
+            ctaText: { type: 'text', label: 'Teks Tombol (mis: Learn More / Pelajari)' },
+            ctaLink: { type: 'text', label: 'Link Tujuan Tombol' },
+            accentColor: {
+              type: 'select',
+              label: 'Warna Gradien Hover',
+              options: [
+                { label: 'Merah UPA', value: 'red' },
+                { label: 'Biru Algolia', value: 'blue' },
+                { label: 'Ungu Elegant', value: 'purple' },
+                { label: 'Hijau Emerald', value: 'emerald' },
+                { label: 'Oranye Warm', value: 'amber' },
+              ],
+            },
+          },
+        },
+        ...commonElementorFields,
+      },
+      defaultProps: {
+        bgImageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1800&q=80',
+        bgOverlayOpacity: 85,
+        headingPosition: 'right',
+        heading: 'Solusi Akademik Berstandar Global',
+        subheading: 'Inilah berbagai keunggulan utama teknologi dan pendidikan FTI Universitas Patria Artha dari hari pertama.',
+        cards: [
+          {
+            title: 'Kurikulum Berbasis AI & Industri 4.0',
+            description: 'Mahasiswa dibekali keterampilan teknologi terkini, machine learning, dan cloud software yang relevan dengan kebutuhan industri masa kini.',
+            ctaText: 'Lihat Kurikulum',
+            ctaLink: '/prodi',
+            accentColor: 'red',
+          },
+          {
+            title: 'Memahami Kebutuhan Riset & Inovasi',
+            description: 'Fasilitas GPU Server A100 dan Laboratorium HPC mendukung riset mandiri mahasiswa dalam menghasilkan solusi nyata.',
+            ctaText: 'Pelajari Riset',
+            ctaLink: '/profil',
+            accentColor: 'blue',
+          },
+          {
+            title: 'Sertifikasi Kompetensi Internasional',
+            description: 'Lulusan dibekali sertifikasi resmi dari AWS Academy, Cisco, dan Microsoft untuk daya saing tingkat global.',
+            ctaText: 'Info Sertifikasi',
+            ctaLink: '/profil',
+            accentColor: 'purple',
+          },
+          {
+            title: 'Kemitraan & Penyerapan Kerja Fast-Track',
+            description: 'Jaringan mitra industri tech nasional membuka akses magang MBKM dan rekrutmen langsung bagi lulusan FTI.',
+            ctaText: 'Kemitraan Industri',
+            ctaLink: '#karir',
+            accentColor: 'emerald',
+          },
+          {
+            title: 'Program Beasiswa & Pendampingan Karir',
+            description: 'Potongan UKT hingga 100% dan inkubasi bisnis startup untuk mencetak technopreneur masa depan.',
+            ctaText: 'Daftar Beasiswa',
+            ctaLink: '#spmb',
+            accentColor: 'amber',
+          },
+        ],
+      },
+      render: (props) => <AlgoliaSolutions {...props} />,
     },
 
     Hero231Block: {
