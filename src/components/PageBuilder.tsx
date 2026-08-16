@@ -4672,9 +4672,9 @@ export const puckConfig: Config<Props> = {
         secondaryCTA: { ctaEnabled: true, text: 'Pelajari Lebih Lanjut', href: '#', variant: 'outline' }
       },
       render: (props) => {
-        const imageList = (props.images || []).map((img: any) => img.url);
-        const imageAltsList = (props.imageAlts || []).map((img: any) => img.alt);
-        return <Hero10 {...props} images={imageList} imageAlts={imageAltsList} />;
+        const imageList = (props.images || []).map((img: any) => (typeof img === 'string' ? img : img?.url)).filter((url: any) => url && typeof url === 'string' && url.trim() !== '');
+        const imageAltsList = (props.imageAlts || []).map((img: any) => (typeof img === 'string' ? img : img?.alt)).filter((alt: any) => Boolean(alt));
+        return <Hero10 {...props} images={imageList.length ? imageList : ['https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80']} imageAlts={imageAltsList} />;
       }
     },
     LogoCloudBlock: {

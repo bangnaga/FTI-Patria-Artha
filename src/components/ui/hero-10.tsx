@@ -135,9 +135,16 @@ function ImageFan({
     >
       {images.slice(0, 3).map((src, i) => {
         const slot = fanSlots[i] ?? fanSlots[1]
+        const fallbackUrls = [
+          'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80',
+          'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80',
+          'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80'
+        ]
+        const validSrc = src && src.trim() !== '' ? src : fallbackUrls[i % fallbackUrls.length]
+
         return (
           <motion.div
-            key={`fan-img-${i}-${src}`}
+            key={`fan-img-${i}-${validSrc}`}
             custom={slot}
             variants={fanCard}
             className={cn(
@@ -148,7 +155,7 @@ function ImageFan({
             )}
           >
             <img
-              src={src}
+              src={validSrc}
               alt={imageAlts?.[i] ?? ''}
               decoding="async"
               className="size-full object-cover"
