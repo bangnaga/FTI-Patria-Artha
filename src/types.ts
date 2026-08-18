@@ -1,4 +1,4 @@
-export type SpecializationType = 'AI' | 'RPL' | 'CyberSecurity' | 'IoT' | 'DataScience';
+export type SpecializationType = 'AI' | 'RPL' | 'CyberSecurity' | 'IoT' | 'DataScience' | 'Struktur' | 'Geoteknik' | 'Air' | 'Transportasi' | 'Manajemen Konstruksi' | string;
 
 export interface VisiMisi {
   visi: string;
@@ -32,8 +32,8 @@ export interface Course {
   name: string;
   sks: number;
   semester: number;
-  category: 'Wajib Prodi' | 'Wajib Universitas' | 'Mata Kuliah Pilihan';
-  specialization?: SpecializationType;
+  category: 'Wajib Prodi' | 'Wajib Universitas' | 'Mata Kuliah Pilihan' | 'Wajib' | 'Pilihan' | 'Bisa Diimbangi' | string;
+  specialization?: SpecializationType | string;
   studyProgram?: string;
   description: string;
   prerequisites: string[];

@@ -179,8 +179,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         { id: 'm-prodi-tm', label: 'Teknik Mesin (S1)', url: 'prodi-tm', isVisible: true, order: 4, icon: 'Layers', line2: 'CAD/CAM, Otomotif & Manufaktur' }
       ]
     },
-    { id: 'm-berita', label: 'Berita', url: 'berita', isVisible: true, order: 5, icon: 'Newspaper' },
-    { id: 'm-kontak', label: 'Kontak', url: 'kontak', isVisible: true, order: 6, icon: 'PhoneCall' }
+    { id: 'm-pendaftaran', label: 'Pendaftaran PMB', url: 'pendaftaran', isVisible: true, order: 5, icon: 'GraduationCap', badge: 'ONLINE' },
+    { id: 'm-berita', label: 'Berita', url: 'berita', isVisible: true, order: 6, icon: 'Newspaper' },
+    { id: 'm-kontak', label: 'Kontak', url: 'kontak', isVisible: true, order: 7, icon: 'PhoneCall' }
   ];
 
   const displayNavItems = customMenuItems && Array.isArray(customMenuItems)
@@ -306,7 +307,35 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
+  const navRef = React.useRef<HTMLElement>(null);
   const dropdownTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const [mobileSubmenuOpenMap, setMobileSubmenuOpenMap] = useState<Record<string, boolean>>({
+    'm-profil-fakultas': true,
+    'm-prodi-group': true
+  });
+
+  const toggleMobileSubmenu = (id: string) => {
+    setMobileSubmenuOpenMap(prev => ({
+      ...prev,
+      [id]: prev[id] === undefined ? false : !prev[id]
+    }));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+        setQuickLinksOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   const handleDropdownMouseEnter = (id: string) => {
     if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
@@ -322,7 +351,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header 
-      className="sticky top-0 z-40 w-full shadow-md border-b border-[#9B2C2C]/30 transition-colors duration-200"
+      ref={navRef}
+      className="sticky top-0 z-40 w-full shadow-md border-none transition-colors duration-200"
       style={{ backgroundColor: 'var(--header-bg, #800020)', color: 'var(--header-text, #FFF5F5)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -374,12 +404,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
+                        if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
                         if (openDropdown === item.id) {
                           setOpenDropdown(null);
+                          handleNavClick(item.url);
                         } else {
-                          handleDropdownMouseEnter(item.id);
+                          setOpenDropdown(item.id);
                         }
-                        handleNavClick(item.url);
                       }}
                       className={`px-2.5 py-1.5 text-xs xl:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
                         isParentActive
@@ -410,26 +441,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                               }}
                               className={`w-full text-left p-2.5 rounded-xl transition-colors flex items-start gap-2.5 cursor-pointer ${
                                 isUrlActive(child.url)
-                                  ? 'text-[#800020] dark:text-red-400 font-extrabold bg-red-50 dark:bg-slate-800' 
-                                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 hover:text-[#800020]'
+                                  ? 'text-red-600 dark:text-red-400 font-extrabold bg-red-50 dark:bg-slate-800' 
+                                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 hover:text-red-600'
                               }`}
                             >
                               {child.icon ? (
-                                <div className="p-1.5 rounded-lg bg-red-50 dark:bg-slate-800 text-[#9B2C2C] dark:text-red-400 shrink-0 mt-0.5">
+                                <div className="p-1.5 rounded-lg bg-red-50 dark:bg-slate-800 text-red-600 dark:text-red-400 shrink-0 mt-0.5">
                                   {renderMenuIcon(child.icon, "w-4 h-4")}
                                 </div>
                               ) : null}
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between gap-1">
-                                  <span className="text-xs font-bold truncate">{child.line1 || child.label}</span>
+                                  <span className="text-xs sm:text-sm font-bold truncate">{child.line1 || child.label}</span>
                                   {child.badge && (
-                                    <span className="px-1.5 py-0.2 text-[9px] font-black rounded bg-amber-400 text-slate-900 shrink-0">
+                                    <span className="px-1.5 py-0.5 text-[10px] sm:text-xs font-black rounded bg-amber-400 text-slate-950 shrink-0 uppercase tracking-wider">
                                       {child.badge}
                                     </span>
                                   )}
                                 </div>
                                 {child.line2 && (
-                                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-normal leading-tight line-clamp-1 mt-0.5">
+                                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-tight line-clamp-1 mt-0.5">
                                     {child.line2}
                                   </p>
                                 )}
@@ -449,14 +480,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => handleNavClick(item.url)}
                   className={`px-2.5 py-1.5 text-xs xl:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
                     isUrlActive(item.url)
-                      ? 'text-[#800020] bg-[#FFF5F5] shadow-sm font-extrabold'
+                      ? 'text-red-600 bg-white shadow-sm font-extrabold'
                       : 'text-[#FFF5F5]/90 hover:text-[#FFF5F5] hover:bg-white/10'
                   }`}
                 >
                   {renderMenuIcon(item.icon, "w-4 h-4 shrink-0")}
                   <span>{item.line1 || item.label}</span>
                   {item.badge && (
-                    <span className="px-1.5 py-0.2 text-[9px] font-black rounded bg-amber-400 text-slate-900">
+                    <span className="px-1.5 py-0.5 text-[10px] sm:text-xs font-black rounded bg-amber-400 text-slate-950 uppercase tracking-wider">
                       {item.badge}
                     </span>
                   )}
@@ -526,54 +557,65 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile & Tablet Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-[#9B2C2C] bg-[#800020] px-4 pt-2 pb-6 space-y-3">
+        <div className="lg:hidden border-b border-[#9B2C2C] bg-[#800020] px-4 pt-2 pb-6 space-y-3 max-h-[calc(100vh-4.5rem)] overflow-y-auto shadow-2xl animate-in fade-in slide-in-from-top-2">
           <div className="flex flex-col gap-1.5 pt-2">
             {displayNavItems.map((item) => {
               const hasChildren = item.children && item.children.length > 0;
+              const isExpanded = mobileSubmenuOpenMap[item.id] !== false;
+
               return (
                 <div key={item.id} className="space-y-1">
                   {hasChildren ? (
-                    <div className="bg-black/15 rounded-xl p-2.5 space-y-2 border border-white/10">
-                      <div className="flex items-center gap-2 px-1 text-xs font-black text-[#FFF5F5] uppercase tracking-wider">
-                        {renderMenuIcon(item.icon, "w-4 h-4 text-amber-300")}
-                        <span>{item.line1 || item.label}</span>
-                      </div>
-                      <div className="grid grid-cols-1 gap-1.5 pl-2 border-l-2 border-white/30 ml-1">
-                        {item.children!.map((child) => (
-                          <button
-                            key={child.id}
-                            onClick={() => handleNavClick(child.url)}
-                            className={`text-left p-2 text-xs rounded-lg transition-colors flex items-start gap-2 ${
-                              isUrlActive(child.url)
-                                ? 'text-[#800020] bg-[#FFF5F5] font-bold shadow-xs'
-                                : 'text-[#FFF5F5]/90 hover:bg-white/10'
-                            }`}
-                          >
-                            {child.icon ? (
-                              <div className="mt-0.5 shrink-0">
-                                {renderMenuIcon(child.icon, "w-3.5 h-3.5")}
-                              </div>
-                            ) : null}
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between gap-1 font-semibold">
-                                <span>{child.line1 || child.label}</span>
-                                {child.badge && (
-                                  <span className="px-1 py-0.2 text-[9px] font-black rounded bg-amber-400 text-slate-900 shrink-0">
-                                    {child.badge}
-                                  </span>
+                    <div className="bg-black/20 rounded-xl p-2 space-y-1.5 border border-white/10">
+                      <button
+                        onClick={() => toggleMobileSubmenu(item.id)}
+                        className="w-full flex items-center justify-between p-2 text-xs font-black text-[#FFF5F5] uppercase tracking-wider rounded-lg hover:bg-white/10 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          {renderMenuIcon(item.icon, "w-4 h-4 text-amber-300")}
+                          <span>{item.line1 || item.label}</span>
+                        </div>
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-amber-300' : 'text-white/60'}`} />
+                      </button>
+
+                      {isExpanded && (
+                        <div className="grid grid-cols-1 gap-1 pl-2 border-l-2 border-amber-400/40 ml-2 mt-1">
+                          {item.children!.map((child) => (
+                            <button
+                              key={child.id}
+                              onClick={() => handleNavClick(child.url)}
+                              className={`text-left p-2.5 text-xs rounded-lg transition-colors flex items-start gap-2.5 ${
+                                isUrlActive(child.url)
+                                  ? 'text-[#800020] bg-[#FFF5F5] font-bold shadow-xs'
+                                  : 'text-[#FFF5F5]/95 hover:bg-white/15'
+                              }`}
+                            >
+                              {child.icon ? (
+                                <div className="mt-0.5 shrink-0">
+                                  {renderMenuIcon(child.icon, "w-3.5 h-3.5")}
+                                </div>
+                              ) : null}
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-1 font-bold">
+                                  <span>{child.line1 || child.label}</span>
+                                  {child.badge && (
+                                    <span className="px-1.5 py-0.2 text-[9px] font-black rounded bg-amber-400 text-slate-900 shrink-0">
+                                      {child.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                {child.line2 && (
+                                  <p className="text-[10px] opacity-80 font-normal line-clamp-1 mt-0.5">
+                                    {child.line2}
+                                  </p>
                                 )}
                               </div>
-                              {child.line2 && (
-                                <p className="text-[10px] opacity-75 font-normal line-clamp-1 mt-0.5">
-                                  {child.line2}
-                                </p>
-                              )}
-                            </div>
-                          </button>
-                        ))}
-                      </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <button

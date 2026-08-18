@@ -112,6 +112,17 @@ export async function PUT(request: Request, context: { params: Promise<{ model: 
     delete dataToSave.createdAt;
     delete dataToSave.updatedAt;
 
+    if (params.model === 'news' && dataToSave.title) {
+      if (!dataToSave.slug || !String(dataToSave.slug).trim()) {
+        const titleStr = String(dataToSave.title).trim();
+        dataToSave.slug = titleStr
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+    }
+
     for (const key in dataToSave) {
       if (Array.isArray(dataToSave[key]) || (typeof dataToSave[key] === 'object' && dataToSave[key] !== null)) {
         dataToSave[key] = JSON.stringify(dataToSave[key]);
@@ -133,11 +144,27 @@ export async function PUT(request: Request, context: { params: Promise<{ model: 
       }
     }
 
-    // @ts-ignore
-    const updated = await prisma[modelName].update({
-      where: { id: params.id },
-      data: dataToSave
-    });
+    let updated;
+    try {
+      // @ts-ignore
+      updated = await prisma[modelName].update({
+        where: { id: params.id },
+        data: dataToSave
+      });
+    } catch (updateErr: any) {
+      // Fallback: If update fails (e.g. record from initial data not in DB yet), create it!
+      try {
+        // @ts-ignore
+        updated = await prisma[modelName].create({
+          data: {
+            id: params.id,
+            ...dataToSave
+          }
+        });
+      } catch (createErr: any) {
+        return NextResponse.json({ error: updateErr.message || createErr.message }, { status: 500 });
+      }
+    }
     return NextResponse.json(updated);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

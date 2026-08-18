@@ -94,7 +94,10 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(item),
     });
-    if (!res.ok) throw new Error('Failed to update lecturer');
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || 'Failed to update lecturer');
+    }
     const updated = await res.json();
     return {
       ...updated,

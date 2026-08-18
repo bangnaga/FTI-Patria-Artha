@@ -7,6 +7,7 @@ import '@measured/puck/puck.css';
 import { api } from '../services/api';
 import { NewsItem, Lecturer, StudyProgram, Course, AlumniTestimonial } from '../types';
 import { renderMarkdownToHtml } from '../utils/markdown';
+import { slugify, getNewsSlug } from '../utils/slugify';
 import Hero10, { type Hero10Props } from './ui/hero-10';
 import LogoCloud, { type LogoCloudProps } from './ui/logo-cloud';
 import { GalleryGrid, GalleryGridCell, ContainerStagger } from './ui/gallery-grid';
@@ -26,6 +27,9 @@ import AlgoliaHero, { type AlgoliaHeroProps } from './ui/algolia-hero';
 import AlgoliaSolutions, { type AlgoliaSolutionsProps } from './ui/algolia-solutions';
 import { MediaManager } from './MediaManager';
 import { Skeleton, NewsCardSkeleton, LecturerCardSkeleton, ProdiCardSkeleton } from './ui/Skeleton';
+import { PmbRegistrationIframe } from './PmbRegistrationIframe';
+import { ParticlesBg } from './ui/particles-bg';
+import StrukturBlock, { type StrukturBlockProps } from './ui/struktur-block';
 
 import { 
   Sparkles, 
@@ -90,7 +94,15 @@ import {
   Star,
   Box,
   Maximize2,
-  LayoutTemplate
+  LayoutTemplate,
+  Target,
+  Compass,
+  Rocket,
+  TrendingUp,
+  CheckCircle,
+  Bookmark,
+  Wrench,
+  Settings
 } from 'lucide-react';
 
 // --- ELEMENTOR-STYLE ADVANCED STYLING UTILITIES ---
@@ -570,44 +582,59 @@ const DbNewsBlockRender: React.FC<Props['DbNewsBlock']> = (props) => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {displayed.map(item => (
-              <div key={item.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-[#800020] transition-all flex flex-col justify-between group">
-                <div>
-                  {item.thumbnail && (
-                    <div className="w-full h-32 rounded-xl bg-slate-200 dark:bg-slate-700 overflow-hidden mb-3">
-                      <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {displayed.map(item => {
+              const targetUrl = `/halaman/detail-berita?berita=${encodeURIComponent(getNewsSlug(item))}`;
+              const handleOpenDetail = (e: React.MouseEvent) => {
+                e.preventDefault();
+                if (typeof window !== 'undefined') {
+                  window.location.href = targetUrl;
+                }
+              };
+
+              return (
+                <div 
+                  key={item.id} 
+                  onClick={handleOpenDetail}
+                  className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-[#800020] dark:hover:border-red-400 transition-all flex flex-col justify-between group cursor-pointer shadow-xs hover:shadow-lg"
+                >
+                  <div>
+                    {item.thumbnail && (
+                      <div className="w-full h-40 rounded-xl bg-slate-200 dark:bg-slate-700 overflow-hidden mb-3.5">
+                        <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between gap-2 mb-2.5">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-red-100 dark:bg-red-950 text-[#800020] dark:text-red-300 uppercase tracking-wider">
+                        {item.category}
+                      </span>
+                      <span className="text-xs font-medium text-slate-400 dark:text-slate-500">{item.date}</span>
                     </div>
-                  )}
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-100 dark:bg-red-950 text-[#800020] dark:text-red-300">
-                      {item.category}
-                    </span>
-                    <span className="text-[10px] text-slate-400">{item.date}</span>
+                    <h4 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-[#800020] dark:group-hover:text-red-400 transition-colors">
+                      {item.title}
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2 leading-relaxed font-normal">
+                      {item.summary}
+                    </p>
                   </div>
-                  <h4 className="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-[#800020] transition-colors">{item.title}</h4>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{item.summary}</p>
+                  <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    {props.showAuthor !== 'false' ? (
+                      <span>Penulis: <strong className="text-slate-700 dark:text-slate-300">{item.author || 'Admin FTI'}</strong></span>
+                    ) : (
+                      <span></span>
+                    )}
+                    <a 
+                      href={targetUrl} 
+                      onClick={handleOpenDetail}
+                      className="font-extrabold text-xs sm:text-sm text-[#800020] dark:text-red-400 flex items-center gap-1 hover:underline group-hover:translate-x-0.5 transition-transform"
+                    >
+                      <span>Baca Selengkapnya</span>
+                      <span>→</span>
+                    </a>
+                  </div>
                 </div>
-                <div className="mt-4 pt-2 border-t border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between text-[10px] text-slate-400">
-                  {props.showAuthor !== 'false' ? (
-                    <span>Penulis: {item.author || 'Admin FTI'}</span>
-                  ) : (
-                    <span></span>
-                  )}
-                  <a 
-                    href={`/?page=detail-berita&berita=${item.slug || item.id}`} 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.history.pushState({}, '', `/?page=detail-berita&berita=${item.slug || item.id}`);
-                      window.dispatchEvent(new CustomEvent('fti_navigate', { detail: 'detail-berita' }));
-                    }}
-                    className="font-bold text-[#800020] dark:text-red-400 flex items-center gap-0.5 hover:underline"
-                  >
-                    Baca Selengkapnya →
-                  </a>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {isPaginationActive && (
@@ -642,10 +669,18 @@ const DbNewsDetailBlockRender: React.FC<Props['DbNewsDetailBlock']> = (props) =>
         if (data) {
           setNewsList(data);
           const urlParams = new URLSearchParams(window.location.search);
-          const slug = urlParams.get('berita');
-          if (slug) {
-            const found = data.find(n => n.slug === slug || n.id === slug);
-            setArticle(found || null);
+          const rawSlug = urlParams.get('berita');
+          if (rawSlug) {
+            const slug = decodeURIComponent(rawSlug);
+            const found = data.find(n => 
+              n.slug === slug || 
+              getNewsSlug(n) === slug ||
+              n.id === slug || 
+              slugify(n.title) === slugify(slug) ||
+              (n.title && n.title.toLowerCase().includes(slug.toLowerCase())) ||
+              (n.title && slug.toLowerCase().includes(n.title.toLowerCase()))
+            );
+            setArticle(found || data[0] || null);
           } else if (data.length > 0) {
             setArticle(data[0]);
           }
@@ -895,161 +930,7 @@ const DbNewsDetailBlockRender: React.FC<Props['DbNewsDetailBlock']> = (props) =>
   );
 };
 
-const ProfileVisionBlockRender: React.FC<Props['ProfileVisionBlock']> = (props) => {
-  const styleClass = getAdvancedStyleClasses(props);
 
-  return (
-    <div className={styleClass}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          {props.badgeText && (
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 text-xs font-semibold mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-info w-3.5 h-3.5" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-              {props.badgeText}
-            </div>
-          )}
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">{props.heading}</h2>
-          <p className="mt-3 text-slate-600 dark:text-slate-400 text-sm sm:text-base">{props.description}</p>
-        </div>
-
-        {/* Accreditation */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-bl-full pointer-events-none"></div>
-            <div className="flex items-start justify-between mb-4">
-              <div className="p-3 bg-emerald-100 dark:bg-emerald-950/80 rounded-xl text-emerald-600 dark:text-emerald-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-award w-6 h-6" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></svg>
-              </div>
-              <span className="px-3 py-1 bg-emerald-500 text-white font-extrabold text-xs rounded-full uppercase tracking-wider">Unggul</span>
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">Akreditasi Nasional (LAM INFOKOM)</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Badan Akreditasi Mandiri Informatika &amp; Komputer Indonesia</p>
-            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 space-y-2 text-xs text-slate-600 dark:text-slate-300">
-              <div className="flex justify-between"><span className="text-slate-400">Nomor SK:</span><span className="font-mono font-medium">084/SK/LAM-INFOKOM/Akred/S1/XII/2024</span></div>
-              <div className="flex justify-between"><span className="text-slate-400">Masa Berlaku:</span><span className="font-semibold text-emerald-600 dark:text-emerald-400">Hingga 31 Desember 2029</span></div>
-            </div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-bl-full pointer-events-none"></div>
-            <div className="flex items-start justify-between mb-4">
-              <div className="p-3 bg-red-100 dark:bg-red-950/80 rounded-xl text-red-600 dark:text-red-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shield-check w-6 h-6" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
-              </div>
-              <span className="px-3 py-1 bg-red-600 text-white font-extrabold text-xs rounded-full uppercase tracking-wider">Sertifikasi Internasional</span>
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">Sertifikasi &amp; Keanggotaan Internasional</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Washington Accord Global Engineering Standard</p>
-            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 space-y-2 text-xs">
-              <div className="flex items-center justify-between"><span className="text-slate-700 dark:text-slate-300 font-medium">IABEE (Indonesian Accreditation Board for Engineering Education)</span><span className="px-2 py-0.5 rounded bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold">Full Accreditation (2024)</span></div>
-              <div className="flex items-center justify-between"><span className="text-slate-700 dark:text-slate-300 font-medium">ASIIN e.V. Germany</span><span className="px-2 py-0.5 rounded bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold">Provisional Member (2025)</span></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Vision Mission */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          <div className="bg-gradient-to-br from-red-900 via-rose-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
-            <div className="flex items-center gap-2 text-red-300 text-xs font-bold uppercase tracking-wider mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles w-4 h-4" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
-              Visi FTI Patria Artha 2030
-            </div>
-            <p className="text-sm sm:text-base leading-relaxed text-slate-100 font-medium italic">"Menjadi Fakultas Teknik dan Informatika Universitas Patria Artha yang terkemuka, unggul, dan berdaya saing global pada tahun 2030 dalam bidang Rekayasa Teknologi, Artificial Intelligence, dan Sistem Informasi Terintegrasi berjiwa technopreneurship."</p>
-            <div className="mt-6 pt-4 border-t border-red-800/80 text-xs text-red-200">✓ Berfokus pada AI, Cybersecurity, Software Engineering, dan Technopreneurship.</div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm lg:col-span-2">
-            <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 text-xs font-bold uppercase tracking-wider mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-target w-4 h-4" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-              Misi Strategis FTI
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                <div className="w-6 h-6 rounded-full bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</div>
-                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Menyelenggarakan pendidikan tinggi Teknik &amp; Informatika berstandar internasional dengan kurikulum adaptif berbasis Outcome-Based Education (OBE).</p>
-              </div>
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                <div className="w-6 h-6 rounded-full bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</div>
-                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Melaksanakan penelitian unggulan di bidang Artificial Intelligence, Cyber Security, Cloud Computing, Software Engineering, dan IoT yang berkontribusi nyata bagi kemajuan industri &amp; masyarakat.</p>
-              </div>
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                <div className="w-6 h-6 rounded-full bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">3</div>
-                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Menyelenggarakan pengabdian masyarakat berbasis produk teknologi tepat guna dan solusi digital terintegrasi di Universitas Patria Artha.</p>
-              </div>
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                <div className="w-6 h-6 rounded-full bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">4</div>
-                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Membangun kemitraan strategis dengan industri teknologi nasional maupun multinasional untuk memperkuat kesiapan kerja alumni Fakultas Teknik dan Informatika Universitas Patria Artha.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 4 Focus Areas */}
-        <div>
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-white">4 Fokus Keahlian &amp; Peminatan Studi</h3>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Mahasiswa memilih spesialisasi pada semester 5 sesuai minat bakat dan cita-cita karir</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-red-500/60 transition-all cursor-pointer group flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-700/60 w-fit mb-4 group-hover:scale-110 transition-transform">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-brain w-6 h-6 text-blue-500" aria-hidden="true"><path d="M12 18V5"></path><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"></path><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"></path><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"></path><path d="M18 18a4 4 0 0 0 2-7.464"></path><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"></path><path d="M6 18a4 4 0 0 1-2-7.464"></path><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"></path></svg>
-                </div>
-                <h4 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">Artificial Intelligence &amp; Data Science</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">Fokus pada Machine Learning, Deep Learning, Computer Vision, NLP, Big Data Analytics, dan Generative AI.</p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs font-semibold text-red-600 dark:text-red-400">
-                <span>Rincian Kurikulum &amp; Karir</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-              </div>
-            </div>
-            
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-red-500/60 transition-all cursor-pointer group flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-700/60 w-fit mb-4 group-hover:scale-110 transition-transform">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-code w-6 h-6 text-purple-500" aria-hidden="true"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>
-                </div>
-                <h4 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">Software Engineering &amp; Cloud Computing</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">Fokus pada Arsitektur Microservices, Full-Stack Web/Mobile, DevOps, Clean Code, dan System Architecture.</p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs font-semibold text-red-600 dark:text-red-400">
-                <span>Rincian Kurikulum &amp; Karir</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-red-500/60 transition-all cursor-pointer group flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-700/60 w-fit mb-4 group-hover:scale-110 transition-transform">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shield-check w-6 h-6 text-emerald-500" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
-                </div>
-                <h4 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">Cyber Security &amp; Network Infrastructure</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">Fokus pada Ethical Hacking, Penetration Testing, Cryptography, Cloud Security, dan Network Engineering.</p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs font-semibold text-red-600 dark:text-red-400">
-                <span>Rincian Kurikulum &amp; Karir</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-red-500/60 transition-all cursor-pointer group flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-700/60 w-fit mb-4 group-hover:scale-110 transition-transform">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-cpu w-6 h-6 text-amber-500" aria-hidden="true"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
-                </div>
-                <h4 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">Internet of Things &amp; Embedded Systems</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">Fokus pada Smart City, Autonomous Systems, Sensor Networks, Microcontrollers, dan Robotics.</p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs font-semibold text-red-600 dark:text-red-400">
-                <span>Rincian Kurikulum &amp; Karir</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 
 const DbStudyProgramBlockRender: React.FC<Props['DbStudyProgramBlock']> = (props) => {
@@ -2488,9 +2369,8 @@ export const TrendingNewsBlock: React.FC<TrendingNewsProps> = (props) => {
           
           {/* LEFT 7-COLUMN BIG FEATURED ARTICLE CARD */}
           <div className="lg:col-span-7 group cursor-pointer" onClick={() => {
-            const url = `/?berita=${(featuredItem as any).slug}#berita`;
-            window.history.pushState({}, '', url);
-            window.dispatchEvent(new CustomEvent('fti_navigate', { detail: 'berita' }));
+            const targetSlug = getNewsSlug(featuredItem as any);
+            window.location.href = `/halaman/detail-berita?berita=${encodeURIComponent(targetSlug)}`;
           }}>
             <div className="space-y-4">
               <div className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
@@ -2519,45 +2399,56 @@ export const TrendingNewsBlock: React.FC<TrendingNewsProps> = (props) => {
                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed line-clamp-3">
                   {featuredItem.summary}
                 </p>
+
+                <div className="pt-2">
+                  <span className="font-extrabold text-xs text-[#9B2C2C] dark:text-red-400 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                    <span>Baca Selengkapnya</span>
+                    <span>→</span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* RIGHT 5-COLUMN STACKED SIDE ARTICLES LIST */}
           <div className="lg:col-span-5 space-y-4">
-            {sideItems.map((item, idx) => (
-              <div
-                key={idx}
-                onClick={() => {
-                  const slug = (item as any).slug || idx;
-                  const url = `/?berita=${slug}#berita`;
-                  window.history.pushState({}, '', url);
-                  window.dispatchEvent(new CustomEvent('fti_navigate', { detail: 'berita' }));
-                }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-[#9B2C2C]/50 hover:shadow-md transition-all group cursor-pointer"
-              >
-                {/* Thumbnail */}
-                <div className="w-24 sm:w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-100 dark:bg-slate-800">
-                  <img
-                    src={item.imageUrl || 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400&q=80'}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+            {sideItems.map((item, idx) => {
+              const targetSlug = getNewsSlug(item as any);
+              return (
+                <div
+                  key={idx}
+                  onClick={() => {
+                    window.location.href = `/halaman/detail-berita?berita=${encodeURIComponent(targetSlug)}`;
+                  }}
+                  className="flex items-center gap-4 p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-[#9B2C2C]/50 hover:shadow-md transition-all group cursor-pointer"
+                >
+                  {/* Thumbnail */}
+                  <div className="w-24 sm:w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-100 dark:bg-slate-800">
+                    <img
+                      src={item.imageUrl || 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400&q=80'}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
 
-                {/* Content Details */}
-                <div className="flex-1 min-w-0 space-y-1">
-                  <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-snug line-clamp-2 group-hover:text-[#9B2C2C] dark:group-hover:text-red-400 transition-colors">
-                    {item.title}
-                  </h4>
-                  {item.date && (
-                    <p className="text-[11px] font-semibold text-slate-400">
-                      {item.date}
-                    </p>
-                  )}
+                  {/* Content Details */}
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-snug line-clamp-2 group-hover:text-[#9B2C2C] dark:group-hover:text-red-400 transition-colors">
+                      {item.title}
+                    </h4>
+                    {item.date && (
+                      <p className="text-[11px] font-semibold text-slate-400">
+                        {item.date}
+                      </p>
+                    )}
+                    <span className="text-[11px] font-bold text-[#9B2C2C] dark:text-red-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      <span>Baca Selengkapnya</span>
+                      <span>→</span>
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
         </div>
@@ -2736,10 +2627,8 @@ export const NewsCarouselBlock: React.FC<NewsCarouselProps> = (props) => {
                 style={{ flex: `0 0 calc(${100 / numVisible}% - ${((numVisible - 1) * 24) / numVisible}px)` }}
                 className="group flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
                 onClick={() => {
-                  const slug = (item as any).slug || idx;
-                  const url = `/?berita=${slug}#berita`;
-                  window.history.pushState({}, '', url);
-                  window.dispatchEvent(new CustomEvent('fti_navigate', { detail: 'berita' }));
+                  const slug = getNewsSlug(item as any);
+                  window.location.href = `/halaman/detail-berita?berita=${encodeURIComponent(slug)}`;
                 }}
               >
                 {/* Image Header */}
@@ -2910,8 +2799,8 @@ export const HeroSlideshowBlock: React.FC<HeroSlideshowProps> = (props) => {
   // Container margin class
   const marginClass = {
     none: '',
-    medium: 'my-4 mx-2 sm:mx-6 border border-slate-200/80 dark:border-slate-800 shadow-xl',
-    floating: 'my-6 sm:my-10 mx-3 sm:mx-12 border-2 border-white/20 dark:border-slate-800 shadow-2xl ring-4 ring-black/10'
+    medium: 'my-4 mx-2 sm:mx-6 shadow-xl',
+    floating: 'my-6 sm:my-10 mx-3 sm:mx-12 shadow-2xl'
   }[props.containerMargin || 'none'];
 
   // Gradient Overlay Class generator
@@ -3413,16 +3302,14 @@ type Props = {
     animatedTitles?: { word: string }[];
     enableTextAnimation?: boolean;
     enableParticles?: boolean;
+    showParticles?: boolean | string;
+    particlesColor?: string;
     bgGradient: string;
     overlayOpacity?: string;
     minHeight?: string;
   } & AdvancedStyleProps;
 
-  ProfileVisionBlock: {
-    badgeText: string;
-    heading: string;
-    description: string;
-  } & AdvancedStyleProps;
+  ProfileVisionBlock: ProfileVisionProps & AdvancedStyleProps;
 
   ProfileHeaderBlock: {
     badge: string;
@@ -3725,15 +3612,18 @@ type Props = {
     itemsPerPage?: string;
   } & AdvancedStyleProps;
 
-  DeanWelcomeBlock: {
+  SambutanBlock: {
     badgeText: string;
     heading: string;
     highlightHeading: string;
     paragraph1: string;
     paragraph2: string;
-    deanName: string;
-    deanTitle: string;
-    deanPhoto: string;
+    pimpinanName?: string;
+    deanName?: string;
+    pimpinanTitle?: string;
+    deanTitle?: string;
+    pimpinanPhoto?: string;
+    deanPhoto?: string;
     buttonText: string;
     buttonLink: string;
     signatureText: string;
@@ -3741,6 +3631,62 @@ type Props = {
     themeStyle: 'dark' | 'maroon' | 'indigo' | 'light';
     showSignature: string;
     showDecorativeBlobs: string;
+    showParticles?: string;
+    particlesColor?: string;
+    containerWidth?: 'full' | 'max-w-7xl' | 'max-w-6xl' | 'max-w-5xl' | 'max-w-4xl';
+    paddingLeft?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+    paddingRight?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+    marginLeft?: 'auto' | 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+    marginRight?: 'auto' | 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+    pimpinanPhotoObjectFit?: 'contain' | 'cover' | 'fill' | 'scale-down' | 'none';
+    pimpinanPhotoPosition?: 'bottom' | 'center' | 'top';
+    pimpinanPhotoMaxHeight?: '420px' | '480px' | '560px' | '640px' | 'auto';
+    pimpinanPhotoCardWidth?: '3' | '4' | '5' | '6' | '7';
+    blockLayoutMode?: 'boxed' | 'fullwidth';
+    blockWidth?: 'full' | 'w-[95%]' | 'w-[90%]' | 'w-[85%]' | 'w-[80%]' | 'w-[75%]' | 'max-w-7xl' | 'max-w-6xl' | 'max-w-5xl' | 'max-w-4xl' | 'max-w-3xl' | 'max-w-2xl';
+    blockAlign?: 'center' | 'left' | 'right';
+    textAnimation?: 'slideUp' | 'fadeIn' | 'blurIn' | 'scaleUp' | 'none';
+    headingGradientAnimated?: 'true' | 'false';
+  } & AdvancedStyleProps;
+
+  ProdiIlustrasiBlock: {
+    badgeText?: string;
+    heading?: string;
+    highlightHeading?: string;
+    subheading?: string;
+
+    // Prodi 1: Teknik Mesin
+    prodi1Title?: string;
+    prodi1Degree?: string;
+    prodi1Badge?: string;
+    prodi1Desc?: string;
+    prodi1BgImage?: string;
+    prodi1Link?: string;
+    prodi1Specs?: string;
+
+    // Prodi 2: Teknik Elektro
+    prodi2Title?: string;
+    prodi2Degree?: string;
+    prodi2Badge?: string;
+    prodi2Desc?: string;
+    prodi2BgImage?: string;
+    prodi2Link?: string;
+    prodi2Specs?: string;
+
+    // Prodi 3: Teknik Informatika
+    prodi3Title?: string;
+    prodi3Degree?: string;
+    prodi3Badge?: string;
+    prodi3Desc?: string;
+    prodi3BgImage?: string;
+    prodi3Link?: string;
+    prodi3Specs?: string;
+
+    themeStyle?: 'dark' | 'maroon' | 'indigo' | 'light';
+    cardHeight?: 'tall' | 'medium' | 'short';
+    blockLayoutMode?: 'boxed' | 'fullwidth';
+    blockWidth?: 'full' | 'w-[95%]' | 'w-[90%]' | 'w-[85%]' | 'w-[80%]' | 'w-[75%]' | 'max-w-7xl' | 'max-w-6xl' | 'max-w-5xl';
+    blockAlign?: 'center' | 'left' | 'right';
   } & AdvancedStyleProps;
 
   // ===== 6 N8N-INSPIRED BLOCKS =====
@@ -3756,6 +3702,8 @@ type Props = {
     secondaryCtaHref: string;
     accentColor: 'orange' | 'blue' | 'green' | 'purple' | 'red';
     showNodes: string;
+    showParticles?: string;
+    particlesColor?: string;
   };
 
   IntegrationMarqueeBlock: {
@@ -3830,6 +3778,356 @@ type Props = {
     borderStyle?: string;
     padding?: string;
   } & AdvancedStyleProps;
+
+  IframeBlock: {
+    src?: string;
+    title?: string;
+    subtitle?: string;
+    height?: string;
+    showCardHeader?: boolean;
+    showFooterNotice?: boolean;
+    themeStyle?: 'maroon' | 'dark' | 'light' | 'glass';
+  } & AdvancedStyleProps;
+
+  Struktur_Block: StrukturBlockProps & AdvancedStyleProps;
+  StrukturBlock: StrukturBlockProps & AdvancedStyleProps;
+};
+
+export interface ProfileVisionProps {
+  badge?: string;
+  heading: string;
+  subheading?: string;
+  layoutPreset?: 'glassmorphism' | 'gradient-accent' | 'corporate-card' | 'full-image' | 'minimal-bordered';
+  cardCount?: '1' | '2' | '3' | '4' | '6';
+  gridColumns?: '1' | '2' | '3' | '4';
+  
+  headingSize?: 'text-lg' | 'text-xl' | 'text-2xl' | 'text-3xl';
+  headingWeight?: 'font-bold' | 'font-extrabold' | 'font-black';
+  headingColor?: 'default' | 'burgundy' | 'gold' | 'white' | 'emerald';
+  bodySize?: 'text-xs' | 'text-sm' | 'text-base';
+  textAlign?: 'left' | 'center' | 'right';
+
+  card1Title: string;
+  card1Subtitle?: string;
+  card1Description: string;
+  card1Icon?: string;
+  card1BgPreset?: string;
+  card1BgImage?: string;
+  card1LinkText?: string;
+  card1LinkUrl?: string;
+  card1LinkTarget?: '_self' | '_blank';
+
+  card2Title?: string;
+  card2Subtitle?: string;
+  card2Description?: string;
+  card2Icon?: string;
+  card2BgPreset?: string;
+  card2BgImage?: string;
+  card2LinkText?: string;
+  card2LinkUrl?: string;
+  card2LinkTarget?: '_self' | '_blank';
+
+  card3Title?: string;
+  card3Subtitle?: string;
+  card3Description?: string;
+  card3Icon?: string;
+  card3BgPreset?: string;
+  card3BgImage?: string;
+  card3LinkText?: string;
+  card3LinkUrl?: string;
+  card3LinkTarget?: '_self' | '_blank';
+
+  card4Title?: string;
+  card4Subtitle?: string;
+  card4Description?: string;
+  card4Icon?: string;
+  card4BgPreset?: string;
+  card4BgImage?: string;
+  card4LinkText?: string;
+  card4LinkUrl?: string;
+  card4LinkTarget?: '_self' | '_blank';
+
+  card5Title?: string;
+  card5Subtitle?: string;
+  card5Description?: string;
+  card5Icon?: string;
+  card5BgPreset?: string;
+  card5BgImage?: string;
+  card5LinkText?: string;
+  card5LinkUrl?: string;
+  card5LinkTarget?: '_self' | '_blank';
+
+  card6Title?: string;
+  card6Subtitle?: string;
+  card6Description?: string;
+  card6Icon?: string;
+  card6BgPreset?: string;
+  card6BgImage?: string;
+  card6LinkText?: string;
+  card6LinkUrl?: string;
+  card6LinkTarget?: '_self' | '_blank';
+}
+
+const ProfileVisionBlockRender: React.FC<Props['ProfileVisionBlock']> = (props) => {
+  const styleClass = getAdvancedStyleClasses(props);
+
+  const iconMap: Record<string, any> = {
+    Target,
+    Compass,
+    Award,
+    Sparkles,
+    BookOpen,
+    ShieldCheck,
+    Globe,
+    Users,
+    Zap,
+    TrendingUp,
+    CheckCircle,
+    Star,
+    Bookmark,
+    FileText,
+    Rocket,
+  };
+
+  const activeCount = parseInt(props.cardCount || '3', 10);
+  const gridCols = props.gridColumns === '1' 
+    ? 'grid-cols-1' 
+    : props.gridColumns === '2' 
+    ? 'grid-cols-1 md:grid-cols-2' 
+    : props.gridColumns === '4' 
+    ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4' 
+    : 'grid-cols-1 md:grid-cols-3';
+
+  const rawCards = [
+    {
+      title: props.card1Title,
+      subtitle: props.card1Subtitle,
+      description: props.card1Description,
+      icon: props.card1Icon || 'Target',
+      bgPreset: props.card1BgPreset || 'burgundy',
+      bgImage: props.card1BgImage,
+      linkText: props.card1LinkText,
+      linkUrl: props.card1LinkUrl,
+      linkTarget: props.card1LinkTarget || '_self',
+    },
+    {
+      title: props.card2Title,
+      subtitle: props.card2Subtitle,
+      description: props.card2Description,
+      icon: props.card2Icon || 'Compass',
+      bgPreset: props.card2BgPreset || 'gold',
+      bgImage: props.card2BgImage,
+      linkText: props.card2LinkText,
+      linkUrl: props.card2LinkUrl,
+      linkTarget: props.card2LinkTarget || '_self',
+    },
+    {
+      title: props.card3Title,
+      subtitle: props.card3Subtitle,
+      description: props.card3Description,
+      icon: props.card3Icon || 'Award',
+      bgPreset: props.card3BgPreset || 'teal',
+      bgImage: props.card3BgImage,
+      linkText: props.card3LinkText,
+      linkUrl: props.card3LinkUrl,
+      linkTarget: props.card3LinkTarget || '_self',
+    },
+    {
+      title: props.card4Title,
+      subtitle: props.card4Subtitle,
+      description: props.card4Description,
+      icon: props.card4Icon || 'Sparkles',
+      bgPreset: props.card4BgPreset || 'emerald',
+      bgImage: props.card4BgImage,
+      linkText: props.card4LinkText,
+      linkUrl: props.card4LinkUrl,
+      linkTarget: props.card4LinkTarget || '_self',
+    },
+    {
+      title: props.card5Title,
+      subtitle: props.card5Subtitle,
+      description: props.card5Description,
+      icon: props.card5Icon || 'Globe',
+      bgPreset: props.card5BgPreset || 'violet',
+      bgImage: props.card5BgImage,
+      linkText: props.card5LinkText,
+      linkUrl: props.card5LinkUrl,
+      linkTarget: props.card5LinkTarget || '_self',
+    },
+    {
+      title: props.card6Title,
+      subtitle: props.card6Subtitle,
+      description: props.card6Description,
+      icon: props.card6Icon || 'Rocket',
+      bgPreset: props.card6BgPreset || 'slate',
+      bgImage: props.card6BgImage,
+      linkText: props.card6LinkText,
+      linkUrl: props.card6LinkUrl,
+      linkTarget: props.card6LinkTarget || '_self',
+    },
+  ];
+
+  const cards = rawCards.slice(0, activeCount).filter(c => c.title);
+
+  const getPresetStyles = (preset?: string, customImg?: string, layoutPreset?: string) => {
+    if (customImg || preset === 'custom-image' || layoutPreset === 'full-image') {
+      const imgUrl = customImg || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800';
+      return {
+        className: 'relative text-white overflow-hidden border border-white/20 shadow-2xl group-hover:border-amber-400/60',
+        bgStyle: {
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.9)), url("${imgUrl}")`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        },
+      };
+    }
+    if (layoutPreset === 'glassmorphism') {
+      return {
+        className: 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl hover:border-[#800020] dark:hover:border-red-400',
+        bgStyle: {},
+      };
+    }
+    if (layoutPreset === 'corporate-card') {
+      return {
+        className: 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-t-4 border-t-[#800020] border-x border-b border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-2xl',
+        bgStyle: {},
+      };
+    }
+    if (layoutPreset === 'minimal-bordered') {
+      return {
+        className: 'bg-slate-50/50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white hover:border-[#800020] dark:hover:border-red-400 shadow-xs',
+        bgStyle: {},
+      };
+    }
+
+    switch (preset) {
+      case 'gold':
+        return {
+          className: 'bg-gradient-to-br from-amber-500 via-amber-600 to-amber-800 text-slate-950 border border-amber-400/50 shadow-xl shadow-amber-900/10',
+          bgStyle: {},
+        };
+      case 'teal':
+        return {
+          className: 'bg-gradient-to-br from-teal-600 via-cyan-700 to-slate-900 text-white border border-teal-400/30 shadow-xl shadow-teal-900/20',
+          bgStyle: {},
+        };
+      case 'emerald':
+        return {
+          className: 'bg-gradient-to-br from-emerald-600 via-emerald-800 to-slate-950 text-white border border-emerald-500/30 shadow-xl shadow-emerald-900/20',
+          bgStyle: {},
+        };
+      case 'violet':
+        return {
+          className: 'bg-gradient-to-br from-purple-700 via-indigo-900 to-slate-950 text-white border border-purple-500/30 shadow-xl shadow-purple-900/20',
+          bgStyle: {},
+        };
+      case 'slate':
+        return {
+          className: 'bg-gradient-to-br from-slate-800 via-slate-900 to-black text-white border border-slate-700/80 shadow-xl',
+          bgStyle: {},
+        };
+      case 'glass':
+        return {
+          className: 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl',
+          bgStyle: {},
+        };
+      case 'burgundy':
+      default:
+        return {
+          className: 'bg-gradient-to-br from-[#800020] via-[#5A0017] to-red-950 text-white border border-red-500/30 shadow-xl shadow-red-950/30',
+          bgStyle: {},
+        };
+    }
+  };
+
+  const getHeadingColor = (customColor?: string) => {
+    if (customColor === 'burgundy') return 'text-[#800020] dark:text-red-400';
+    if (customColor === 'gold') return 'text-amber-400 dark:text-amber-300';
+    if (customColor === 'white') return 'text-white';
+    if (customColor === 'emerald') return 'text-emerald-500 dark:text-emerald-400';
+    return '';
+  };
+
+  const alignClass = props.textAlign === 'center' ? 'text-center items-center' : props.textAlign === 'right' ? 'text-right items-end' : 'text-left items-start';
+
+  return (
+    <div className={styleClass}>
+      {(props.heading || props.badge) && (
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+          {props.badge && (
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-red-100 dark:bg-red-950/80 text-[#800020] dark:text-red-300 text-xs font-extrabold uppercase tracking-wider shadow-xs">
+              <Sparkles className="w-3.5 h-3.5" />
+              {props.badge}
+            </span>
+          )}
+          {props.heading && (
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+              {props.heading}
+            </h2>
+          )}
+          {props.subheading && (
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              {props.subheading}
+            </p>
+          )}
+        </div>
+      )}
+
+      <div className={`grid ${gridCols} gap-6 sm:gap-8`}>
+        {cards.map((card, idx) => {
+          const IconComp = iconMap[card.icon || 'Target'] || Target;
+          const styleConfig = getPresetStyles(card.bgPreset, card.bgImage, props.layoutPreset);
+          const headingColorClass = getHeadingColor(props.headingColor);
+
+          return (
+            <div
+              key={idx}
+              style={styleConfig.bgStyle}
+              className={`p-6 sm:p-8 rounded-3xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between group ${styleConfig.className} ${alignClass}`}
+            >
+              <div className="space-y-4 w-full">
+                <div className="flex items-center justify-between w-full">
+                  <div className="p-3.5 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 shadow-inner flex items-center justify-center shrink-0">
+                    <IconComp className="w-6 h-6" />
+                  </div>
+
+                  {card.subtitle && (
+                    <span className="px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/20 backdrop-blur-md border border-white/20">
+                      {card.subtitle}
+                    </span>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className={`${props.headingSize || 'text-xl'} ${props.headingWeight || 'font-extrabold'} ${headingColorClass} tracking-tight leading-snug`}>
+                    {card.title}
+                  </h3>
+
+                  <p className={`mt-2.5 ${props.bodySize || 'text-sm'} opacity-90 leading-relaxed font-normal`}>
+                    {card.description}
+                  </p>
+                </div>
+              </div>
+
+              {(card.linkText || card.linkUrl) && (
+                <div className="mt-6 pt-4 border-t border-white/15 w-full flex items-center justify-between">
+                  <a
+                    href={card.linkUrl || '#'}
+                    target={card.linkTarget || '_self'}
+                    rel={card.linkTarget === '_blank' ? 'noopener noreferrer' : undefined}
+                    className="inline-flex items-center gap-1.5 text-xs font-black hover:underline group-hover:translate-x-1 transition-transform"
+                  >
+                    <span>{card.linkText || 'Selengkapnya'}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
 const HeroBlockRender: React.FC<Props['HeroBlock']> = (props) => {
@@ -3866,7 +4164,7 @@ const HeroBlockRender: React.FC<Props['HeroBlock']> = (props) => {
 
   const activeHighlightText = isTextAnim ? titlesList[titleIdx] : (props.titleHighlight || 'Berdaya Saing Global');
   const validImgSrc = props.imageUrl && props.imageUrl.trim() !== '' ? props.imageUrl : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80';
-  const enableParticles = props.enableParticles !== false;
+  const enableParticles = props.enableParticles !== false || props.showParticles === 'true';
 
   return (
     <div className={`relative overflow-hidden ${styleClass}`}>
@@ -3903,32 +4201,9 @@ const HeroBlockRender: React.FC<Props['HeroBlock']> = (props) => {
         </div>
       )}
 
-      {/* Floating Particles/StarDust Layer */}
+      {/* Floating Particles Canvas Animation (particles.js) */}
       {enableParticles && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
-          {Array.from({ length: 18 }).map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{
-                x: `${(i * 17) % 100}%`,
-                y: `${(i * 23) % 100}%`,
-                opacity: 0.2 + (i % 5) * 0.15,
-                scale: 0.6 + (i % 4) * 0.3,
-              }}
-              animate={{
-                y: [`${(i * 23) % 100}%`, `${((i * 23) % 100) - 15}%`, `${(i * 23) % 100}%`],
-                opacity: [0.2, 0.8, 0.2],
-              }}
-              transition={{
-                duration: 4 + (i % 6),
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: (i % 5) * 0.5,
-              }}
-              className="absolute w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.8)]"
-            />
-          ))}
-        </div>
+        <ParticlesBg color={props.particlesColor || 'white'} count={50} speed={0.9} />
       )}
 
       {/* Hero Content */}
@@ -4066,6 +4341,27 @@ export type RootProps = {
   boxedShadow?: string;
 };
 
+const particleFields = {
+  showParticles: {
+    type: 'select' as const,
+    label: '✨ Efek Background Particles (particles.js)',
+    options: [
+      { label: 'Non-aktifkan Particles', value: 'false' },
+      { label: 'Aktifkan Efek Particles (particles.js)', value: 'true' },
+    ],
+  },
+  particlesColor: {
+    type: 'select' as const,
+    label: '🎨 Warna Efek Particles',
+    options: [
+      { label: 'Putih Sinar (White Glow)', value: 'white' },
+      { label: 'Merah FTI (Red Glow)', value: 'red' },
+      { label: 'Emas (Gold Glow)', value: 'gold' },
+      { label: 'Biru Tech (Blue Glow)', value: 'blue' },
+    ],
+  },
+};
+
 export const puckConfig: Config<Props, RootProps> = {
   root: {
     fields: {
@@ -4140,7 +4436,7 @@ export const puckConfig: Config<Props, RootProps> = {
     },
     hero: {
       title: '🚀 Hero & Banner Utama',
-      components: ['AlgoliaHeroBlock', 'Hero231Block', 'ModernSvgBannerBlock', 'HeroSlideshowBlock', 'PageBannerBlock', 'HeroSliderBlock', 'Hero10Block', 'LogoCloudBlock', 'AboutAppsBlock', 'GalleryGridBlock', 'HeroBlock', 'DeanWelcomeBlock', 'AlertBannerBlock', 'SubMenuGridBlock'],
+      components: ['AlgoliaHeroBlock', 'Hero231Block', 'ModernSvgBannerBlock', 'HeroSlideshowBlock', 'PageBannerBlock', 'HeroSliderBlock', 'Hero10Block', 'LogoCloudBlock', 'AboutAppsBlock', 'GalleryGridBlock', 'HeroBlock', 'SambutanBlock', 'AlertBannerBlock', 'SubMenuGridBlock'],
     },
     content: {
       title: '📝 Konten & Teks',
@@ -4148,11 +4444,11 @@ export const puckConfig: Config<Props, RootProps> = {
     },
     dataAndMedia: {
       title: '📊 Statistik & Media',
-      components: ['StatsGridBlock', 'FeaturesGridBlock', 'ImageGalleryBlock', 'VideoEmbedBlock'],
+      components: ['StatsGridBlock', 'FeaturesGridBlock', 'ImageGalleryBlock', 'VideoEmbedBlock', 'IframeBlock'],
     },
     academic: {
       title: '🎓 Akademik & Struktur',
-      components: ['TrendingNewsBlock', 'NewsCarouselBlock', 'AcademicProgramBlock', 'CurriculumTableBlock', 'FacultyOrgChartBlock', 'LecturerGridBlock', 'LecturerHighlightBlock', 'LabCardBlock', 'NewsListBlock'],
+      components: ['ProdiIlustrasiBlock', 'Struktur_Block', 'StrukturBlock', 'IframeBlock', 'TrendingNewsBlock', 'NewsCarouselBlock', 'AcademicProgramBlock', 'CurriculumTableBlock', 'FacultyOrgChartBlock', 'LecturerGridBlock', 'LecturerHighlightBlock', 'LabCardBlock', 'NewsListBlock'],
     },
     agendaAndContact: {
       title: '📅 Agenda & Kontak',
@@ -4316,9 +4612,77 @@ export const puckConfig: Config<Props, RootProps> = {
       },
       render: (props) => <GridLayoutBlockRender {...props} />,
     },
+
+    // ─── 🌐 IFRAME / PMB PENDAFTARAN BLOCK ─────────────────────────────────
+    IframeBlock: {
+      fields: {
+        src: { type: 'text', label: '🔗 URL Target Iframe' },
+        title: { type: 'text', label: '📌 Judul Header Iframe' },
+        subtitle: { type: 'textarea', label: '📝 Subjudul / Deskripsi Header' },
+        height: {
+          type: 'select', label: '📐 Tinggi Iframe (Height)',
+          options: [
+            { label: 'Tinggi Standar (750px)', value: '750px' },
+            { label: 'Tinggi Portabel Form PMB (850px)', value: '850px' },
+            { label: 'Tinggi Panjang (1000px)', value: '1000px' },
+            { label: 'Layar Penuh (calc(100vh - 100px))', value: 'calc(100vh - 100px)' },
+          ],
+        },
+        themeStyle: {
+          type: 'select', label: '🎨 Tema Warna Header',
+          options: [
+            { label: '🔴 Maroon UPA (Standar)', value: 'maroon' },
+            { label: '⚫ Dark Slate (Gelap)', value: 'dark' },
+            { label: '⚪ Light Clean (Terang)', value: 'light' },
+            { label: '🧊 Glassmorphism (Kaca)', value: 'glass' },
+          ],
+        },
+        showCardHeader: {
+          type: 'select', label: '📌 Tampilkan Header Bar Kartu?',
+          options: [
+            { label: 'Ya (Tampilkan Header dengan Tombol Fullscreen & Tab Baru)', value: true as any },
+            { label: 'Tidak (Hanya Iframe Tanpa Header)', value: false as any },
+          ],
+        },
+        showFooterNotice: {
+          type: 'select', label: 'ℹ️ Tampilkan Footer Bantuan PMB?',
+          options: [
+            { label: 'Ya (Tampilkan Link Bantuan WA & Fallback)', value: true as any },
+            { label: 'Tidak (Tanpa Footer)', value: false as any },
+          ],
+        },
+        ...advancedStyleFields,
+      },
+      defaultProps: {
+        src: 'https://pmb.patria-artha.ac.id/join/reg/camaba.php',
+        title: 'Formulir Pendaftaran Mahasiswa Baru (CAMABA)',
+        subtitle: 'Portal Resmi Penerimaan Mahasiswa Baru Universitas Patria Artha',
+        height: '850px',
+        themeStyle: 'maroon',
+        showCardHeader: true as any,
+        showFooterNotice: true as any,
+      },
+      render: (props: any) => {
+        const styleClass = getAdvancedStyleClasses(props);
+        return (
+          <div className={`w-full py-6 px-2 sm:px-4 ${styleClass}`}>
+            <PmbRegistrationIframe
+              src={props.src || 'https://pmb.patria-artha.ac.id/join/reg/camaba.php'}
+              title={props.title || 'Formulir Pendaftaran Mahasiswa Baru (CAMABA)'}
+              subtitle={props.subtitle || 'Portal Resmi Penerimaan Mahasiswa Baru Universitas Patria Artha'}
+              height={props.height || '850px'}
+              themeStyle={props.themeStyle || 'maroon'}
+              showCardHeader={props.showCardHeader !== false}
+              showFooterNotice={props.showFooterNotice !== false}
+            />
+          </div>
+        );
+      },
+    },
     // ─── 🌄 HERO SLIDESHOW BLOCK ──────────────────────────────────────────
     HeroSlideshowBlock: {
       fields: {
+        ...particleFields,
         autoPlay: {
           type: 'select', label: '▶ Otomatis Putar (Auto Slideshow)?',
           options: [
@@ -4570,6 +4934,7 @@ export const puckConfig: Config<Props, RootProps> = {
     // ─── 🚩 PAGE BANNER BLOCK ─────────────────────────────────────────────
     PageBannerBlock: {
       fields: {
+        ...particleFields,
         badge: { type: 'text', label: '🏷️ Teks Badge / Pill Tag (mis: Berita Kampus)' },
         badgeColor: {
           type: 'select', label: '🎨 Warna Latar Pill Badge',
@@ -4670,6 +5035,7 @@ export const puckConfig: Config<Props, RootProps> = {
     // ─── 📐 MODERN SVG BANNER BLOCK (REFERENSI GEOMETRIC SLASH) ───────────
     ModernSvgBannerBlock: {
       fields: {
+        ...particleFields,
         titleTop: { type: 'text', label: '📌 Judul Atas (mis: BANNER / FAKULTAS TEKNIK)' },
         titleBottom: { type: 'text', label: '📌 Judul Bawah (mis: Template / INFORMATIKA)' },
         subtitle: { type: 'textarea', label: '📝 Sub-judul / Deskripsi' },
@@ -4723,6 +5089,7 @@ export const puckConfig: Config<Props, RootProps> = {
     // ─── 🎠 HERO SLIDER BLOCK ─────────────────────────────────────────────
     HeroSliderBlock: {
       fields: {
+        ...particleFields,
         bgColor: {
           type: 'select', label: '🎨 Warna Background',
           options: [
@@ -4992,6 +5359,7 @@ export const puckConfig: Config<Props, RootProps> = {
 
     AlgoliaHeroBlock: {
       fields: {
+        ...particleFields,
         badgeText: { type: 'text', label: '🏷️ Teks Badge Top' },
         titlePrefix: { type: 'text', label: 'Judul Utama (Awal)' },
         titleHighlight: { type: 'text', label: 'Judul Utama (Highlight Gradien)' },
@@ -5196,6 +5564,7 @@ export const puckConfig: Config<Props, RootProps> = {
 
     Hero231Block: {
       fields: {
+        ...particleFields,
         layoutStyle: {
           type: 'select',
           label: '📐 Style / Layout Alternatif',
@@ -5350,6 +5719,7 @@ export const puckConfig: Config<Props, RootProps> = {
 
     Hero10Block: {
       fields: {
+        ...particleFields,
         title: { type: 'text', label: 'Judul Baris 1' },
         titleLine2Prefix: { type: 'text', label: 'Judul Baris 2' },
         titleHighlight: { type: 'text', label: 'Kata Highlight Gradient' },
@@ -5363,6 +5733,12 @@ export const puckConfig: Config<Props, RootProps> = {
             url: makeImageField('URL / Pilih Gambar') as any,
           }
         },
+        photo1Name: { type: 'text', label: '👤 Nama Foto 1 (Kiri)' },
+        photo1Title: { type: 'text', label: '🏷️ Jabatan Foto 1' },
+        photo2Name: { type: 'text', label: '👤 Nama Foto 2 (Tengah)' },
+        photo2Title: { type: 'text', label: '🏷️ Jabatan Foto 2' },
+        photo3Name: { type: 'text', label: '👤 Nama Foto 3 (Kanan)' },
+        photo3Title: { type: 'text', label: '🏷️ Jabatan Foto 3' },
         primaryCTA: {
           type: 'object',
           label: '🟢 Tombol Utama',
@@ -5392,7 +5768,13 @@ export const puckConfig: Config<Props, RootProps> = {
         titleHighlight: '& Inovatif',
         description: 'Pendidikan vokasi & sarjana berbasis Outcome-Based Education (OBE) yang mengintegrasikan Artificial Intelligence, Cloud Software, Cyber Security, dan Internet of Things.',
         socialProof: 'Bergabunglah dengan ratusan mahasiswa lainnya',
-        images: [{ url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80' }, { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80' }, { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80' }],
+        images: [{ url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80' }, { url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80' }, { url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80' }],
+        photo1Name: 'Prof. Dr. Ir. H. Ahmad Fauzi, M.T.',
+        photo1Title: 'Dekan FTI UPA',
+        photo2Name: 'Dr. Eng. Rina Melati, S.T., M.T.',
+        photo2Title: 'Wakil Dekan I Akademik',
+        photo3Name: 'Ir. Muhammad Arham, M.Kom.',
+        photo3Title: 'Ketua Prodi Informatika',
         animation: 'subtle',
         variant: 'standard',
         primaryCTA: { ctaEnabled: true, text: 'Daftar Sekarang', href: '#', variant: 'solid' },
@@ -5401,7 +5783,18 @@ export const puckConfig: Config<Props, RootProps> = {
       render: (props) => {
         const imageList = (props.images || []).map((img: any) => (typeof img === 'string' ? img : img?.url)).filter((url: any) => url && typeof url === 'string' && url.trim() !== '');
         const imageAltsList = (props.imageAlts || []).map((img: any) => (typeof img === 'string' ? img : img?.alt)).filter((alt: any) => Boolean(alt));
-        return <Hero10 {...props} images={imageList.length ? imageList : ['https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80']} imageAlts={imageAltsList} />;
+        const photoNames = [props.photo1Name, props.photo2Name, props.photo3Name].filter(Boolean) as string[];
+        const photoTitles = [props.photo1Title, props.photo2Title, props.photo3Title].filter(Boolean) as string[];
+
+        return (
+          <Hero10
+            {...props}
+            images={imageList.length ? imageList : ['https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80']}
+            imageAlts={imageAltsList}
+            photoNames={photoNames.length ? photoNames : undefined}
+            photoTitles={photoTitles.length ? photoTitles : undefined}
+          />
+        );
       }
     },
     LogoCloudBlock: {
@@ -5518,6 +5911,7 @@ export const puckConfig: Config<Props, RootProps> = {
     },
     HeroBlock: {
       fields: {
+        ...particleFields,
         badgeText: { type: 'text', label: '🏷️ Teks Badge (Atas)' },
         titlePrefix: { type: 'text', label: 'Teks Judul (Awal)' },
         titleHighlight: { type: 'text', label: 'Teks Judul (Highlight Gradient Default)' },
@@ -5658,19 +6052,234 @@ export const puckConfig: Config<Props, RootProps> = {
 
     ProfileVisionBlock: {
       fields: {
-        badgeText: { type: 'text', label: 'Teks Lencana (Badge)' },
-        heading: { type: 'text', label: 'Judul Visi & Misi' },
-        description: { type: 'textarea', label: 'Deskripsi Profil' },
+        badge: { type: 'text', label: '🏷️ Badge Tag' },
+        heading: { type: 'text', label: '📌 Judul Utama Section' },
+        subheading: { type: 'textarea', label: '📝 Sub-judul / Deskripsi Singkat' },
+        
+        layoutPreset: {
+          type: 'select',
+          label: '🎨 Preset Layout & Style Kartu',
+          options: [
+            { label: '✨ Glassmorphism (Transparan Modern)', value: 'glassmorphism' },
+            { label: '🌈 Gradient Accent (Warna Gradasi Mewah)', value: 'gradient-accent' },
+            { label: '🏢 Corporate Card (Solid Top Border)', value: 'corporate-card' },
+            { label: '🖼️ Full Image Overlay (Kartu Gambar Latar Latar)', value: 'full-image' },
+            { label: '✏️ Minimal Bordered (Garis Tipis Minimalis)', value: 'minimal-bordered' },
+          ],
+        },
+
+        cardCount: {
+          type: 'select',
+          label: '🔢 Jumlah Kartu Ditampilkan',
+          options: [
+            { label: '1 Kartu', value: '1' },
+            { label: '2 Kartu', value: '2' },
+            { label: '3 Kartu', value: '3' },
+            { label: '4 Kartu', value: '4' },
+            { label: '6 Kartu', value: '6' },
+          ],
+        },
+
+        gridColumns: {
+          type: 'select',
+          label: '📐 Tata Letak Kolom Grid (Desktop)',
+          options: [
+            { label: '1 Kolom', value: '1' },
+            { label: '2 Kolom', value: '2' },
+            { label: '3 Kolom', value: '3' },
+            { label: '4 Kolom', value: '4' },
+          ],
+        },
+
+        headingSize: {
+          type: 'select',
+          label: '🔤 Ukuran Judul Kartu',
+          options: [
+            { label: 'Sedang (text-lg)', value: 'text-lg' },
+            { label: 'Besar (text-xl)', value: 'text-xl' },
+            { label: 'Sangat Besar (text-2xl)', value: 'text-2xl' },
+            { label: 'Ekstra Besar (text-3xl)', value: 'text-3xl' },
+          ],
+        },
+        headingWeight: {
+          type: 'select',
+          label: '✍️ Ketebalan Font Judul',
+          options: [
+            { label: 'Bold (Tebal)', value: 'font-bold' },
+            { label: 'Extra Bold (Sangat Tebal)', value: 'font-extrabold' },
+            { label: 'Black (Maksimal)', value: 'font-black' },
+          ],
+        },
+        headingColor: {
+          type: 'select',
+          label: '🎨 Warna Teks Judul Kartu',
+          options: [
+            { label: 'Otomatis Sesuai Preset', value: 'default' },
+            { label: 'Patria Burgundy (#800020)', value: 'burgundy' },
+            { label: 'Royal Gold (Emas)', value: 'gold' },
+            { label: 'Putih Murni', value: 'white' },
+            { label: 'Emerald Green', value: 'emerald' },
+          ],
+        },
+        bodySize: {
+          type: 'select',
+          label: '📄 Ukuran Teks Deskripsi',
+          options: [
+            { label: 'Kecil (text-xs)', value: 'text-xs' },
+            { label: 'Standar (text-sm)', value: 'text-sm' },
+            { label: 'Sedang (text-base)', value: 'text-base' },
+          ],
+        },
+        textAlign: {
+          type: 'select',
+          label: '↔️ Rata Teks Kartu',
+          options: [
+            { label: 'Rata Kiri (Left)', value: 'left' },
+            { label: 'Rata Tengah (Center)', value: 'center' },
+            { label: 'Rata Kanan (Right)', value: 'right' },
+          ],
+        },
+
+        // Card 1
+        card1Title: { type: 'text', label: '📌 Card 1 - Judul' },
+        card1Subtitle: { type: 'text', label: '🏷️ Card 1 - Subtitle / Badge' },
+        card1Description: { type: 'textarea', label: '📝 Card 1 - Deskripsi' },
+        card1Icon: {
+          type: 'select', label: '🔮 Card 1 - Ikon',
+          options: [
+            { label: '🎯 Target (Visi)', value: 'Target' },
+            { label: '🧭 Compass (Misi)', value: 'Compass' },
+            { label: '🏆 Award (Prestasi/Tujuan)', value: 'Award' },
+            { label: '✨ Sparkles (Keunggulan)', value: 'Sparkles' },
+            { label: '📚 BookOpen (Pendidikan)', value: 'BookOpen' },
+            { label: '🛡️ ShieldCheck (Akreditasi)', value: 'ShieldCheck' },
+            { label: '🌐 Globe (Internasional)', value: 'Globe' },
+            { label: '🚀 Rocket (Inovasi)', value: 'Rocket' },
+          ],
+        },
+        card1BgPreset: {
+          type: 'select', label: '🎨 Card 1 - Preset Warna',
+          options: [
+            { label: 'Patria Burgundy Gradient', value: 'burgundy' },
+            { label: 'Royal Gold Gradient', value: 'gold' },
+            { label: 'Cyber Teal Gradient', value: 'teal' },
+            { label: 'Deep Emerald Gradient', value: 'emerald' },
+            { label: 'Midnight Violet Gradient', value: 'violet' },
+            { label: 'Dark Slate Gradient', value: 'slate' },
+            { label: 'Glassmorphism Transparan', value: 'glass' },
+            { label: 'Gambar Background Custom', value: 'custom-image' },
+          ],
+        },
+        card1BgImage: { type: 'text', label: '🖼️ Card 1 - URL Gambar Latar' },
+        card1LinkText: { type: 'text', label: '🔗 Card 1 - Teks Tombol Link' },
+        card1LinkUrl: { type: 'text', label: '🌐 Card 1 - URL Link Tujuan' },
+
+        // Card 2
+        card2Title: { type: 'text', label: '📌 Card 2 - Judul' },
+        card2Subtitle: { type: 'text', label: '🏷️ Card 2 - Subtitle / Badge' },
+        card2Description: { type: 'textarea', label: '📝 Card 2 - Deskripsi' },
+        card2Icon: {
+          type: 'select', label: '🔮 Card 2 - Ikon',
+          options: [
+            { label: '🧭 Compass (Misi)', value: 'Compass' },
+            { label: '🎯 Target (Visi)', value: 'Target' },
+            { label: '🏆 Award (Prestasi/Tujuan)', value: 'Award' },
+            { label: '✨ Sparkles (Keunggulan)', value: 'Sparkles' },
+            { label: '📚 BookOpen (Pendidikan)', value: 'BookOpen' },
+            { label: '🛡️ ShieldCheck (Akreditasi)', value: 'ShieldCheck' },
+            { label: '🌐 Globe (Internasional)', value: 'Globe' },
+            { label: '🚀 Rocket (Inovasi)', value: 'Rocket' },
+          ],
+        },
+        card2BgPreset: {
+          type: 'select', label: '🎨 Card 2 - Preset Warna',
+          options: [
+            { label: 'Royal Gold Gradient', value: 'gold' },
+            { label: 'Patria Burgundy Gradient', value: 'burgundy' },
+            { label: 'Cyber Teal Gradient', value: 'teal' },
+            { label: 'Deep Emerald Gradient', value: 'emerald' },
+            { label: 'Midnight Violet Gradient', value: 'violet' },
+            { label: 'Dark Slate Gradient', value: 'slate' },
+            { label: 'Glassmorphism Transparan', value: 'glass' },
+            { label: 'Gambar Background Custom', value: 'custom-image' },
+          ],
+        },
+        card2BgImage: { type: 'text', label: '🖼️ Card 2 - URL Gambar Latar' },
+        card2LinkText: { type: 'text', label: '🔗 Card 2 - Teks Tombol Link' },
+        card2LinkUrl: { type: 'text', label: '🌐 Card 2 - URL Link Tujuan' },
+
+        // Card 3
+        card3Title: { type: 'text', label: '📌 Card 3 - Judul' },
+        card3Subtitle: { type: 'text', label: '🏷️ Card 3 - Subtitle / Badge' },
+        card3Description: { type: 'textarea', label: '📝 Card 3 - Deskripsi' },
+        card3Icon: {
+          type: 'select', label: '🔮 Card 3 - Ikon',
+          options: [
+            { label: '🏆 Award (Prestasi/Tujuan)', value: 'Award' },
+            { label: '🎯 Target (Visi)', value: 'Target' },
+            { label: '🧭 Compass (Misi)', value: 'Compass' },
+            { label: '✨ Sparkles (Keunggulan)', value: 'Sparkles' },
+            { label: '📚 BookOpen (Pendidikan)', value: 'BookOpen' },
+            { label: '🛡️ ShieldCheck (Akreditasi)', value: 'ShieldCheck' },
+            { label: '🌐 Globe (Internasional)', value: 'Globe' },
+            { label: '🚀 Rocket (Inovasi)', value: 'Rocket' },
+          ],
+        },
+        card3BgPreset: {
+          type: 'select', label: '🎨 Card 3 - Preset Warna',
+          options: [
+            { label: 'Cyber Teal Gradient', value: 'teal' },
+            { label: 'Patria Burgundy Gradient', value: 'burgundy' },
+            { label: 'Royal Gold Gradient', value: 'gold' },
+            { label: 'Deep Emerald Gradient', value: 'emerald' },
+            { label: 'Midnight Violet Gradient', value: 'violet' },
+            { label: 'Dark Slate Gradient', value: 'slate' },
+            { label: 'Glassmorphism Transparan', value: 'glass' },
+            { label: 'Gambar Background Custom', value: 'custom-image' },
+          ],
+        },
+        card3BgImage: { type: 'text', label: '🖼️ Card 3 - URL Gambar Latar' },
+        card3LinkText: { type: 'text', label: '🔗 Card 3 - Teks Tombol Link' },
+        card3LinkUrl: { type: 'text', label: '🌐 Card 3 - URL Link Tujuan' },
+
         ...commonElementorFields,
       },
       defaultProps: {
-        badgeText: 'Profil Fakultas',
-        heading: 'Visi & Misi FTI',
-        description: 'Menjadi fakultas unggulan di bidang teknologi informasi yang berdaya saing global pada tahun 2030.',
-        bgStyle: 'white',
-        borderRadius: 'none',
-        paddingY: 'xl',
-        paddingX: 'none',
+        badge: 'PROFIL & ARAH STRATEGIS',
+        heading: 'Visi, Misi & Keunggulan Fakultas',
+        subheading: 'Pusat keunggulan pendidikan komputer dan teknik berbasis teknologi masa depan di Indonesia.',
+        layoutPreset: 'gradient-accent',
+        cardCount: '3',
+        gridColumns: '3',
+        headingSize: 'text-xl',
+        headingWeight: 'font-extrabold',
+        headingColor: 'default',
+        bodySize: 'text-sm',
+        textAlign: 'left',
+
+        card1Title: 'Visi Utama Fakultas',
+        card1Subtitle: 'TARGET 2035',
+        card1Description: 'Menjadi fakultas keunggulan nasional dan internasional dalam sains data, kecerdasan buatan, dan keahlian rekayasa berbasis Outcome-Based Education (OBE).',
+        card1Icon: 'Target',
+        card1BgPreset: 'burgundy',
+        card1LinkText: 'Lihat Visi Selengkapnya',
+        card1LinkUrl: '/halaman/visi-misi',
+
+        card2Title: 'Misi & Tridharma',
+        card2Subtitle: 'AKADEMIK',
+        card2Description: 'Menyelenggarakan pembelajaran berkualitas, penelitian inovatif terpublikasi internasional, serta pengabdian masyarakat berorientasi industri.',
+        card2Icon: 'Compass',
+        card2BgPreset: 'gold',
+        card2LinkText: 'Program Unggulan',
+        card2LinkUrl: '/halaman/kurikulum',
+
+        card3Title: 'Tujuan Strategis',
+        card3Subtitle: 'KELULUSAN',
+        card3Description: 'Menghasilkan lulusan berdaya saing global yang menguasai kecerdasan buatan, cloud computing, cybersecurity, serta memiliki integritas etika tinggi.',
+        card3Icon: 'Award',
+        card3BgPreset: 'teal',
+        card3LinkText: 'Pencapaian Mahasiswa',
+        card3LinkUrl: '/halaman/prestasi',
       },
       render: (props) => <ProfileVisionBlockRender {...props} />,
     },
@@ -6428,16 +7037,59 @@ export const puckConfig: Config<Props, RootProps> = {
     },
 
 
-    DeanWelcomeBlock: {
+    SambutanBlock: {
       fields: {
+        ...particleFields,
         badgeText: { type: 'text', label: 'Teks Badge Top' },
         heading: { type: 'text', label: 'Judul Utama Sambutan' },
         highlightHeading: { type: 'text', label: 'Teks Highlight Gradient' },
         paragraph1: { type: 'textarea', label: 'Paragraf Utama (Kutipan)' },
         paragraph2: { type: 'textarea', label: 'Paragraf Kedua (Penjelas)' },
-        deanName: { type: 'text', label: 'Nama Dekan & Gelar' },
-        deanTitle: { type: 'text', label: 'Jabatan Dekan' },
-        deanPhoto: makeImageField('📸 Foto Dekan (dari Media Manager)') as any,
+        pimpinanName: { type: 'text', label: 'Nama Pimpinan & Gelar' },
+        pimpinanTitle: { type: 'text', label: 'Jabatan Pimpinan' },
+        pimpinanPhoto: makeImageField('📸 Foto Pimpinan Full Body (dari Media Manager)') as any,
+        pimpinanPhotoObjectFit: {
+          type: 'select',
+          label: '🖼️ Fit Mode Foto Pimpinan (Object Fit)',
+          options: [
+            { label: 'Utuh / Uncropped (object-contain)', value: 'contain' },
+            { label: 'Penuh Kontainer (object-cover)', value: 'cover' },
+            { label: 'Isi Penuh (object-fill)', value: 'fill' },
+            { label: 'Ukuran Asli (object-scale-down)', value: 'scale-down' },
+            { label: 'Tanpa Scaling (object-none)', value: 'none' },
+          ],
+        },
+        pimpinanPhotoPosition: {
+          type: 'select',
+          label: '📍 Posisi Alignment Foto (Object Position)',
+          options: [
+            { label: 'Rata Bawah (Bottom)', value: 'bottom' },
+            { label: 'Rata Tengah (Center)', value: 'center' },
+            { label: 'Rata Atas (Top)', value: 'top' },
+          ],
+        },
+        pimpinanPhotoMaxHeight: {
+          type: 'select',
+          label: '📐 Tinggi Maksimal Foto Pimpinan',
+          options: [
+            { label: 'Standar Kampus (max-h-[480px])', value: '480px' },
+            { label: 'Ringkas (max-h-[420px])', value: '420px' },
+            { label: 'Tinggi (max-h-[560px])', value: '560px' },
+            { label: 'Maksimal (max-h-[640px])', value: '640px' },
+            { label: 'Otomatis (Auto Height)', value: 'auto' },
+          ],
+        },
+        pimpinanPhotoCardWidth: {
+          type: 'select',
+          label: '↔️ Lebar Kolom Card Foto Profil (Grid Span)',
+          options: [
+            { label: 'Ramping / 25% (lg:col-span-3)', value: '3' },
+            { label: 'Ringkas / 33% (lg:col-span-4)', value: '4' },
+            { label: 'Standar Kampus / 42% (lg:col-span-5)', value: '5' },
+            { label: 'Seimbang 50/50 (lg:col-span-6)', value: '6' },
+            { label: 'Lebar / 58% (lg:col-span-7)', value: '7' },
+          ],
+        },
         buttonText: { type: 'text', label: 'Teks Tombol CTA' },
         buttonLink: { type: 'text', label: 'Tautan / Link Tombol' },
         signatureText: { type: 'text', label: 'Tanda Tangan Teks / Inisial' },
@@ -6468,17 +7120,136 @@ export const puckConfig: Config<Props, RootProps> = {
             { label: 'Non-aktifkan Background Glow', value: 'false' },
           ],
         },
+        blockLayoutMode: {
+          type: 'select',
+          label: '📦 Mode Layout Section (Boxed vs Fullwidth)',
+          options: [
+            { label: 'Boxed Card (Sudut Melengkung & Floating Card)', value: 'boxed' },
+            { label: 'Full Width Section (Latar Belakang Penuh Layar)', value: 'fullwidth' },
+          ],
+        },
+        blockWidth: {
+          type: 'select',
+          label: '📏 Lebar Blok Utama Merah (Outer Section Width)',
+          options: [
+            { label: 'Penuh 100% Layar (w-full)', value: 'full' },
+            { label: 'Sangat Lebar 95% (w-[95%])', value: 'w-[95%]' },
+            { label: 'Lebar 90% (w-[90%])', value: 'w-[90%]' },
+            { label: 'Lebar 85% (w-[85%])', value: 'w-[85%]' },
+            { label: 'Lebar 80% (w-[80%])', value: 'w-[80%]' },
+            { label: 'Lebar 75% (w-[75%])', value: 'w-[75%]' },
+            { label: 'Max Lebar 1280px (max-w-7xl)', value: 'max-w-7xl' },
+            { label: 'Max Lebar 1152px (max-w-6xl)', value: 'max-w-6xl' },
+            { label: 'Sedang 1024px (max-w-5xl)', value: 'max-w-5xl' },
+            { label: 'Ramping 896px (max-w-4xl)', value: 'max-w-4xl' },
+            { label: 'Ringkas 768px (max-w-3xl)', value: 'max-w-3xl' },
+            { label: 'Sangat Ringkas 672px (max-w-2xl)', value: 'max-w-2xl' },
+          ],
+        },
+        blockAlign: {
+          type: 'select',
+          label: '🎯 Posisi Alignment Card (Rata Tengah / Kiri / Kanan)',
+          options: [
+            { label: 'Rata Tengah (Center - Default)', value: 'center' },
+            { label: 'Rata Kiri (Left)', value: 'left' },
+            { label: 'Rata Kanan (Right)', value: 'right' },
+          ],
+        },
+        textAnimation: {
+          type: 'select',
+          label: '🎬 Efek Animasi Teks & Konten',
+          options: [
+            { label: 'Slide Up & Fade Smooth (Default)', value: 'slideUp' },
+            { label: 'Soft Fade In', value: 'fadeIn' },
+            { label: 'Blur to Focus Reveal', value: 'blurIn' },
+            { label: 'Zoom Scale Up', value: 'scaleUp' },
+            { label: 'Tanpa Animasi (Statis)', value: 'none' },
+          ],
+        },
+        headingGradientAnimated: {
+          type: 'select',
+          label: '✨ Animasi Gradient Shift Teks Highlight',
+          options: [
+            { label: 'Aktifkan Animasi Gradient Bergerak', value: 'true' },
+            { label: 'Non-aktifkan (Gradient Statis)', value: 'false' },
+          ],
+        },
+        containerWidth: {
+          type: 'select',
+          label: '📐 Lebar Maksimal Kontainer Inner Content',
+          options: [
+            { label: 'Full Width (Tanpa Batas Lebar)', value: 'full' },
+            { label: 'Sangat Lebar (max-w-7xl)', value: 'max-w-7xl' },
+            { label: 'Standar Kampus (max-w-6xl)', value: 'max-w-6xl' },
+            { label: 'Sedang (max-w-5xl)', value: 'max-w-5xl' },
+            { label: 'Ramping (max-w-4xl)', value: 'max-w-4xl' },
+          ],
+        },
+        paddingLeft: {
+          type: 'select',
+          label: '⬅️ Padding Kiri (Inner Left)',
+          options: [
+            { label: 'Tanpa Padding (0px)', value: 'none' },
+            { label: 'Kecil (pl-4 / 16px)', value: 'sm' },
+            { label: 'Sedang (pl-6 / 24px)', value: 'md' },
+            { label: 'Besar (pl-8 / 32px)', value: 'lg' },
+            { label: 'Ekstra Besar (pl-12 / 48px)', value: 'xl' },
+            { label: 'Maksimal (pl-16 / 64px)', value: '2xl' },
+          ],
+        },
+        paddingRight: {
+          type: 'select',
+          label: '➡️ Padding Kanan (Inner Right)',
+          options: [
+            { label: 'Tanpa Padding (0px)', value: 'none' },
+            { label: 'Kecil (pr-4 / 16px)', value: 'sm' },
+            { label: 'Sedang (pr-6 / 24px)', value: 'md' },
+            { label: 'Besar (pr-8 / 32px)', value: 'lg' },
+            { label: 'Ekstra Besar (pr-12 / 48px)', value: 'xl' },
+            { label: 'Maksimal (pr-16 / 64px)', value: '2xl' },
+          ],
+        },
+        marginLeft: {
+          type: 'select',
+          label: '⬅️ Margin Kiri Blok Merah (Outer Left)',
+          options: [
+            { label: 'Otomatis Center (mx-auto)', value: 'auto' },
+            { label: 'Tanpa Margin (0px)', value: 'none' },
+            { label: 'Kecil (ml-4 / 16px)', value: 'sm' },
+            { label: 'Sedang (ml-6 / 24px)', value: 'md' },
+            { label: 'Besar (ml-8 / 32px)', value: 'lg' },
+            { label: 'Ekstra Besar (ml-12 / 48px)', value: 'xl' },
+            { label: 'Maksimal (ml-16 / 64px)', value: '2xl' },
+          ],
+        },
+        marginRight: {
+          type: 'select',
+          label: '➡️ Margin Kanan Blok Merah (Outer Right)',
+          options: [
+            { label: 'Otomatis Center (mx-auto)', value: 'auto' },
+            { label: 'Tanpa Margin (0px)', value: 'none' },
+            { label: 'Kecil (mr-4 / 16px)', value: 'sm' },
+            { label: 'Sedang (mr-6 / 24px)', value: 'md' },
+            { label: 'Besar (mr-8 / 32px)', value: 'lg' },
+            { label: 'Ekstra Besar (mr-12 / 48px)', value: 'xl' },
+            { label: 'Maksimal (mr-16 / 64px)', value: '2xl' },
+          ],
+        },
         ...commonElementorFields,
       },
       defaultProps: {
-        badgeText: 'Sambutan Dekan',
+        badgeText: 'Sambutan Pimpinan',
         heading: 'Membangun Generasi Unggul Berbasis',
         highlightHeading: 'Inovasi & Teknologi',
-        paragraph1: '"Selamat datang di Fakultas Teknik & Teknologi. Kami berkomitmen untuk menyelenggarakan pendidikan tinggi berkualitas global yang mengintegrasikan kecerdasan akademis dengan integritas moral."',
+        paragraph1: '"Selamat datang di Fakultas Teknik & Informatika Universitas Patria Artha. Kami berkomitmen untuk menyelenggarakan pendidikan tinggi berkualitas global yang mengintegrasikan kecerdasan akademis dengan integritas moral."',
         paragraph2: 'Di era transformasi digital yang bergerak cepat, kami terus beradaptasi dengan menghadirkan kurikulum berbasis industri, riset mutakhir, serta kolaborasi lintas disiplin demi mencetak lulusan yang siap bersaing secara global.',
-        deanName: 'Prof. Dr. Ir. H. Ahmad Dahlan, M.T.',
-        deanTitle: 'Dekan Fakultas Teknik & Teknologi',
-        deanPhoto: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
+        pimpinanName: 'Prof. Dr. Ir. H. Ahmad Dahlan, M.T.',
+        pimpinanTitle: 'Pimpinan Fakultas Teknik & Informatika',
+        pimpinanPhoto: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
+        pimpinanPhotoObjectFit: 'contain',
+        pimpinanPhotoPosition: 'bottom',
+        pimpinanPhotoMaxHeight: '480px',
+        pimpinanPhotoCardWidth: '5',
         buttonText: 'Baca Sambutan Selengkapnya',
         buttonLink: '#sambutan-lengkap',
         signatureText: 'A. Dahlan',
@@ -6486,6 +7257,16 @@ export const puckConfig: Config<Props, RootProps> = {
         themeStyle: 'dark',
         showSignature: 'true',
         showDecorativeBlobs: 'true',
+        blockLayoutMode: 'boxed',
+        blockWidth: 'max-w-6xl',
+        blockAlign: 'center',
+        textAnimation: 'slideUp',
+        headingGradientAnimated: 'true',
+        containerWidth: 'max-w-6xl',
+        paddingLeft: 'md',
+        paddingRight: 'md',
+        marginLeft: 'auto',
+        marginRight: 'auto',
         bgStyle: 'transparent',
         fontFamily: 'sans',
         textAlign: 'left',
@@ -6496,6 +7277,129 @@ export const puckConfig: Config<Props, RootProps> = {
       render: (props) => {
         const styleClass = getAdvancedStyleClasses(props);
 
+        const isBoxed = (props.blockLayoutMode || 'boxed') === 'boxed';
+        const sectionLayoutClass = isBoxed
+          ? 'relative overflow-hidden rounded-3xl'
+          : 'relative w-full left-0 right-0 overflow-hidden';
+
+        const alignClass = {
+          center: 'mx-auto',
+          left: 'ml-0 mr-auto',
+          right: 'ml-auto mr-0',
+        }[props.blockAlign || 'center'];
+
+        const blockWidthVal = props.blockWidth || 'max-w-6xl';
+        const sectionWidthClass = blockWidthVal === 'full' 
+          ? 'w-full' 
+          : blockWidthVal.startsWith('w-') 
+            ? `${blockWidthVal}` 
+            : `w-full ${blockWidthVal}`;
+
+        const plClass = {
+          none: 'pl-0',
+          sm: 'pl-4',
+          md: 'pl-6',
+          lg: 'pl-8',
+          xl: 'pl-12',
+          '2xl': 'pl-16',
+        }[props.paddingLeft || 'md'];
+
+        const prClass = {
+          none: 'pr-0',
+          sm: 'pr-4',
+          md: 'pr-6',
+          lg: 'pr-8',
+          xl: 'pr-12',
+          '2xl': 'pr-16',
+        }[props.paddingRight || 'md'];
+
+        const mlClass = {
+          auto: 'ml-auto',
+          none: 'ml-0',
+          sm: 'ml-4',
+          md: 'ml-6',
+          lg: 'ml-8',
+          xl: 'ml-12',
+          '2xl': 'ml-16',
+        }[props.marginLeft || 'auto'];
+
+        const mrClass = {
+          auto: 'mr-auto',
+          none: 'mr-0',
+          sm: 'mr-4',
+          md: 'mr-6',
+          lg: 'mr-8',
+          xl: 'mr-12',
+          '2xl': 'mr-16',
+        }[props.marginRight || 'auto'];
+
+        const objFitClass = {
+          contain: 'object-contain',
+          cover: 'object-cover w-full h-full',
+          fill: 'object-fill w-full h-full',
+          'scale-down': 'object-scale-down',
+          none: 'object-none',
+        }[props.pimpinanPhotoObjectFit || 'contain'];
+
+        const objPosClass = {
+          bottom: 'object-bottom',
+          center: 'object-center',
+          top: 'object-top',
+        }[props.pimpinanPhotoPosition || 'bottom'];
+
+        const maxHeightClass = {
+          '420px': 'max-h-[420px]',
+          '480px': 'max-h-[480px]',
+          '560px': 'max-h-[560px]',
+          '640px': 'max-h-[640px]',
+          auto: 'max-h-none',
+        }[props.pimpinanPhotoMaxHeight || '480px'];
+
+        const photoColSpanMap: Record<string, { photo: string; text: string }> = {
+          '3': { photo: 'lg:col-span-3', text: 'lg:col-span-9' },
+          '4': { photo: 'lg:col-span-4', text: 'lg:col-span-8' },
+          '5': { photo: 'lg:col-span-5', text: 'lg:col-span-7' },
+          '6': { photo: 'lg:col-span-6', text: 'lg:col-span-6' },
+          '7': { photo: 'lg:col-span-7', text: 'lg:col-span-5' },
+        };
+
+        const photoColConfig = photoColSpanMap[props.pimpinanPhotoCardWidth || '5'] || photoColSpanMap['5'];
+        const photoColSpan = photoColConfig.photo;
+        const textColSpan = photoColConfig.text;
+
+        const widthClass = props.containerWidth === 'full' ? 'w-full' : (props.containerWidth || 'max-w-6xl');
+
+        const pimpinanName = props.pimpinanName || props.deanName || 'Prof. Dr. Ir. H. Ahmad Dahlan, M.T.';
+        const pimpinanTitle = props.pimpinanTitle || props.deanTitle || 'Pimpinan Fakultas Teknik & Informatika';
+        const pimpinanPhoto = props.pimpinanPhoto || props.deanPhoto || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80';
+
+        const animEffect = props.textAnimation || 'slideUp';
+        const itemVariants = {
+          slideUp: {
+            hidden: { opacity: 0, y: 35 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
+          },
+          fadeIn: {
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.7, ease: 'easeOut' as const } },
+          },
+          blurIn: {
+            hidden: { opacity: 0, filter: 'blur(10px)', y: 20 },
+            visible: { opacity: 1, filter: 'blur(0px)', y: 0, transition: { duration: 0.7, ease: 'easeOut' as const } },
+          },
+          scaleUp: {
+            hidden: { opacity: 0, scale: 0.92, y: 20 },
+            visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
+          },
+          none: {
+            hidden: { opacity: 1, y: 0 },
+            visible: { opacity: 1, y: 0 },
+          },
+        }[animEffect] || {
+          hidden: { opacity: 0, y: 35 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
+        };
+
         const containerVariants = {
           hidden: { opacity: 0 },
           visible: {
@@ -6504,15 +7408,6 @@ export const puckConfig: Config<Props, RootProps> = {
               staggerChildren: 0.2,
               delayChildren: 0.1,
             },
-          },
-        };
-
-        const itemVariants = {
-          hidden: { opacity: 0, y: 30 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
           },
         };
 
@@ -6541,13 +7436,16 @@ export const puckConfig: Config<Props, RootProps> = {
 
         const badgeDot = isMaroon ? 'bg-amber-400' : isIndigo ? 'bg-purple-400' : isLight ? 'bg-[#800020] dark:bg-red-400' : 'bg-blue-400';
 
+        const isGradientAnimated = props.headingGradientAnimated !== 'false';
+        const gradientAnimClass = isGradientAnimated ? 'animate-gradient-x bg-[length:200%_200%]' : '';
+
         const gradientHeading = isMaroon
-          ? 'bg-gradient-to-r from-amber-200 to-amber-400 bg-clip-text text-transparent'
+          ? `bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent ${gradientAnimClass}`
           : isIndigo
-          ? 'bg-gradient-to-r from-purple-300 to-indigo-200 bg-clip-text text-transparent'
+          ? `bg-gradient-to-r from-purple-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent ${gradientAnimClass}`
           : isLight
-          ? 'bg-gradient-to-r from-[#800020] to-amber-600 bg-clip-text text-transparent'
-          : 'bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent';
+          ? `bg-gradient-to-r from-[#800020] via-amber-600 to-[#800020] bg-clip-text text-transparent ${gradientAnimClass}`
+          : `bg-gradient-to-r from-blue-400 via-indigo-300 to-blue-400 bg-clip-text text-transparent ${gradientAnimClass}`;
 
         const deanTitleColor = isMaroon ? 'text-amber-300' : isIndigo ? 'text-purple-300' : isLight ? 'text-[#800020] dark:text-red-400' : 'text-blue-400';
 
@@ -6568,7 +7466,11 @@ export const puckConfig: Config<Props, RootProps> = {
           : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30';
 
         return (
-          <section className={`relative overflow-hidden rounded-3xl ${bgSection} ${styleClass}`}>
+          <section className={`${sectionLayoutClass} ${sectionWidthClass} ${alignClass} ${bgSection} ${styleClass}`}>
+            {/* Background Particles.js Canvas Animation */}
+            {props.showParticles && props.showParticles !== 'false' && (
+              <ParticlesBg color={props.particlesColor || 'white'} count={45} speed={0.8} />
+            )}
             {/* Background Decorative Blobs */}
             {props.showDecorativeBlobs !== 'false' && (
               <>
@@ -6577,7 +7479,7 @@ export const puckConfig: Config<Props, RootProps> = {
               </>
             )}
 
-            <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
+            <div className={`container mx-auto ${plClass} ${prClass} ${widthClass} relative z-10`}>
               <motion.div
                 variants={containerVariants}
                 initial="hidden"
@@ -6585,40 +7487,40 @@ export const puckConfig: Config<Props, RootProps> = {
                 viewport={{ once: true, amount: 0.2 }}
                 className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
               >
-                {/* Kolom Foto Dekan */}
-                <motion.div variants={itemVariants} className="lg:col-span-5 relative group">
+                {/* Kolom Foto Pimpinan (Full Body Uncropped) */}
+                <motion.div variants={itemVariants} className={`${photoColSpan} relative group`}>
                   {/* Frame Aksen Dekoratif */}
                   <div className={`absolute -inset-1 rounded-3xl bg-gradient-to-r ${frameGlow} opacity-30 blur transition duration-500 group-hover:opacity-60`} />
 
                   <div className={`relative overflow-hidden rounded-3xl border ${
                     isLight ? 'border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80' : 'border-slate-700/50 bg-slate-800/50'
-                  } p-3 backdrop-blur-xl shadow-2xl`}>
-                    <div className="overflow-hidden rounded-2xl">
+                  } p-3 backdrop-blur-xl shadow-2xl flex flex-col justify-end`}>
+                    <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-slate-900/40 via-slate-900/80 to-slate-950/95 flex items-end justify-center min-h-[420px] sm:min-h-[480px] p-2">
                       <motion.img
-                        whileHover={{ scale: 1.05 }}
+                        whileHover={{ scale: 1.03 }}
                         transition={{ duration: 0.4 }}
-                        src={props.deanPhoto || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80'}
-                        alt={props.deanName || 'Foto Dekan'}
-                        className="h-[380px] sm:h-[420px] w-full object-cover object-center"
+                        src={pimpinanPhoto}
+                        alt={pimpinanName}
+                        className={`w-auto h-auto ${maxHeightClass} max-w-full ${objFitClass} ${objPosClass} drop-shadow-2xl mx-auto block`}
                       />
                     </div>
 
                     {/* Tag Name Badge Overlay */}
                     <div className={`absolute bottom-6 left-6 right-6 rounded-xl border ${
-                      isLight ? 'border-slate-200 dark:border-white/10 bg-white/90 dark:bg-slate-900/90 text-slate-900 dark:text-white' : 'border-white/10 bg-slate-900/80 text-white'
+                      isLight ? 'border-slate-200 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white' : 'border-white/10 bg-slate-900/90 text-white'
                     } p-4 backdrop-blur-md shadow-lg`}>
                       <h3 className={`text-base sm:text-lg font-bold ${isLight ? 'text-slate-900 dark:text-white' : 'text-white'}`}>
-                        {props.deanName}
+                        {pimpinanName}
                       </h3>
                       <p className={`text-xs font-semibold ${deanTitleColor}`}>
-                        {props.deanTitle}
+                        {pimpinanTitle}
                       </p>
                     </div>
                   </div>
                 </motion.div>
 
                 {/* Kolom Teks Sambutan */}
-                <motion.div variants={itemVariants} className="lg:col-span-7 space-y-6">
+                <motion.div variants={itemVariants} className={`${textColSpan} space-y-6`}>
                   {props.badgeText && (
                     <div className={`inline-flex items-center gap-2 rounded-full border ${badgeClass} px-4 py-1.5 text-xs font-bold uppercase tracking-wider`}>
                       <span className={`h-2 w-2 rounded-full ${badgeDot} animate-pulse`} />
@@ -6678,6 +7580,339 @@ export const puckConfig: Config<Props, RootProps> = {
                   </div>
                 </motion.div>
               </motion.div>
+            </div>
+          </section>
+        );
+      },
+    },
+
+    ProdiIlustrasiBlock: {
+      fields: {
+        badgeText: { type: 'text', label: 'Teks Badge / Tagline Atas' },
+        heading: { type: 'text', label: 'Judul Utama Section' },
+        highlightHeading: { type: 'text', label: 'Teks Judul Berwarna Highlight' },
+        subheading: { type: 'textarea', label: 'Deskripsi Paragraf Subjudul' },
+
+        // --- Prodi 1: Teknik Mesin ---
+        prodi1Title: { type: 'text', label: '⚙️ Prodi 1 - Nama Program Studi' },
+        prodi1Degree: { type: 'text', label: '⚙️ Prodi 1 - Gelar Lulusan' },
+        prodi1Badge: { type: 'text', label: '⚙️ Prodi 1 - Akreditasi / Tag' },
+        prodi1Desc: { type: 'textarea', label: '⚙️ Prodi 1 - Ringkasan Deskripsi' },
+        prodi1BgImage: { type: 'text', label: '⚙️ Prodi 1 - URL Gambar Latar Ilustrasi' },
+        prodi1Link: { type: 'text', label: '⚙️ Prodi 1 - Link Detail / Kurikulum' },
+        prodi1Specs: { type: 'text', label: '⚙️ Prodi 1 - Spesialisasi (Pisahkan Koma)' },
+
+        // --- Prodi 2: Teknik Elektro ---
+        prodi2Title: { type: 'text', label: '⚡ Prodi 2 - Nama Program Studi' },
+        prodi2Degree: { type: 'text', label: '⚡ Prodi 2 - Gelar Lulusan' },
+        prodi2Badge: { type: 'text', label: '⚡ Prodi 2 - Akreditasi / Tag' },
+        prodi2Desc: { type: 'textarea', label: '⚡ Prodi 2 - Ringkasan Deskripsi' },
+        prodi2BgImage: { type: 'text', label: '⚡ Prodi 2 - URL Gambar Latar Ilustrasi' },
+        prodi2Link: { type: 'text', label: '⚡ Prodi 2 - Link Detail / Kurikulum' },
+        prodi2Specs: { type: 'text', label: '⚡ Prodi 2 - Spesialisasi (Pisahkan Koma)' },
+
+        // --- Prodi 3: Teknik Informatika ---
+        prodi3Title: { type: 'text', label: '💻 Prodi 3 - Nama Program Studi' },
+        prodi3Degree: { type: 'text', label: '💻 Prodi 3 - Gelar Lulusan' },
+        prodi3Badge: { type: 'text', label: '💻 Prodi 3 - Akreditasi / Tag' },
+        prodi3Desc: { type: 'textarea', label: '💻 Prodi 3 - Ringkasan Deskripsi' },
+        prodi3BgImage: { type: 'text', label: '💻 Prodi 3 - URL Gambar Latar Ilustrasi' },
+        prodi3Link: { type: 'text', label: '💻 Prodi 3 - Link Detail / Kurikulum' },
+        prodi3Specs: { type: 'text', label: '💻 Prodi 3 - Spesialisasi (Pisahkan Koma)' },
+
+        themeStyle: {
+          type: 'select',
+          label: '🎨 Suasana Warna Section',
+          options: [
+            { label: 'Dark Tech Slate-950 (Modern Dark)', value: 'dark' },
+            { label: 'Universitas Maroon (#800020 & Gold)', value: 'maroon' },
+            { label: 'Deep Indigo Futuristic', value: 'indigo' },
+            { label: 'Light Clean (Terang & Soft)', value: 'light' },
+          ],
+        },
+        cardHeight: {
+          type: 'select',
+          label: '📐 Tinggi Card Ilustrasi',
+          options: [
+            { label: 'Tinggi Sempurna (h-[500px])', value: 'tall' },
+            { label: 'Sedang (h-[440px])', value: 'medium' },
+            { label: 'Ringkas (h-[380px])', value: 'short' },
+          ],
+        },
+        blockLayoutMode: {
+          type: 'select',
+          label: '📦 Mode Layout Section (Boxed vs Fullwidth)',
+          options: [
+            { label: 'Boxed Card (Sudut Melengkung & Floating Card)', value: 'boxed' },
+            { label: 'Full Width Section (Latar Belakang Penuh Layar)', value: 'fullwidth' },
+          ],
+        },
+        blockWidth: {
+          type: 'select',
+          label: '📏 Lebar Blok Utama Outer Section',
+          options: [
+            { label: 'Penuh 100% Layar (w-full)', value: 'full' },
+            { label: 'Sangat Lebar 95% (w-[95%])', value: 'w-[95%]' },
+            { label: 'Lebar 90% (w-[90%])', value: 'w-[90%]' },
+            { label: 'Lebar 85% (w-[85%])', value: 'w-[85%]' },
+            { label: 'Lebar 80% (w-[80%])', value: 'w-[80%]' },
+            { label: 'Lebar 75% (w-[75%])', value: 'w-[75%]' },
+            { label: 'Max Lebar 1280px (max-w-7xl)', value: 'max-w-7xl' },
+            { label: 'Max Lebar 1152px (max-w-6xl)', value: 'max-w-6xl' },
+            { label: 'Sedang 1024px (max-w-5xl)', value: 'max-w-5xl' },
+          ],
+        },
+        blockAlign: {
+          type: 'select',
+          label: '🎯 Posisi Alignment Block',
+          options: [
+            { label: 'Rata Tengah (Center - Default)', value: 'center' },
+            { label: 'Rata Kiri (Left)', value: 'left' },
+            { label: 'Rata Kanan (Right)', value: 'right' },
+          ],
+        },
+        ...commonElementorFields,
+      },
+      defaultProps: {
+        badgeText: 'PROGRAM STUDI UNGGULAN',
+        heading: 'Pilih Masa Depanmu di',
+        highlightHeading: 'Fakultas Teknik & Informatika',
+        subheading: 'Menyelenggarakan pendidikan berbasis riset dan standar industri global untuk mencetak profesional tangguh di bidang Teknik Mesin, Teknik Elektro, dan Teknik Informatika.',
+
+        // Prodi 1: Mesin
+        prodi1Title: 'Teknik Mesin',
+        prodi1Degree: 'Sarjana Teknik (S.T.)',
+        prodi1Badge: 'S1 - Akreditasi Baik Sekali',
+        prodi1Desc: 'Fokus pada manufaktur presisi, konversi energi, mekanika fluida, serta perancangan sistem mekanik & robotika industri.',
+        prodi1BgImage: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80',
+        prodi1Link: '/prodi/teknik-mesin',
+        prodi1Specs: 'Robotika Industri, Konversi Energi, Manufaktur Otomotif',
+
+        // Prodi 2: Elektro
+        prodi2Title: 'Teknik Elektro',
+        prodi2Degree: 'Sarjana Teknik (S.T.)',
+        prodi2Badge: 'S1 - Akreditasi Baik Sekali',
+        prodi2Desc: 'Mengembangkan keahlian di bidang sistem tenaga listrik, kendali mikroprosesor, IoT (Internet of Things), & telekomunikasi.',
+        prodi2BgImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+        prodi2Link: '/prodi/teknik-elektro',
+        prodi2Specs: 'IoT & Smart Sensors, Sistem Tenaga Listrik, Telematika',
+
+        // Prodi 3: Informatika
+        prodi3Title: 'Teknik Informatika',
+        prodi3Degree: 'Sarjana Komputer (S.Kom.)',
+        prodi3Badge: 'S1 - Akreditasi Unggulan',
+        prodi3Desc: 'Mencetak perekayasa perangkat lunak, ahli Artificial Intelligence (AI), Machine Learning, Cloud Architecture & Cyber Security.',
+        prodi3BgImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
+        prodi3Link: '/prodi/teknik-informatika',
+        prodi3Specs: 'AI & Data Science, Cloud & DevOps, Cyber Security',
+
+        themeStyle: 'dark',
+        cardHeight: 'tall',
+        blockLayoutMode: 'boxed',
+        blockWidth: 'max-w-7xl',
+        blockAlign: 'center',
+        bgStyle: 'transparent',
+        fontFamily: 'sans',
+        textAlign: 'center',
+        paddingY: 'xl',
+        paddingX: 'lg',
+        borderRadius: 'lg',
+      },
+      render: (props) => {
+        const styleClass = getAdvancedStyleClasses(props);
+
+        const isBoxed = (props.blockLayoutMode || 'boxed') === 'boxed';
+        const sectionLayoutClass = isBoxed
+          ? 'relative overflow-hidden rounded-3xl'
+          : 'relative w-full left-0 right-0 overflow-hidden';
+
+        const alignClass = {
+          center: 'mx-auto',
+          left: 'ml-0 mr-auto',
+          right: 'ml-auto mr-0',
+        }[props.blockAlign || 'center'];
+
+        const blockWidthVal = props.blockWidth || 'max-w-7xl';
+        const sectionWidthClass = blockWidthVal === 'full' 
+          ? 'w-full' 
+          : blockWidthVal.startsWith('w-') 
+            ? `${blockWidthVal}` 
+            : `w-full ${blockWidthVal}`;
+
+        const isMaroon = props.themeStyle === 'maroon';
+        const isIndigo = props.themeStyle === 'indigo';
+        const isLight = props.themeStyle === 'light';
+
+        const bgSection = isMaroon 
+          ? 'bg-gradient-to-br from-[#4A0012] via-[#800020] to-slate-950 text-white' 
+          : isIndigo 
+          ? 'bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 text-white'
+          : isLight 
+          ? 'bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800'
+          : 'bg-slate-950 text-white';
+
+        const heightClass = {
+          tall: 'min-h-[500px] sm:min-h-[540px]',
+          medium: 'min-h-[440px] sm:min-h-[480px]',
+          short: 'min-h-[380px] sm:min-h-[420px]',
+        }[props.cardHeight || 'tall'];
+
+        const prodiList = [
+          {
+            id: 'mesin',
+            title: props.prodi1Title || 'Teknik Mesin',
+            degree: props.prodi1Degree || 'Sarjana Teknik (S.T.)',
+            badge: props.prodi1Badge || 'S1 - Akreditasi Baik Sekali',
+            desc: props.prodi1Desc || 'Fokus pada manufaktur presisi, konversi energi, mekanika fluida, serta perancangan sistem mekanik & robotika industri.',
+            bgImage: props.prodi1BgImage || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80',
+            link: props.prodi1Link || '/prodi/teknik-mesin',
+            specs: (props.prodi1Specs || 'Robotika Industri, Konversi Energi, Manufaktur Otomotif').split(','),
+            icon: Wrench,
+            accentColor: 'from-amber-500/80 to-amber-600/80',
+            badgeColor: 'border-amber-400/40 bg-amber-500/20 text-amber-300',
+            glowColor: 'group-hover:border-amber-400/60 shadow-amber-500/10',
+          },
+          {
+            id: 'elektro',
+            title: props.prodi2Title || 'Teknik Elektro',
+            degree: props.prodi2Degree || 'Sarjana Teknik (S.T.)',
+            badge: props.prodi2Badge || 'S1 - Akreditasi Baik Sekali',
+            desc: props.prodi2Desc || 'Mengembangkan keahlian di bidang sistem tenaga listrik, kendali mikroprosesor, IoT (Internet of Things), & telekomunikasi.',
+            bgImage: props.prodi2BgImage || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+            link: props.prodi2Link || '/prodi/teknik-elektro',
+            specs: (props.prodi2Specs || 'IoT & Smart Sensors, Sistem Tenaga Listrik, Telematika').split(','),
+            icon: Zap,
+            accentColor: 'from-cyan-500/80 to-blue-600/80',
+            badgeColor: 'border-cyan-400/40 bg-cyan-500/20 text-cyan-300',
+            glowColor: 'group-hover:border-cyan-400/60 shadow-cyan-500/10',
+          },
+          {
+            id: 'informatika',
+            title: props.prodi3Title || 'Teknik Informatika',
+            degree: props.prodi3Degree || 'Sarjana Komputer (S.Kom.)',
+            badge: props.prodi3Badge || 'S1 - Akreditasi Unggulan',
+            desc: props.prodi3Desc || 'Mencetak perekayasa perangkat lunak, ahli Artificial Intelligence (AI), Machine Learning, Cloud Architecture & Cyber Security.',
+            bgImage: props.prodi3BgImage || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
+            link: props.prodi3Link || '/prodi/teknik-informatika',
+            specs: (props.prodi3Specs || 'AI & Data Science, Cloud & DevOps, Cyber Security').split(','),
+            icon: Code,
+            accentColor: 'from-purple-500/80 to-indigo-600/80',
+            badgeColor: 'border-purple-400/40 bg-purple-500/20 text-purple-300',
+            glowColor: 'group-hover:border-purple-400/60 shadow-purple-500/10',
+          },
+        ];
+
+        return (
+          <section className={`${sectionLayoutClass} ${sectionWidthClass} ${alignClass} ${bgSection} ${styleClass} py-16 sm:py-24 px-4 sm:px-6`}>
+            {/* Header Section */}
+            <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 space-y-4">
+              {props.badgeText && (
+                <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-wider ${
+                  isMaroon ? 'border-amber-400/30 bg-amber-400/10 text-amber-300' : 'border-blue-500/30 bg-blue-500/10 text-blue-400'
+                }`}>
+                  <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                  {props.badgeText}
+                </div>
+              )}
+
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+                {props.heading}{' '}
+                {props.highlightHeading && (
+                  <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200 bg-clip-text text-transparent animate-gradient-x bg-[length:200%_200%]">
+                    {props.highlightHeading}
+                  </span>
+                )}
+              </h2>
+
+              {props.subheading && (
+                <p className={`text-base sm:text-lg leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>
+                  {props.subheading}
+                </p>
+              )}
+            </div>
+
+            {/* Grid 3 Prodi Cards dengan Ilustrasi Latar Belakang */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+              {prodiList.map((prodi, idx) => {
+                const IconComp = prodi.icon;
+                return (
+                  <motion.div
+                    key={prodi.id}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.6, delay: idx * 0.15 }}
+                    whileHover={{ y: -8 }}
+                    className={`group relative overflow-hidden rounded-3xl border border-white/10 ${prodi.glowColor} ${heightClass} flex flex-col justify-between shadow-2xl backdrop-blur-xl transition-all duration-500`}
+                  >
+                    {/* Background Image Ilustrasi dengan Zoom Effect */}
+                    <div className="absolute inset-0 z-0 overflow-hidden">
+                      <img
+                        src={prodi.bgImage}
+                        alt={prodi.title}
+                        className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
+                      />
+                      {/* Gradient Overlay Multi-Stop untuk Memastikan Teks Terbaca 100% */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/30 group-hover:via-slate-950/70 transition-colors duration-500" />
+                    </div>
+
+                    {/* Top Content (Badge & Icon) */}
+                    <div className="relative z-10 p-6 sm:p-8 flex items-start justify-between gap-4">
+                      {/* Icon Badge */}
+                      <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${prodi.accentColor} p-3 text-white shadow-lg flex items-center justify-center group-hover:rotate-6 transition-transform duration-300`}>
+                        <IconComp className="h-6 w-6 stroke-[2.2]" />
+                      </div>
+
+                      {/* Akreditasi Badge */}
+                      <span className={`inline-flex items-center gap-1.5 rounded-full border ${prodi.badgeColor} px-3 py-1 text-[11px] font-bold backdrop-blur-md shadow-sm`}>
+                        <span className="h-1.5 w-1.5 rounded-full bg-current animate-ping" />
+                        {prodi.badge}
+                      </span>
+                    </div>
+
+                    {/* Bottom Content (Title, Degree, Desc, Specs & Link) */}
+                    <div className="relative z-10 p-6 sm:p-8 space-y-4">
+                      <div>
+                        <span className="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
+                          {prodi.degree}
+                        </span>
+                        <h3 className="text-2xl sm:text-3xl font-extrabold text-white group-hover:text-amber-300 transition-colors">
+                          {prodi.title}
+                        </h3>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-3">
+                        {prodi.desc}
+                      </p>
+
+                      {/* Spesialisasi / Tags */}
+                      {prodi.specs && prodi.specs.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {prodi.specs.map((spec, sIdx) => (
+                            <span
+                              key={sIdx}
+                              className="rounded-lg bg-white/10 dark:bg-slate-800/60 border border-white/10 px-2.5 py-1 text-[10px] sm:text-xs font-semibold text-slate-200 backdrop-blur-md"
+                            >
+                              {spec.trim()}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Button Action */}
+                      <div className="pt-2">
+                        <a
+                          href={prodi.link}
+                          className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-amber-300 group-hover:text-amber-200 transition-colors"
+                        >
+                          Lihat Detail Prodi & Kurikulum
+                          <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1.5 transition-transform" />
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </section>
         );
@@ -7822,7 +9057,13 @@ export const puckConfig: Config<Props, RootProps> = {
             )}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {news.map((n, idx) => (
-                <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-[#800020] transition-all flex flex-col justify-between">
+                <div 
+                  key={idx} 
+                  onClick={() => {
+                    window.location.href = `/halaman/detail-berita?berita=${encodeURIComponent(slugify(n.title) || n.title)}`;
+                  }}
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-[#800020] transition-all flex flex-col justify-between cursor-pointer group hover:-translate-y-0.5 shadow-xs hover:shadow-md"
+                >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-100 dark:bg-red-950 text-[#800020] dark:text-red-300">
@@ -7830,10 +9071,10 @@ export const puckConfig: Config<Props, RootProps> = {
                       </span>
                       <span className="text-[10px] text-slate-400">{n.date}</span>
                     </div>
-                    <h4 className="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 leading-snug">{n.title}</h4>
+                    <h4 className="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-[#800020] dark:group-hover:text-red-400 transition-colors">{n.title}</h4>
                   </div>
-                  <span className="mt-4 text-[11px] font-bold text-[#800020] dark:text-red-400 flex items-center gap-1">
-                    <span>Baca Artikel</span>
+                  <span className="mt-4 text-[11px] font-bold text-[#800020] dark:text-red-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                    <span>Baca Selengkapnya</span>
                     <ArrowRight className="w-3 h-3" />
                   </span>
                 </div>
@@ -8146,6 +9387,7 @@ export const puckConfig: Config<Props, RootProps> = {
 
     DarkHeroBlock: {
       fields: {
+        ...particleFields,
         theme: {
           type: 'select', label: '🌗 Tema (default: Light)',
           options: [{ label: 'Light (Terang)', value: 'light' }, { label: 'Dark (Gelap)', value: 'dark' }],
@@ -8199,6 +9441,8 @@ export const puckConfig: Config<Props, RootProps> = {
           secondaryCtaHref={props.secondaryCtaHref}
           accentColor={props.accentColor}
           showNodes={props.showNodes !== 'false'}
+          showParticles={props.showParticles}
+          particlesColor={props.particlesColor}
         />
       ),
     },
@@ -8491,6 +9735,171 @@ export const puckConfig: Config<Props, RootProps> = {
       ),
     },
 
+    Struktur_Block: {
+      fields: {
+        title: { type: 'text', label: 'Judul Bagan Organisasi' },
+        subtitle: { type: 'text', label: 'Sub-judul / Keterangan' },
+        rektorName: { type: 'text', label: 'Nama Rektor' },
+        wr1Name: { type: 'text', label: 'Nama Wakil Rektor I (Akademik)' },
+        wr2Name: { type: 'text', label: 'Nama Wakil Rektor II (Keuangan & Umum)' },
+        wr3Name: { type: 'text', label: 'Nama Wakil Rektor III (Kemahasiswaan)' },
+        dekanName: { type: 'text', label: 'Nama Dekan Fakultas Teknik' },
+        kaprodiTifName: { type: 'text', label: 'Nama Kaprodi Teknik Informatika' },
+        kaprodiTeName: { type: 'text', label: 'Nama Kaprodi Teknik Elektro' },
+        kaprodiTmName: { type: 'text', label: 'Nama Kaprodi Teknik Mesin' },
+        theme: {
+          type: 'select',
+          label: 'Tema Tampilan',
+          options: [
+            { label: 'Light (Terang)', value: 'light' },
+            { label: 'Dark (Gelap)', value: 'dark' },
+          ],
+        },
+        containerHeight: {
+          type: 'select',
+          label: 'Tinggi Kontainer Canvas',
+          options: [
+            { label: 'Standard (750px)', value: '750px' },
+            { label: 'Ringkas (600px)', value: '600px' },
+            { label: 'Tinggi (900px)', value: '900px' },
+            { label: 'Otomatis', value: 'auto' },
+          ],
+        },
+        enableZoom: {
+          type: 'select',
+          label: 'Aktifkan Kontrol Zoom & Pan',
+          options: [
+            { label: 'Ya', value: 'true' },
+            { label: 'Tidak', value: 'false' },
+          ],
+        },
+        enableExport: {
+          type: 'select',
+          label: 'Aktifkan Tombol Unduh SVG',
+          options: [
+            { label: 'Ya', value: 'true' },
+            { label: 'Tidak', value: 'false' },
+          ],
+        },
+      },
+      defaultProps: {
+        title: 'Bagan Struktur Organisasi Universitas',
+        subtitle: 'Fakultas Teknik, Biro, & Lembaga',
+        rektorName: 'DR. Bastian Lubis, S.E., M.M., CFM',
+        wr1Name: 'Suhendra, S.E., M.M., CFM',
+        wr2Name: 'Vieni Irhaswati, S.E, M.M.',
+        wr3Name: 'Ir. Asnefi., M.M., CFM',
+        dekanName: 'Dr. Andi Nur Putri, S.Pd., M.T.',
+        kaprodiTifName: 'Dayanti, S.Kom., M.Kom.',
+        kaprodiTeName: 'Ir. Irwan Syarif, S.Pd., M.T.',
+        kaprodiTmName: 'Ir. Muhammd Arham, S.Pd., M.T.',
+        theme: 'light',
+        containerHeight: '750px',
+        enableZoom: 'true',
+        enableExport: 'true',
+      },
+      render: (props: any) => (
+        <StrukturBlock
+          title={props.title}
+          subtitle={props.subtitle}
+          rektorName={props.rektorName}
+          wr1Name={props.wr1Name}
+          wr2Name={props.wr2Name}
+          wr3Name={props.wr3Name}
+          dekanName={props.dekanName}
+          kaprodiTifName={props.kaprodiTifName}
+          kaprodiTeName={props.kaprodiTeName}
+          kaprodiTmName={props.kaprodiTmName}
+          theme={props.theme}
+          containerHeight={props.containerHeight}
+          enableZoom={props.enableZoom}
+          enableExport={props.enableExport}
+        />
+      ),
+    },
+
+    StrukturBlock: {
+      fields: {
+        title: { type: 'text', label: 'Judul Bagan Organisasi' },
+        subtitle: { type: 'text', label: 'Sub-judul / Keterangan' },
+        rektorName: { type: 'text', label: 'Nama Rektor' },
+        wr1Name: { type: 'text', label: 'Nama Wakil Rektor I (Akademik)' },
+        wr2Name: { type: 'text', label: 'Nama Wakil Rektor II (Keuangan & Umum)' },
+        wr3Name: { type: 'text', label: 'Nama Wakil Rektor III (Kemahasiswaan)' },
+        dekanName: { type: 'text', label: 'Nama Dekan Fakultas Teknik' },
+        kaprodiTifName: { type: 'text', label: 'Nama Kaprodi Teknik Informatika' },
+        kaprodiTeName: { type: 'text', label: 'Nama Kaprodi Teknik Elektro' },
+        kaprodiTmName: { type: 'text', label: 'Nama Kaprodi Teknik Mesin' },
+        theme: {
+          type: 'select',
+          label: 'Tema Tampilan',
+          options: [
+            { label: 'Light (Terang)', value: 'light' },
+            { label: 'Dark (Gelap)', value: 'dark' },
+          ],
+        },
+        containerHeight: {
+          type: 'select',
+          label: 'Tinggi Kontainer Canvas',
+          options: [
+            { label: 'Standard (750px)', value: '750px' },
+            { label: 'Ringkas (600px)', value: '600px' },
+            { label: 'Tinggi (900px)', value: '900px' },
+            { label: 'Otomatis', value: 'auto' },
+          ],
+        },
+        enableZoom: {
+          type: 'select',
+          label: 'Aktifkan Kontrol Zoom & Pan',
+          options: [
+            { label: 'Ya', value: 'true' },
+            { label: 'Tidak', value: 'false' },
+          ],
+        },
+        enableExport: {
+          type: 'select',
+          label: 'Aktifkan Tombol Unduh SVG',
+          options: [
+            { label: 'Ya', value: 'true' },
+            { label: 'Tidak', value: 'false' },
+          ],
+        },
+      },
+      defaultProps: {
+        title: 'Bagan Struktur Organisasi Universitas',
+        subtitle: 'Fakultas Teknik, Biro, & Lembaga',
+        rektorName: 'DR. Bastian Lubis, S.E., M.M., CFM',
+        wr1Name: 'Suhendra, S.E., M.M., CFM',
+        wr2Name: 'Vieni Irhaswati, S.E, M.M.',
+        wr3Name: 'Ir. Asnefi., M.M., CFM',
+        dekanName: 'Dr. Andi Nur Putri, S.Pd., M.T.',
+        kaprodiTifName: 'Dayanti, S.Kom., M.Kom.',
+        kaprodiTeName: 'Ir. Irwan Syarif, S.Pd., M.T.',
+        kaprodiTmName: 'Ir. Muhammd Arham, S.Pd., M.T.',
+        theme: 'light',
+        containerHeight: '750px',
+        enableZoom: 'true',
+        enableExport: 'true',
+      },
+      render: (props: any) => (
+        <StrukturBlock
+          title={props.title}
+          subtitle={props.subtitle}
+          rektorName={props.rektorName}
+          wr1Name={props.wr1Name}
+          wr2Name={props.wr2Name}
+          wr3Name={props.wr3Name}
+          dekanName={props.dekanName}
+          kaprodiTifName={props.kaprodiTifName}
+          kaprodiTeName={props.kaprodiTeName}
+          kaprodiTmName={props.kaprodiTmName}
+          theme={props.theme}
+          containerHeight={props.containerHeight}
+          enableZoom={props.enableZoom}
+          enableExport={props.enableExport}
+        />
+      ),
+    },
   },
 };
 
@@ -8527,41 +9936,6 @@ export const initialPuckData: Data = {
         borderRadius: 'md',
         paddingY: 'sm',
         paddingX: 'md',
-      },
-    },
-    {
-      type: 'StatsGridBlock',
-      props: {
-        id: 'stats-1',
-        stat1Number: '98.4%',
-        stat1Label: 'Lulusan Langsung Bekerja',
-        stat2Number: 'Unggul',
-        stat2Label: 'Akreditasi LAM INFOKOM',
-        stat3Number: '35+',
-        stat3Label: 'Dosen Gelar Doktor & Prof',
-        stat4Number: '12 Lab',
-        stat4Label: 'Fasilitas Riset Komputasi',
-        bgStyle: 'transparent',
-        borderRadius: 'none',
-        paddingY: 'md',
-      },
-    },
-    {
-      type: 'FeaturesGridBlock',
-      props: {
-        id: 'features-1',
-        heading: 'Fasilitas & Layanan Pembelajaran Digital',
-        subheading: 'Setiap blok di halaman ini dirancang responsif dan dapat disesuaikan kebutuhan website.',
-        item1Title: 'Laboratorium AI & GPU HPC Cluster',
-        item1Desc: 'Akses penuh ke server komputasi GPU tinggi untuk penelitian machine learning.',
-        item2Title: 'Sertifikasi Internasional AWS & Cisco',
-        item2Desc: 'Ujian sertifikasi yang diakui secara global bagi seluruh lulusan.',
-        item3Title: 'Program Riset Bersama Mitra Industri',
-        item3Desc: 'Kolaborasi nyata pengerjaan aplikasi komersial bersama praktisi.',
-        bgStyle: 'white',
-        borderRadius: 'lg',
-        paddingY: 'lg',
-        paddingX: 'lg',
       },
     },
   ],
@@ -8644,9 +10018,8 @@ const DuplicateSidebarButton: React.FC = () => {
   );
 };
 
-// --- DEDICATED SIDEBAR PANEL FOR PRE-DESIGNED BUILDING BLOCKS ---
-
 const PRE_DESIGNED_BLOCKS = [
+  // --- HERO & BANNER ---
   {
     type: 'HeroBlock',
     title: 'Hero & Banner Utama',
@@ -8654,14 +10027,61 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Sparkles,
     desc: 'Header visual utama dengan judul, sub-judul, tombol CTA, badge akreditasi, dan efek gradien.',
     badge: 'Popular',
+    keywords: ['hero', 'banner', 'header', 'utama', 'selamat datang', 'pmb'],
   },
   {
-    type: 'DeanWelcomeBlock',
-    title: 'Sambutan Dekan (Welcome Section)',
+    type: 'SambutanBlock',
+    title: 'Sambutan Pimpinan (Welcome Section)',
     category: 'Hero & Banner',
     icon: Sparkles,
-    desc: 'Block sambutan pimpinan/dekan dengan foto, badge, kutipan pesan, tombol CTA, dan tanda tangan digital.',
-    badge: 'Spesial',
+    desc: 'Block sambutan pimpinan dengan foto profil full-body (uncropped), badge, kutipan pesan, tombol CTA, dan tanda tangan digital.',
+    badge: 'Pimpinan',
+    keywords: ['sambutan', 'pimpinan', 'dekan', 'rektor', 'foto', 'profil', 'tanda tangan'],
+  },
+  {
+    type: 'AlgoliaHeroBlock',
+    title: 'Hero Banner Pencarian Algolia',
+    category: 'Hero & Banner',
+    icon: Search,
+    desc: 'Banner hero modern dengan kolom pencarian Algolia interaktif.',
+    badge: 'Algolia',
+    keywords: ['hero', 'algolia', 'pencarian', 'search', 'banner'],
+  },
+  {
+    type: 'Hero231Block',
+    title: 'Hero 231 Modern Split Card',
+    category: 'Hero & Banner',
+    icon: Sparkles,
+    desc: 'Layout Hero 231 split dengan kartu ilustrasi dan dua tombol CTA.',
+    badge: 'Modern',
+    keywords: ['hero', 'split', 'modern', 'card', '231'],
+  },
+  {
+    type: 'ModernSvgBannerBlock',
+    title: 'Banner Ilustrasi SVG Modern',
+    category: 'Hero & Banner',
+    icon: Sparkles,
+    desc: 'Banner dengan latar ilustrasi SVG dan badge sorotan.',
+    badge: 'SVG',
+    keywords: ['banner', 'svg', 'ilustrasi', 'hero'],
+  },
+  {
+    type: 'HeroSlideshowBlock',
+    title: 'Hero Slideshow Foto Kampus',
+    category: 'Hero & Banner',
+    icon: ImageIcon,
+    desc: 'Slideshow foto kampus latar belakang dengan pergantian gambar otomatis.',
+    badge: 'Slideshow',
+    keywords: ['hero', 'slideshow', 'foto', 'slider', 'gambar'],
+  },
+  {
+    type: 'PageBannerBlock',
+    title: 'Header Banner Halaman / Page Title',
+    category: 'Hero & Banner',
+    icon: Layout,
+    desc: 'Header banner sub-halaman dengan breadcrumb navigasi.',
+    badge: 'Header Page',
+    keywords: ['page', 'banner', 'header', 'title', 'breadcrumb'],
   },
   {
     type: 'AlertBannerBlock',
@@ -8670,6 +10090,7 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Zap,
     desc: 'Banner notifikasi pesan penting PMB, info darurat, atau tautan pengumuman.',
     badge: 'Urgent',
+    keywords: ['alert', 'pengumuman', 'notifikasi', 'banner', 'penting'],
   },
   {
     type: 'SubMenuGridBlock',
@@ -8678,70 +10099,18 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Grid,
     desc: 'Tautan navigasi cepat ke halaman prodi, fasilitas, biaya kuliah, dan registrasi.',
     badge: 'Navigasi',
+    keywords: ['submenu', 'grid', 'navigasi', 'link', 'menu'],
   },
+
+  // --- AKADEMIK & PRODI ---
   {
-    type: 'RichTextBlock',
-    title: 'Rich Text & Artikel',
-    category: 'Konten & Teks',
-    icon: FileText,
-    desc: 'Blok paragraf teks bebas, format artikel, heading, serta penjelasan rinci.',
-    badge: 'Standard',
-  },
-  {
-    type: 'AccordionFaqBlock',
-    title: 'Accordion FAQ & Tanya Jawab',
-    category: 'Konten & Teks',
-    icon: HelpCircle,
-    desc: 'Daftar pertanyaan dan jawaban interaktif yang dapat dibuka-tutup.',
-    badge: 'Interaktif',
-  },
-  {
-    type: 'TestimonialBlock',
-    title: 'Kutipan & Testimoni Alumni',
-    category: 'Konten & Teks',
-    icon: MessageSquare,
-    desc: 'Kutipan kesan alumni, lulusan sukses, dan profil karir di industri tech.',
-    badge: 'Sosial',
-  },
-  {
-    type: 'CtaBoxBlock',
-    title: 'Call to Action Box (PMB)',
-    category: 'Konten & Teks',
-    icon: Award,
-    desc: 'Kotak ajakan pendaftaran mahasiswa baru dengan tombol aksi prominent.',
-    badge: 'Konversi',
-  },
-  {
-    type: 'StatsGridBlock',
-    title: 'Grid Angka Statistik',
-    category: 'Statistik & Media',
-    icon: Award,
-    desc: 'Counter pencapaian fakultas: persentase lulusan, akreditasi, jumlah lab & dosen.',
-    badge: 'Data',
-  },
-  {
-    type: 'FeaturesGridBlock',
-    title: 'Grid Keunggulan & Fasilitas',
-    category: 'Statistik & Media',
-    icon: ShieldCheck,
-    desc: 'Kartu keunggulan prodi, sertifikasi AWS/Cisco, dan laboratorium GPU AI.',
-    badge: 'Fitur',
-  },
-  {
-    type: 'ImageGalleryBlock',
-    title: 'Galeri Foto & Fasilitas',
-    category: 'Statistik & Media',
-    icon: ImageIcon,
-    desc: 'Showcase foto laboratorium komputasi, ruang kuliah, dan gedung kampus.',
-    badge: 'Visual',
-  },
-  {
-    type: 'VideoEmbedBlock',
-    title: 'Embed Video Profil YouTube',
-    category: 'Statistik & Media',
-    icon: Video,
-    desc: 'Pemutar video profil fakultas, tur kampus, atau rekaman webinar.',
-    badge: 'Video',
+    type: 'ProdiIlustrasiBlock',
+    title: 'Card Ilustrasi Prodi (Mesin, Elektro, Informatika)',
+    category: 'Akademik & Dosen',
+    icon: GraduationCap,
+    desc: 'Showcase 3 Card Prodi (Teknik Mesin, Teknik Elektro, Teknik Informatika) dengan gambar ilustrasi latar, icon badge, dan tag spesialisasi.',
+    badge: 'Baru 🔥',
+    keywords: ['prodi', 'program studi', 'mesin', 'elektro', 'informatika', 'ilustrasi', 'jurusan', 's1'],
   },
   {
     type: 'AcademicProgramBlock',
@@ -8750,6 +10119,7 @@ const PRE_DESIGNED_BLOCKS = [
     icon: GraduationCap,
     desc: 'Detail akreditasi prodi, gelar lulusan, kaprodi, visi, dan prospek karir.',
     badge: 'Akademik',
+    keywords: ['prodi', 'akademik', 'sarjana', 'diploma', 'kaprodi'],
   },
   {
     type: 'CurriculumTableBlock',
@@ -8758,14 +10128,25 @@ const PRE_DESIGNED_BLOCKS = [
     icon: BookOpen,
     desc: 'Daftar mata kuliah per semester beserta beban bobot SKS.',
     badge: 'Kurikulum',
+    keywords: ['kurikulum', 'sks', 'matakuliah', 'semester', 'tabel'],
+  },
+  {
+    type: 'Struktur_Block',
+    title: 'Struktur Organisasi Kampus (SVG Canvas)',
+    category: 'Akademik & Dosen',
+    icon: Layers,
+    desc: 'Bagan struktur organisasi universitas interaktif (Rektor, WR I-III, Dekan, 3 Kaprodi) dengan kontrol zoom, unduh SVG, & modal detail.',
+    badge: 'SVG Interaktif',
+    keywords: ['struktur', 'organisasi', 'rektor', 'dekan', 'bagan', 'svg', 'hirarki'],
   },
   {
     type: 'FacultyOrgChartBlock',
-    title: 'Bagan Struktur Organisasi',
+    title: 'Bagan Struktur Dekanat Fakultas',
     category: 'Akademik & Dosen',
     icon: Layers,
     desc: 'Bagan pimpinan dekanat, wakil dekan, ketua program studi, dan tata usaha.',
     badge: 'Struktur',
+    keywords: ['struktur', 'dekanat', 'fakultas', 'bagan'],
   },
   {
     type: 'LecturerGridBlock',
@@ -8774,6 +10155,7 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Users,
     desc: 'Daftar profil para dosen pengajar, gelar akademik, dan bidang riset.',
     badge: 'Dosen',
+    keywords: ['dosen', 'pengajar', 'peneliti', 'profil', 'nidn'],
   },
   {
     type: 'NewsListBlock',
@@ -8782,23 +10164,10 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Newspaper,
     desc: 'Tiga kolom berita akademik, jadwal wisuda, dan pendaftaran seminar.',
     badge: 'Berita',
+    keywords: ['berita', 'pengumuman', 'warta', 'artikel'],
   },
-  {
-    type: 'EventScheduleBlock',
-    title: 'Jadwal Agenda & Workshop',
-    category: 'Agenda & Kontak',
-    icon: Calendar,
-    desc: 'Detail acara seminar, tanggal, lokasi, jam, narasumber, dan pendaftaran.',
-    badge: 'Agenda',
-  },
-  {
-    type: 'ContactMapBlock',
-    title: 'Kontak & Peta Lokasi Kampus',
-    category: 'Agenda & Kontak',
-    icon: MapPin,
-    desc: 'Alamat resmi, email, telepon, jam operasional, dan embed peta lokasi.',
-    badge: 'Kontak',
-  },
+
+  // --- DATABASE LIVE ---
   {
     type: 'DbNewsBlock',
     title: 'Live DB: Berita & Pengumuman',
@@ -8806,6 +10175,16 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Newspaper,
     desc: 'Tampilkan artikel berita & warta kampus real-time disinkronkan dari Database.',
     badge: 'Live DB',
+    keywords: ['live', 'db', 'database', 'berita', 'realtime'],
+  },
+  {
+    type: 'NewsCarouselBlock',
+    title: 'Live DB: Carousel & Slideshow Berita Kampus',
+    category: 'Database Live',
+    icon: Newspaper,
+    desc: 'Slideshow carousel berita & pengumuman kampus interaktif dengan auto-play, navigasi slide, dan data live DB.',
+    badge: 'Carousel DB',
+    keywords: ['carousel', 'slideshow', 'berita', 'live', 'db'],
   },
   {
     type: 'DbStudyProgramBlock',
@@ -8814,6 +10193,7 @@ const PRE_DESIGNED_BLOCKS = [
     icon: GraduationCap,
     desc: 'Daftar prodi S1/D3, akreditasi, & kaprodi real-time dari Database.',
     badge: 'Live DB',
+    keywords: ['prodi', 'live', 'db', 'database'],
   },
   {
     type: 'DbCurriculumBlock',
@@ -8822,6 +10202,7 @@ const PRE_DESIGNED_BLOCKS = [
     icon: BookOpen,
     desc: 'Tabel daftar mata kuliah, kode MK, & SKS real-time dari Database.',
     badge: 'Live DB',
+    keywords: ['kurikulum', 'live', 'db', 'sks'],
   },
   {
     type: 'DbLecturerBlock',
@@ -8830,6 +10211,7 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Users,
     desc: 'Kartu profil dosen pengajar, NIDN, & keahlian riset dari Database.',
     badge: 'Live DB',
+    keywords: ['dosen', 'live', 'db', 'profil'],
   },
   {
     type: 'DbAcademicCalendarBlock',
@@ -8838,6 +10220,7 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Calendar,
     desc: 'Timeline jadwal registrasi, UTS, UAS, & wisuda real-time dari Database.',
     badge: 'Live DB',
+    keywords: ['kalender', 'akademik', 'live', 'db', 'jadwal'],
   },
   {
     type: 'DbTestimonialCarouselBlock',
@@ -8846,6 +10229,195 @@ const PRE_DESIGNED_BLOCKS = [
     icon: Quote,
     desc: 'Carousel & slideshow testimoni alumni FTI dengan efek animasi, bintang rating, dan auto-play.',
     badge: 'Slideshow',
+    keywords: ['testimoni', 'alumni', 'carousel', 'live', 'db'],
+  },
+  {
+    type: 'IframeBlock',
+    title: 'Iframe PMB Pendaftaran Mahasiswa Baru',
+    category: 'Database Live',
+    icon: GraduationCap,
+    desc: 'Block Iframe terintegrasi ke https://pmb.patria-artha.ac.id/join/reg/camaba.php dengan header, loader, & mode fullscreen.',
+    badge: 'PMB / Iframe',
+    keywords: ['pmb', 'iframe', 'pendaftaran', 'form', 'camaba'],
+  },
+
+  // --- KONTEN & TEKS ---
+  {
+    type: 'RichTextBlock',
+    title: 'Rich Text & Artikel',
+    category: 'Konten & Teks',
+    icon: FileText,
+    desc: 'Blok paragraf teks bebas, format artikel, heading, serta penjelasan rinci.',
+    badge: 'Standard',
+    keywords: ['text', 'rich text', 'paragraf', 'artikel', 'konten'],
+  },
+  {
+    type: 'ProfileVisionBlock',
+    title: 'Kartu Profil Visi, Misi & Tujuan',
+    category: 'Konten & Teks',
+    icon: Target,
+    desc: 'Kartu profil Visi Misi interaktif dengan preset gradient, glassmorphism, gambar background, typografi, konfigurasi jumlah kartu & link.',
+    badge: 'Profil & Visi',
+    keywords: ['visi', 'misi', 'tujuan', 'profil', 'kartu', 'target'],
+  },
+  {
+    type: 'AccordionFaqBlock',
+    title: 'Accordion FAQ & Tanya Jawab',
+    category: 'Konten & Teks',
+    icon: HelpCircle,
+    desc: 'Daftar pertanyaan dan jawaban interaktif yang dapat dibuka-tutup.',
+    badge: 'Interaktif',
+    keywords: ['faq', 'accordion', 'tanya jawab', 'pertanyaan'],
+  },
+  {
+    type: 'TestimonialBlock',
+    title: 'Kutipan & Testimoni Alumni',
+    category: 'Konten & Teks',
+    icon: MessageSquare,
+    desc: 'Kutipan kesan alumni, lulusan sukses, dan profil karir di industri tech.',
+    badge: 'Sosial',
+    keywords: ['testimoni', 'alumni', 'kutipan', 'review'],
+  },
+  {
+    type: 'CtaBoxBlock',
+    title: 'Call to Action Box (PMB)',
+    category: 'Konten & Teks',
+    icon: Award,
+    desc: 'Kotak ajakan pendaftaran mahasiswa baru dengan tombol aksi prominent.',
+    badge: 'Konversi',
+    keywords: ['cta', 'tombol', 'pmb', 'daftar', 'action'],
+  },
+  {
+    type: 'ModernBookCoverGridBlock',
+    title: 'Grid Sampul Buku & E-Book',
+    category: 'Konten & Teks',
+    icon: Book,
+    desc: 'Showcase sampul buku 3D, modul ajar, & e-book karya dosen/mahasiswa.',
+    badge: 'E-Book',
+    keywords: ['buku', 'ebook', 'modul', 'cover', 'publikasi'],
+  },
+  {
+    type: 'AlgoliaSolutionsBlock',
+    title: 'Algolia Solutions Grid',
+    category: 'Konten & Teks',
+    icon: Grid,
+    desc: 'Grid fitur solusi dan layanan Algolia-style dengan ikon dan tautan.',
+    badge: 'Algolia',
+    keywords: ['algolia', 'solutions', 'grid', 'fitur'],
+  },
+
+  // --- STATISTIK & MEDIA ---
+  {
+    type: 'StatsGridBlock',
+    title: 'Grid Angka Statistik',
+    category: 'Statistik & Media',
+    icon: Award,
+    desc: 'Counter pencapaian fakultas: persentase lulusan, akreditasi, jumlah lab & dosen.',
+    badge: 'Data',
+    keywords: ['stats', 'statistik', 'angka', 'counter', 'pencapaian'],
+  },
+  {
+    type: 'FeaturesGridBlock',
+    title: 'Grid Keunggulan & Fasilitas',
+    category: 'Statistik & Media',
+    icon: ShieldCheck,
+    desc: 'Kartu keunggulan prodi, sertifikasi AWS/Cisco, dan laboratorium GPU AI.',
+    badge: 'Fitur',
+    keywords: ['keunggulan', 'fasilitas', 'fitur', 'lab', 'grid'],
+  },
+  {
+    type: 'ImageGalleryBlock',
+    title: 'Galeri Foto & Fasilitas',
+    category: 'Statistik & Media',
+    icon: ImageIcon,
+    desc: 'Showcase foto laboratorium komputasi, ruang kuliah, dan gedung kampus.',
+    badge: 'Visual',
+    keywords: ['galeri', 'foto', 'gambar', 'fasilitas', 'gallery'],
+  },
+  {
+    type: 'VideoEmbedBlock',
+    title: 'Embed Video Profil YouTube',
+    category: 'Statistik & Media',
+    icon: Video,
+    desc: 'Pemutar video profil fakultas, tur kampus, atau rekaman webinar.',
+    badge: 'Video',
+    keywords: ['video', 'youtube', 'embed', 'putar', 'media'],
+  },
+
+  // --- N8N & INTERACTIVE ---
+  {
+    type: 'DarkHeroBlock',
+    title: 'n8n Dark Hero Banner',
+    category: 'n8n Blocks',
+    icon: Sparkles,
+    desc: 'Banner Hero gelap futuristik ala n8n dengan aksen partikel dan node animasi.',
+    badge: 'n8n Style',
+    keywords: ['n8n', 'dark', 'hero', 'futuristik', 'node'],
+  },
+  {
+    type: 'IntegrationMarqueeBlock',
+    title: 'n8n Integration Logo Marquee',
+    category: 'n8n Blocks',
+    icon: Globe,
+    desc: 'Baris running marquee logo integrasi teknologi dan jaringan mitra.',
+    badge: 'Marquee',
+    keywords: ['marquee', 'integration', 'logo', 'mitra', 'n8n'],
+  },
+  {
+    type: 'FeatureTabsBlock',
+    title: 'n8n Feature Tabs Interaktif',
+    category: 'n8n Blocks',
+    icon: Layout,
+    desc: 'Tab fitur interaktif ala n8n dengan preview gambar dan badge kategorisasi.',
+    badge: 'Tabs',
+    keywords: ['tabs', 'feature', 'n8n', 'interaktif'],
+  },
+  {
+    type: 'GradientTileGridBlock',
+    title: 'n8n Gradient Tile Grid',
+    category: 'n8n Blocks',
+    icon: Grid,
+    desc: 'Grid kartu berwarna gradient modern dengan ikon emoji dan efek hover.',
+    badge: 'Gradient',
+    keywords: ['gradient', 'tile', 'grid', 'n8n'],
+  },
+  {
+    type: 'MetricsCounterBlock',
+    title: 'n8n Counter Metrik Count-Up',
+    category: 'n8n Blocks',
+    icon: TrendingUp,
+    desc: 'Blok metrik statistik dengan animasi hitung naik (count-up) otomatis saat di-scroll.',
+    badge: 'Animasi',
+    keywords: ['metrics', 'counter', 'countup', 'animasi', 'n8n'],
+  },
+  {
+    type: 'DarkCtaBlock',
+    title: 'n8n Dark Call To Action',
+    category: 'n8n Blocks',
+    icon: Rocket,
+    desc: 'Section penutup ajakan bertindak (CTA) gelap dengan efek pendaran radial.',
+    badge: 'CTA',
+    keywords: ['cta', 'dark', 'n8n', 'action', 'pendaftaran'],
+  },
+
+  // --- AGENDA & KONTAK ---
+  {
+    type: 'EventScheduleBlock',
+    title: 'Jadwal Agenda & Workshop',
+    category: 'Agenda & Kontak',
+    icon: Calendar,
+    desc: 'Detail acara seminar, tanggal, lokasi, jam, narasumber, dan pendaftaran.',
+    badge: 'Agenda',
+    keywords: ['agenda', 'event', 'jadwal', 'seminar', 'workshop'],
+  },
+  {
+    type: 'ContactMapBlock',
+    title: 'Kontak & Peta Lokasi Kampus',
+    category: 'Agenda & Kontak',
+    icon: MapPin,
+    desc: 'Alamat resmi, email, telepon, jam operasional, dan embed peta lokasi.',
+    badge: 'Kontak',
+    keywords: ['kontak', 'peta', 'lokasi', 'map', 'alamat', 'telepon', 'email'],
   },
 ];
 
@@ -8854,16 +10426,57 @@ const BuildingBlocksCatalogPanel: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('Semua');
+  const [sortBy, setSortBy] = useState<'default' | 'name'>('default');
   const [addedToast, setAddedToast] = useState<string | null>(null);
 
-  const categories = ['Semua', 'Database Live', 'Hero & Banner', 'Konten & Teks', 'Statistik & Media', 'Akademik & Dosen', 'Agenda & Kontak'];
+  const categories = [
+    'Semua',
+    'Hero & Banner',
+    'Akademik & Dosen',
+    'Database Live',
+    'Konten & Teks',
+    'Statistik & Media',
+    'n8n Blocks',
+    'Agenda & Kontak',
+  ];
+
+  const quickFilterTags = [
+    { label: '🔥 Pimpinan', tag: 'pimpinan' },
+    { label: '🎓 Prodi', tag: 'prodi' },
+    { label: '⚡ Live DB', tag: 'live' },
+    { label: '📷 Galeri', tag: 'galeri' },
+    { label: '📢 Alert', tag: 'alert' },
+    { label: '📊 Metrik', tag: 'stats' },
+    { label: '⚡ n8n', tag: 'n8n' },
+  ];
+
+  // Hitung jumlah item per kategori
+  const getCategoryCount = (categoryName: string) => {
+    if (categoryName === 'Semua') return PRE_DESIGNED_BLOCKS.length;
+    return PRE_DESIGNED_BLOCKS.filter(b => b.category === categoryName).length;
+  };
 
   const filteredBlocks = PRE_DESIGNED_BLOCKS.filter(block => {
-    const matchesSearch = block.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          block.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          block.type.toLowerCase().includes(searchQuery.toLowerCase());
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) {
+      return activeCategory === 'Semua' || block.category === activeCategory;
+    }
+
+    const matchesTitle = block.title.toLowerCase().includes(q);
+    const matchesDesc = block.desc.toLowerCase().includes(q);
+    const matchesType = block.type.toLowerCase().includes(q);
+    const matchesCategoryName = block.category.toLowerCase().includes(q);
+    const matchesKeywords = block.keywords ? block.keywords.some(k => k.toLowerCase().includes(q)) : false;
+
+    const matchesSearch = matchesTitle || matchesDesc || matchesType || matchesCategoryName || matchesKeywords;
     const matchesCategory = activeCategory === 'Semua' || block.category === activeCategory;
+
     return matchesSearch && matchesCategory;
+  }).sort((a, b) => {
+    if (sortBy === 'name') {
+      return a.title.localeCompare(b.title);
+    }
+    return 0;
   });
 
   const handleInsert = (blockType: string, blockTitle: string) => {
@@ -8894,6 +10507,8 @@ const BuildingBlocksCatalogPanel: React.FC = () => {
     }
   };
 
+  const isFiltered = searchQuery.trim() !== '' || activeCategory !== 'Semua';
+
   return (
     <>
       {/* Floating Panel Toggle Trigger Button */}
@@ -8901,10 +10516,10 @@ const BuildingBlocksCatalogPanel: React.FC = () => {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 left-6 z-40 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#800020] via-red-800 to-amber-700 hover:from-red-900 hover:to-amber-800 text-white font-extrabold text-xs shadow-2xl flex items-center gap-2 border border-white/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-        title="Buka Katalog 18 Blok Pre-designed Komponen"
+        title={`Buka Katalog ${PRE_DESIGNED_BLOCKS.length} Blok Pre-designed Komponen`}
       >
         <LayoutGrid className="w-4 h-4 text-amber-300" />
-        <span>Katalog Blok (18)</span>
+        <span>Katalog Blok ({PRE_DESIGNED_BLOCKS.length})</span>
         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping ml-0.5" />
       </button>
 
@@ -8919,15 +10534,20 @@ const BuildingBlocksCatalogPanel: React.FC = () => {
       {/* Dedicated Sidebar Drawer Overlay */}
       {isOpen && (
         <div className="fixed inset-y-0 left-0 z-50 w-80 sm:w-96 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700 text-white flex flex-col shadow-2xl animate-in slide-in-from-left duration-200">
-          {/* Header */}
-          <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+          {/* Header Drawer */}
+          <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/70">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#800020] to-amber-600 flex items-center justify-center text-white font-black shadow-md">
-                <LayoutGrid className="w-4 h-4" />
+              <div className="w-8.5 h-8.5 rounded-xl bg-gradient-to-br from-[#800020] to-amber-600 flex items-center justify-center text-white font-black shadow-md">
+                <LayoutGrid className="w-4.5 h-4.5 text-amber-300" />
               </div>
               <div>
-                <h3 className="text-xs font-extrabold text-white tracking-tight">Katalog Blok Komponen</h3>
-                <p className="text-[10px] text-slate-400">Klik +Tambah Ke Halaman atau Drag Blok</p>
+                <h3 className="text-xs font-extrabold text-white tracking-tight flex items-center gap-1.5">
+                  Katalog Blok Komponen
+                  <span className="px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-[10px]">
+                    {PRE_DESIGNED_BLOCKS.length} Total
+                  </span>
+                </h3>
+                <p className="text-[10px] text-slate-400">Klik +Tambah Ke Halaman untuk menyusun layout</p>
               </div>
             </div>
             <button
@@ -8939,53 +10559,127 @@ const BuildingBlocksCatalogPanel: React.FC = () => {
             </button>
           </div>
 
-          {/* Search Bar */}
-          <div className="p-3 border-b border-slate-800/80 bg-slate-950/30">
+          {/* Controls Panel: Search Bar, Quick Tags, Category Pills, Sort */}
+          <div className="p-3.5 border-b border-slate-800/80 bg-slate-950/40 space-y-3">
+            {/* Search Input Box */}
             <div className="relative">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+              <Search className="w-4 h-4 absolute left-3 top-2.5 text-amber-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari blok (e.g. Hero, Stats, Dosen, Video)..."
-                className="w-full pl-8 pr-8 py-1.5 text-xs bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 transition-all"
+                placeholder="Cari (e.g. pimpinan, mesin, dosen, video, live)..."
+                className="w-full pl-9 pr-9 py-2 text-xs bg-slate-800/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all shadow-inner"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-2 text-slate-400 hover:text-white text-xs"
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-white transition-colors"
+                  title="Hapus Kata Kunci"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
 
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-1.5 mt-2.5 overflow-x-auto pb-1 scrollbar-none">
-              {categories.map((cat) => (
+            {/* Quick Filter Tag Buttons */}
+            <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-none">
+              <span className="text-[10px] font-bold text-slate-400 mr-1 shrink-0 flex items-center gap-1">
+                <Filter className="w-3 h-3 text-amber-400" /> Tag:
+              </span>
+              {quickFilterTags.map((t) => (
                 <button
-                  key={cat}
+                  key={t.tag}
                   type="button"
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-2.5 py-1 text-[10px] font-bold rounded-lg shrink-0 transition-all ${
-                    activeCategory === cat
-                      ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
-                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
+                  onClick={() => setSearchQuery(searchQuery === t.tag ? '' : t.tag)}
+                  className={`px-2 py-0.5 text-[10px] font-bold rounded-lg shrink-0 border transition-all ${
+                    searchQuery === t.tag
+                      ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-xs'
+                      : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-white'
                   }`}
                 >
-                  {cat}
+                  {t.label}
                 </button>
               ))}
             </div>
+            {/* Main Category Filter Pills dengan Badge Count */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+              {categories.map((cat) => {
+                const count = getCategoryCount(cat);
+                const isActive = activeCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-2.5 py-1 text-[10px] font-bold rounded-xl shrink-0 border transition-all flex items-center gap-1.5 ${
+                      isActive
+                        ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 border-amber-300 shadow-md font-black'
+                        : 'bg-slate-800/60 text-slate-300 border-slate-700/60 hover:bg-slate-800 hover:text-white'
+                    }`}
+                  >
+                    <span>{cat}</span>
+                    <span className={`px-1.5 py-0.2 text-[9px] rounded-md font-extrabold ${
+                      isActive ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-900 text-slate-400'
+                    }`}>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Status Live Filter Match Count & Reset Button */}
+            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+              <span>
+                Menampilkan <strong className="text-amber-300">{filteredBlocks.length}</strong> dari {PRE_DESIGNED_BLOCKS.length} blok
+              </span>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSortBy(sortBy === 'default' ? 'name' : 'default')}
+                  className="text-[10px] font-bold text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1"
+                  title="Ubah Urutan Penampilan"
+                >
+                  <Sliders className="w-3 h-3" />
+                  <span>{sortBy === 'name' ? 'A-Z' : 'Default'}</span>
+                </button>
+
+                {isFiltered && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery('');
+                      setActiveCategory('Semua');
+                    }}
+                    className="text-[10px] font-extrabold text-red-400 hover:text-red-300 underline cursor-pointer"
+                  >
+                    Reset Filter
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/* Blocks List */}
+          {/* Blocks Catalog Scrollable List */}
           <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
             {filteredBlocks.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 text-xs">
-                <Search className="w-8 h-8 mx-auto mb-2 text-slate-600 opacity-60" />
-                <p>Tidak ada blok komponen yang cocok dengan kata kunci pencarian.</p>
+              <div className="p-8 text-center text-slate-400 text-xs bg-slate-950/30 rounded-2xl border border-slate-800 my-4">
+                <Search className="w-8 h-8 mx-auto mb-2 text-amber-500 opacity-60 animate-pulse" />
+                <p className="font-bold text-white mb-1">Tidak ada blok komponen yang cocok</p>
+                <p className="text-[11px] text-slate-400 mb-3">Coba gunakan kata kunci lain seperti <em>pimpinan, mesin, dosen, berita, live</em></p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setActiveCategory('Semua');
+                  }}
+                  className="px-3 py-1.5 text-xs font-bold bg-amber-400 text-slate-950 rounded-xl hover:bg-amber-300 transition-all shadow-md"
+                >
+                  Tampilkan Semua Blok ({PRE_DESIGNED_BLOCKS.length})
+                </button>
               </div>
             ) : (
               filteredBlocks.map((block) => {
@@ -9001,27 +10695,36 @@ const BuildingBlocksCatalogPanel: React.FC = () => {
                           <IconComp className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-1.5 flex-wrap">
                             <h4 className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">
                               {block.title}
                             </h4>
+                            <span className="px-1.5 py-0.3 rounded text-[9px] font-extrabold bg-slate-900 text-slate-400 border border-slate-700 font-mono">
+                              {block.type}
+                            </span>
                           </div>
                           <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-2 leading-tight">
                             {block.desc}
                           </p>
                         </div>
                       </div>
-                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20 shrink-0">
-                        {block.badge}
-                      </span>
+
+                      {block.badge && (
+                        <span className="px-2 py-0.5 text-[9px] font-extrabold rounded-md bg-amber-400/10 text-amber-300 border border-amber-400/30 shrink-0">
+                          {block.badge}
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex items-center justify-between pt-1 border-t border-slate-700/40">
-                      <span className="text-[9px] font-mono text-slate-500">{block.category}</span>
+                      <span className="text-[9px] text-slate-500 font-medium">
+                        Kategori: <strong className="text-slate-400">{block.category}</strong>
+                      </span>
                       <button
                         type="button"
                         onClick={() => handleInsert(block.type, block.title)}
-                        className="px-2.5 py-1 text-[11px] font-extrabold bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-slate-950 rounded-lg flex items-center gap-1 transition-all shadow-xs active:scale-95 cursor-pointer"
+                        className="px-3 py-1 text-[11px] font-extrabold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl transition-all shadow-md active:scale-95 flex items-center gap-1 cursor-pointer"
+                        title={`Tambahkan blok "${block.title}" ke posisi akhir halaman`}
                       >
                         <Plus className="w-3.5 h-3.5 stroke-[3]" />
                         <span>Tambah Ke Halaman</span>
@@ -9226,15 +10929,16 @@ export const PageBuilder: React.FC<PageBuilderProps> = ({
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col">
       
       {/* Top Page Builder Control Toolbar */}
-      <header className="sticky top-0 z-50 bg-[#5A0017] text-white px-4 py-3 border-b border-[#800020] shadow-lg flex flex-wrap items-center justify-between gap-3">
+      <header className="sticky top-0 z-50 bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white px-4 py-3 border-b border-red-500 shadow-lg flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           {onBackToMainSite && (
             <button
               onClick={onBackToMainSite}
               className="px-3 py-1.5 text-xs font-bold rounded-xl bg-black/30 hover:bg-black/50 text-white flex items-center gap-1.5 transition-colors border border-white/20"
+              title="Kembali ke Manajemen Halaman Custom & Visual Page Builder"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Kembali ke Admin Dashboard</span>
+              <span>Kembali ke Manajemen Halaman Custom & Visual Page Builder</span>
             </button>
           )}
 
@@ -9410,7 +11114,7 @@ export const PageBuilder: React.FC<PageBuilderProps> = ({
       )}
 
       {/* Main Workspace Area */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 min-h-0 relative">
         {mode === 'editor' ? (
           <div className="puck-editor-container bg-white dark:bg-slate-900 min-h-[calc(100vh-60px)]">
             <Puck
@@ -9459,7 +11163,7 @@ export const PageBuilder: React.FC<PageBuilderProps> = ({
             </div>
 
             {/* Rendered View using Puck Render */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-2xl">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-2xl border-none">
               <Render config={puckConfig} data={data} />
             </div>
           </div>

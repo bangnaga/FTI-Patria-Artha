@@ -33,6 +33,7 @@ export default function AdminPage() {
 
   const [viewMode, setViewMode] = useState<'dashboard' | 'builder'>('dashboard');
   const [editingCustomPage, setEditingCustomPage] = useState<any | null>(null);
+  const [activeAdminTab, setActiveAdminTab] = useState<string>('custom-page');
 
   if (!adminUser) {
     return (
@@ -52,7 +53,10 @@ export default function AdminPage() {
     return (
       <PageBuilder
         editingPage={editingCustomPage}
-        onBackToMainSite={() => setViewMode('dashboard')}
+        onBackToMainSite={() => {
+          setActiveAdminTab('custom-page');
+          setViewMode('dashboard');
+        }}
         onSavePage={async (pageObj) => {
           try {
             let saved: any = null;
@@ -115,6 +119,7 @@ export default function AdminPage() {
 
   return (
     <AdminDashboard
+      initialTab={activeAdminTab}
       currentUser={adminUser}
       onLogout={() => {
         handleAdminLogout();
@@ -123,6 +128,7 @@ export default function AdminPage() {
       onBackToWebsite={() => router.push('/')}
       onOpenPageBuilder={(pageObj) => {
         setEditingCustomPage(pageObj || null);
+        setActiveAdminTab('custom-page');
         setViewMode('builder');
       }}
       newsList={newsList}

@@ -150,6 +150,17 @@ export async function POST(request: Request, context: { params: Promise<{ model:
     delete dataToSave.createdAt;
     delete dataToSave.updatedAt;
 
+    if (params.model === 'news' && dataToSave.title) {
+      if (!dataToSave.slug || !String(dataToSave.slug).trim()) {
+        const titleStr = String(dataToSave.title).trim();
+        dataToSave.slug = titleStr
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+    }
+
     for (const key in dataToSave) {
       if (Array.isArray(dataToSave[key]) || (typeof dataToSave[key] === 'object' && dataToSave[key] !== null)) {
         dataToSave[key] = JSON.stringify(dataToSave[key]);

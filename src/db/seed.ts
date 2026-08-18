@@ -22,64 +22,60 @@ import {
   ACCREDITATION_DATA,
   DEFAULT_MEDIA
 } from '../data/mockData';
+import { slugify } from '../utils/slugify';
 
 export async function seedDatabaseIfEmpty() {
   try {
-    // 1. Seed News
-    const newsCount = await prisma.news.count();
-    if (newsCount === 0) {
-      console.log('🌱 Seeding initial News data into DB...');
-      for (const news of NEWS_DATA) {
-        const data = {
-          title: news.title,
-          slug: news.slug,
-          category: news.category,
-          date: news.date,
-          author: news.author,
-          thumbnail: news.thumbnail,
-          summary: news.summary,
-          content: news.content,
-          tags: JSON.stringify(news.tags || []),
-          featured: Boolean(news.featured),
-        };
-        await prisma.news.upsert({
-          where: { id: news.id },
-          update: data,
-          create: { id: news.id, ...data },
-        });
-      }
+    // 1. Seed & Update News Data with Slugs
+    console.log('🌱 Seeding & updating News data with clean slugs...');
+    for (const news of NEWS_DATA) {
+      const generatedSlug = news.slug || slugify(news.title) || news.id;
+      const data = {
+        title: news.title,
+        slug: generatedSlug,
+        category: news.category,
+        date: news.date,
+        author: news.author,
+        thumbnail: news.thumbnail,
+        summary: news.summary,
+        content: news.content,
+        tags: JSON.stringify(news.tags || []),
+        featured: Boolean(news.featured),
+      };
+      await prisma.news.upsert({
+        where: { id: news.id },
+        update: data,
+        create: { id: news.id, ...data },
+      });
     }
 
     // 2. Seed Lecturers
-    const lecturerCount = await prisma.lecturer.count();
-    if (lecturerCount === 0) {
-      console.log('🌱 Seeding initial Lecturers data into DB...');
-      for (const lec of LECTURERS_DATA) {
-        const data = {
-          name: lec.name,
-          nidn: lec.nidn,
-          title: lec.title,
-          photo: lec.photo,
-          expertise: JSON.stringify(lec.expertise || []),
-          expertiseTags: JSON.stringify(lec.expertiseTags || []),
-          email: lec.email,
-          lab: lec.lab,
-          education: JSON.stringify(lec.education || []),
-          googleScholar: lec.googleScholar || null,
-          scopus: lec.scopus || null,
-          sinta: lec.sinta || null,
-          orcid: lec.orcid || null,
-          researchGate: lec.researchGate || null,
-          coursesTaught: JSON.stringify(lec.coursesTaught || []),
-          publicationsCount: lec.publicationsCount || 0,
-          studyProgram: lec.studyProgram || 'Informatika',
-        };
-        await prisma.lecturer.upsert({
-          where: { id: lec.id },
-          update: data,
-          create: { id: lec.id, ...data },
-        });
-      }
+    console.log('🌱 Seeding & updating Lecturers data with default profile photos...');
+    for (const lec of LECTURERS_DATA) {
+      const data = {
+        name: lec.name,
+        nidn: lec.nidn,
+        title: lec.title,
+        photo: lec.photo || '/uploads/noface-1787027055368-je087.jpg',
+        expertise: JSON.stringify(lec.expertise || []),
+        expertiseTags: JSON.stringify(lec.expertiseTags || []),
+        email: lec.email,
+        lab: lec.lab,
+        education: JSON.stringify(lec.education || []),
+        googleScholar: lec.googleScholar || null,
+        scopus: lec.scopus || null,
+        sinta: lec.sinta || null,
+        orcid: lec.orcid || null,
+        researchGate: lec.researchGate || null,
+        coursesTaught: JSON.stringify(lec.coursesTaught || []),
+        publicationsCount: lec.publicationsCount || 0,
+        studyProgram: lec.studyProgram || 'Informatika',
+      };
+      await prisma.lecturer.upsert({
+        where: { id: lec.id },
+        update: data,
+        create: { id: lec.id, ...data },
+      });
     }
 
     // 3. Seed Study Programs
@@ -109,30 +105,28 @@ export async function seedDatabaseIfEmpty() {
       }
     }
 
-    // 4. Seed Courses
-    const courseCount = await prisma.course.count();
-    if (courseCount === 0) {
-      console.log('🌱 Seeding initial Courses data into DB...');
-      for (const course of COURSES_DATA) {
-        const data = {
-          code: course.code,
-          name: course.name,
-          sks: course.sks,
-          semester: course.semester,
-          category: course.category,
-          specialization: course.specialization || null,
-          studyProgram: course.studyProgram || 'Informatika',
-          description: course.description,
-          prerequisites: JSON.stringify(course.prerequisites || []),
-          syllabusTopic: JSON.stringify(course.syllabusTopic || []),
-          rpsUrl: course.rpsUrl || null,
-        };
-        await prisma.course.upsert({
-          where: { id: course.id },
-          update: data,
-          create: { id: course.id, ...data },
-        });
-      }
+    // 4. Seed Courses (Always refresh with full 168 courses from curriculum table)
+    console.log('🌱 Seeding fresh 168 Kurikulum Courses into DB...');
+    await prisma.course.deleteMany({});
+    for (const course of COURSES_DATA) {
+      const data = {
+        code: course.code,
+        name: course.name,
+        sks: course.sks,
+        semester: course.semester,
+        category: course.category,
+        specialization: course.specialization || null,
+        studyProgram: course.studyProgram || 'Teknik Informatika',
+        description: course.description || `Mata kuliah ${course.name}`,
+        prerequisites: JSON.stringify(course.prerequisites || []),
+        syllabusTopic: JSON.stringify(course.syllabusTopic || []),
+        rpsUrl: course.rpsUrl || null,
+      };
+      await prisma.course.upsert({
+        where: { id: course.id },
+        update: data,
+        create: { id: course.id, ...data },
+      });
     }
 
     // 5. Seed Student Organization
@@ -355,7 +349,7 @@ export async function seedDatabaseIfEmpty() {
           role: at.role,
           company: at.company,
           companyLogo: at.companyLogo,
-          photo: at.photo,
+          photo: at.photo || '/uploads/noface-1787027055368-je087.jpg',
           quote: at.quote,
           linkedinUrl: at.linkedinUrl || null,
         },

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { PMBTrack, FAQItem } from '../types';
+import { PmbRegistrationIframe } from './PmbRegistrationIframe';
 import { 
   GraduationCap, 
   CheckCircle2, 
@@ -103,17 +104,50 @@ export const PmbAndServices: React.FC<PmbProps> = ({ onOpenAIAssistant }) => {
                   Estimasi Biaya: <strong className="text-slate-900 dark:text-white">{track.feeEstimate}</strong>
                 </p>
 
+                <a
+                  href="/pendaftaran"
+                  className="w-full py-2.5 bg-gradient-to-r from-[#800020] to-[#9B2C2C] hover:from-[#9B2C2C] hover:to-[#800020] text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-red-950/20"
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  <span>Daftar Online PMB (Iframe)</span>
+                </a>
+
                 <button
                   onClick={onOpenAIAssistant}
-                  className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm shadow-red-500/20"
+                  className="w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   <span>Konsultasi PMB via AI Bot</span>
                 </button>
               </div>
 
             </div>
           ))}
+        </div>
+
+        {/* Form Iframe Block PMB Section */}
+        <div className="mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 text-xs font-bold mb-2">
+              <Sparkles className="w-3.5 h-3.5" /> Direct Registration Form
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+              Formulir Pendaftaran Mahasiswa Baru Online
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Isi data calon mahasiswa baru secara langsung melalui portal resmi PMB Patria Artha di bawah ini
+            </p>
+          </div>
+
+          <PmbRegistrationIframe
+            src="https://pmb.patria-artha.ac.id/join/reg/camaba.php"
+            height="850px"
+            title="Formulir PMB Universitas Patria Artha"
+            subtitle="https://pmb.patria-artha.ac.id/join/reg/camaba.php"
+            themeStyle="maroon"
+            showCardHeader={true}
+            showFooterNotice={true}
+          />
         </div>
 
 

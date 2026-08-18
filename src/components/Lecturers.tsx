@@ -219,7 +219,7 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
           {viewMode === 'grid' ? (
             <motion.div
               layout
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
             >
               {filteredLecturers.map((lecturer) => (
                 <motion.div
@@ -230,39 +230,39 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
                   transition={{ duration: 0.25, ease: 'easeOut' }}
                   key={lecturer.id}
                   onClick={() => setActiveLecturerModal(lecturer)}
-                  className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-[#800020]/60 transition-all duration-300 cursor-pointer flex flex-col justify-between group hover:-translate-y-1"
+                  className="bg-white dark:bg-slate-800 rounded-2xl p-3 sm:p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-[#800020]/60 transition-all duration-300 cursor-pointer flex flex-col justify-between group hover:-translate-y-1"
                 >
                   <div>
-                    <div className="flex items-start gap-4 mb-4">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2.5 sm:gap-4 mb-3 sm:mb-4 text-center sm:text-left">
                       {/* Pas Foto 3:4 Ratio Frame */}
-                      <div className="w-20 sm:w-24 aspect-[3/4] rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300">
+                      <div className="w-16 sm:w-24 aspect-[3/4] rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300">
                         <img
-                          src={lecturer.photo || lecturer.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                          src={lecturer.photo || lecturer.avatar || '/uploads/noface-1787027055368-je087.jpg'}
                           alt={lecturer.name}
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover object-top"
                         />
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
+                      <div className="min-w-0 flex-1 w-full">
+                        <div className="flex items-center justify-center sm:justify-start gap-1 flex-wrap">
+                          <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
                             NIDN: {lecturer.nidn}
                           </span>
                           {lecturer.studyProgram && (
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                            <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 truncate max-w-[110px] sm:max-w-none">
                               {lecturer.studyProgram}
                             </span>
                           )}
                         </div>
-                        <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mt-1 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                        <h3 className="font-bold text-slate-900 dark:text-white text-xs sm:text-base mt-1 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                           {lecturer.name}
                         </h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
+                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
                           {lecturer.title}
                         </p>
                         {lecturer.jabatan && (
-                          <div className="mt-1.5">
-                            <span className="px-2 py-0.5 rounded text-[10px] font-black bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 inline-block">
+                          <div className="mt-1">
+                            <span className="px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-black bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 inline-block">
                               💼 {lecturer.jabatan}
                             </span>
                           </div>
@@ -270,29 +270,29 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
                       </div>
                     </div>
 
-                    <div className="space-y-2 text-xs border-t border-slate-100 dark:border-slate-700/80 pt-3">
-                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                    <div className="space-y-1.5 sm:space-y-2 text-[11px] sm:text-xs border-t border-slate-100 dark:border-slate-700/80 pt-2.5 sm:pt-3">
+                      <div className="flex items-center justify-center sm:justify-start gap-1.5 text-slate-600 dark:text-slate-300">
                         <FlaskConical className="w-3.5 h-3.5 text-red-500 shrink-0" />
                         <span className="truncate">{lecturer.lab || 'Lab FTI UPA'}</span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center justify-center sm:justify-start gap-1.5 text-slate-500 dark:text-slate-400">
                         <Mail className="w-3.5 h-3.5 text-rose-500 shrink-0" />
                         <span className="truncate">{lecturer.email}</span>
                       </div>
                     </div>
 
                     {/* Expertise Tags */}
-                    <div className="flex flex-wrap gap-1 mt-4">
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 mt-3 sm:mt-4">
                       {ensureArray(lecturer.expertiseTags).map((tag, idx) => (
-                        <span key={idx} className="text-[10px] font-medium px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded">
+                        <span key={idx} className="text-[9px] sm:text-[10px] font-medium px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded">
                           {tag}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end text-xs font-semibold text-red-600 dark:text-red-400">
+                  <div className="mt-4 sm:mt-6 pt-2.5 sm:pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-center sm:justify-end text-[11px] sm:text-xs font-semibold text-red-600 dark:text-red-400">
                     <span className="group-hover:translate-x-1 transition-transform">Profil Detail →</span>
                   </div>
 
@@ -303,7 +303,7 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
             <motion.div
               layout
               ref={scrollContainerRef}
-              className="flex items-stretch gap-6 overflow-x-auto pb-6 scroll-smooth snap-x snap-mandatory scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700"
+              className="flex items-stretch gap-3 sm:gap-6 overflow-x-auto pb-6 scroll-smooth snap-x snap-mandatory scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700"
             >
               {filteredLecturers.map((lecturer) => (
                 <motion.div
@@ -314,34 +314,34 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
                   transition={{ duration: 0.25, ease: 'easeOut' }}
                   key={lecturer.id}
                   onClick={() => setActiveLecturerModal(lecturer)}
-                  className="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-[#800020]/60 transition-all duration-300 cursor-pointer flex flex-col justify-between group snap-start hover:-translate-y-1 shrink-0"
+                  className="min-w-[160px] sm:min-w-[320px] max-w-[180px] sm:max-w-[320px] bg-white dark:bg-slate-800 rounded-2xl p-3 sm:p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-[#800020]/60 transition-all duration-300 cursor-pointer flex flex-col justify-between group snap-start hover:-translate-y-1 shrink-0"
                 >
                   <div>
-                    <div className="flex items-start gap-4 mb-4">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2.5 sm:gap-4 mb-3 sm:mb-4 text-center sm:text-left">
                       {/* Pas Foto 3:4 Ratio Frame */}
-                      <div className="w-20 sm:w-24 aspect-[3/4] rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300">
+                      <div className="w-16 sm:w-24 aspect-[3/4] rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-300">
                         <img
-                          src={lecturer.photo || lecturer.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                          src={lecturer.photo || lecturer.avatar || '/uploads/noface-1787027055368-je087.jpg'}
                           alt={lecturer.name}
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover object-top"
                         />
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
+                      <div className="min-w-0 flex-1 w-full">
+                        <div className="flex items-center justify-center sm:justify-start gap-1 flex-wrap">
+                          <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
                             NIDN: {lecturer.nidn}
                           </span>
                         </div>
-                        <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mt-1 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                        <h3 className="font-bold text-slate-900 dark:text-white text-xs sm:text-base mt-1 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                           {lecturer.name}
                         </h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
+                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
                           {lecturer.title}
                         </p>
                         {lecturer.jabatan && (
-                          <div className="mt-1.5">
-                            <span className="px-2 py-0.5 rounded text-[10px] font-black bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 inline-block">
+                          <div className="mt-1">
+                            <span className="px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-black bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 inline-block">
                               💼 {lecturer.jabatan}
                             </span>
                           </div>
@@ -349,29 +349,29 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
                       </div>
                     </div>
 
-                    <div className="space-y-2 text-xs border-t border-slate-100 dark:border-slate-700/80 pt-3">
-                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                    <div className="space-y-1.5 sm:space-y-2 text-[11px] sm:text-xs border-t border-slate-100 dark:border-slate-700/80 pt-2.5 sm:pt-3">
+                      <div className="flex items-center justify-center sm:justify-start gap-1.5 text-slate-600 dark:text-slate-300">
                         <FlaskConical className="w-3.5 h-3.5 text-red-500 shrink-0" />
                         <span className="truncate">{lecturer.lab || 'Lab FTI UPA'}</span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center justify-center sm:justify-start gap-1.5 text-slate-500 dark:text-slate-400">
                         <Mail className="w-3.5 h-3.5 text-rose-500 shrink-0" />
                         <span className="truncate">{lecturer.email}</span>
                       </div>
                     </div>
 
                     {/* Expertise Tags */}
-                    <div className="flex flex-wrap gap-1 mt-4">
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 mt-3 sm:mt-4">
                       {ensureArray(lecturer.expertiseTags).map((tag, idx) => (
-                        <span key={idx} className="text-[10px] font-medium px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded">
+                        <span key={idx} className="text-[9px] sm:text-[10px] font-medium px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded">
                           {tag}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end text-xs font-semibold text-red-600 dark:text-red-400">
+                  <div className="mt-4 sm:mt-6 pt-2.5 sm:pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-center sm:justify-end text-[11px] sm:text-xs font-semibold text-red-600 dark:text-red-400">
                     <span className="group-hover:translate-x-1 transition-transform">Profil Detail →</span>
                   </div>
 
@@ -407,7 +407,7 @@ export const Lecturers: React.FC<LecturersProps> = ({ lecturerList: propLecturer
                 <div className="flex items-start gap-4">
                   <div className="w-24 sm:w-28 aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#800020]/30 bg-slate-100 dark:bg-slate-800 shrink-0 shadow-md">
                     <img
-                      src={activeLecturerModal.photo || activeLecturerModal.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                      src={activeLecturerModal.photo || activeLecturerModal.avatar || '/uploads/noface-1787027055368-je087.jpg'}
                       alt={activeLecturerModal.name}
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover object-top"

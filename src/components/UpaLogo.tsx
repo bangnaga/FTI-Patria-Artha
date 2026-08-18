@@ -30,7 +30,7 @@ export const UpaLogo: React.FC<UpaLogoProps> = ({
       {/* Clean Modern Badge Logo (Non-SVG) */}
       <div 
         style={{ width: `${dimension}px`, height: `${dimension}px`, fontSize: `${fontSize}px` }}
-        className="rounded-2xl bg-gradient-to-tr from-[#800020] via-[#9B2C2C] to-red-600 text-white font-black flex items-center justify-center shadow-lg border border-white/20 shrink-0 select-none tracking-widest hover:scale-105 transition-transform duration-200"
+        className="rounded-2xl bg-gradient-to-tr from-red-600 via-red-500 to-rose-600 text-white font-black flex items-center justify-center shadow-lg border border-white/20 shrink-0 select-none tracking-widest hover:scale-105 transition-transform duration-200"
       >
         UPA
       </div>

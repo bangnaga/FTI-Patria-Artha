@@ -33,17 +33,17 @@ export const defaultCustomPages: CustomPageItem[] = [
           }
         },
         {
-          type: 'DeanWelcomeBlock',
+          type: 'SambutanBlock',
           props: {
             id: 'dean-welcome-main',
-            badgeText: 'Sambutan Dekan',
+            badgeText: 'Sambutan Pimpinan',
             heading: 'Membangun Generasi Unggul Berbasis',
             highlightHeading: 'Inovasi & Teknologi',
-            paragraph1: '"Selamat datang di Fakultas Teknik & Teknologi. Kami berkomitmen untuk menyelenggarakan pendidikan tinggi berkualitas global yang mengintegrasikan kecerdasan akademis dengan integritas moral."',
+            paragraph1: '"Selamat datang di Fakultas Teknik & Informatika. Kami berkomitmen untuk menyelenggarakan pendidikan tinggi berkualitas global yang mengintegrasikan kecerdasan akademis dengan integritas moral."',
             paragraph2: 'Di era transformasi digital yang bergerak cepat, kami terus beradaptasi dengan menghadirkan kurikulum berbasis industri, riset mutakhir, serta kolaborasi lintas disiplin demi mencetak lulusan yang siap bersaing secara global.',
-            deanName: 'Prof. Dr. Ir. H. Ahmad Dahlan, M.T.',
-            deanTitle: 'Dekan Fakultas Teknik & Teknologi',
-            deanPhoto: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
+            pimpinanName: 'Prof. Dr. Ir. H. Ahmad Dahlan, M.T.',
+            pimpinanTitle: 'Pimpinan Fakultas Teknik & Informatika',
+            pimpinanPhoto: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
             buttonText: 'Baca Sambutan Selengkapnya',
             buttonLink: '#sambutan-lengkap',
             signatureText: 'A. Dahlan',
@@ -51,8 +51,12 @@ export const defaultCustomPages: CustomPageItem[] = [
             themeStyle: 'dark',
             showSignature: 'true',
             showDecorativeBlobs: 'true',
+            bgStyle: 'transparent',
+            fontFamily: 'sans',
+            textAlign: 'left',
             paddingY: 'xl',
-            paddingX: 'lg'
+            paddingX: 'lg',
+            borderRadius: 'lg'
           }
         }
       ]
@@ -192,17 +196,17 @@ export const defaultCustomPages: CustomPageItem[] = [
           }
         },
         {
-          type: 'DeanWelcomeBlock',
+          type: 'SambutanBlock',
           props: {
             id: 'dean-welcome-profil',
-            badgeText: 'Sambutan Dekan FTI UPA',
+            badgeText: 'Sambutan Pimpinan FTI UPA',
             heading: 'Mencetak Talenta Digital Unggul Berbasis',
             highlightHeading: 'Inovasi & Integritas',
             paragraph1: '"Selamat datang di Fakultas Teknik & Informatika Universitas Patria Artha. Kami berkomitmen untuk menyelenggarakan pendidikan tinggi berkualitas global yang mengintegrasikan keunggulan komputasi dengan nilai-nilai etika profesional."',
             paragraph2: 'Di era transformasi digital dan revolusi industri AI yang bergerak cepat, FTI UPA secara konsisten menerapkan kurikulum berbasis Outcome-Based Education (OBE), fasilitas riset modern, serta kemitraan dengan industri teknologi terkemuka demi menjamin lulusan yang langsung terserap di dunia kerja.',
-            deanName: 'Dr. Eng. Ir. Herman Pratama, S.T., M.T.',
-            deanTitle: 'Dekan Fakultas Teknik & Informatika UPA',
-            deanPhoto: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
+            pimpinanName: 'Dr. Eng. Ir. Herman Pratama, S.T., M.T.',
+            pimpinanTitle: 'Pimpinan Fakultas Teknik & Informatika UPA',
+            pimpinanPhoto: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
             buttonText: 'Lihat Profil Lengkap Dekanat',
             buttonLink: 'organisasi',
             signatureText: 'Herman Pratama',
@@ -763,6 +767,45 @@ export const defaultCustomPages: CustomPageItem[] = [
             bgStyle: 'white',
             paddingY: 'lg',
             borderRadius: 'lg'
+          }
+        }
+      ]
+    }
+  },
+  {
+    id: 'cp_pendaftaran',
+    title: 'Pendaftaran PMB Online (Iframe)',
+    slug: 'pendaftaran',
+    published: true,
+    views: 2410,
+    updatedAt: new Date().toISOString(),
+    content: {
+      root: { props: { title: 'Pendaftaran PMB Patria Artha' } },
+      content: [
+        {
+          type: 'PageBannerBlock',
+          props: {
+            id: 'banner-pmb-reg',
+            title: 'Pendaftaran Mahasiswa Baru (PMB)',
+            subtitle: 'Formulir Online Penerimaan Calon Mahasiswa Baru Universitas Patria Artha',
+            badge: 'PMB Online',
+            breadcrumb: 'Beranda / Pendaftaran PMB',
+            bannerHeight: 'compact',
+            bgType: 'gradient',
+            accentColor: 'maroon'
+          }
+        },
+        {
+          type: 'IframeBlock',
+          props: {
+            id: 'pmb-iframe-main',
+            src: 'https://pmb.patria-artha.ac.id/join/reg/camaba.php',
+            title: 'Formulir Pendaftaran Mahasiswa Baru (CAMABA)',
+            subtitle: 'Portal Resmi Penerimaan Mahasiswa Baru Universitas Patria Artha',
+            height: '850px',
+            themeStyle: 'maroon',
+            showCardHeader: true,
+            showFooterNotice: true
           }
         }
       ]

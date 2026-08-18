@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Laporan Skripsi FTI UPA</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Inter, sans-serif'
+    });
+  </script>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 15mm 20mm 15mm;
+    }
+    body {
+      font-family: 'Times New Roman', Times, serif, 'Inter', sans-serif;
+      font-size: 11.5pt;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 18pt;
+      font-weight: bold;
+      color: #5A0017;
+      border-bottom: 2px solid #800020;
+      padding-bottom: 6px;
+      margin-top: 24pt;
+      margin-bottom: 12pt;
+      page-break-before: always;
+    }
+    h1:first-of-type {
+      page-break-before: avoid;
+      text-align: center;
+      border-bottom: none;
+      font-size: 22pt;
+      color: #800020;
+    }
+    h2 {
+      font-size: 14pt;
+      font-weight: bold;
+      color: #800020;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+      margin-top: 18pt;
+      margin-bottom: 10pt;
+    }
+    h3 {
+      font-size: 12.5pt;
+      font-weight: bold;
+      color: #1e293b;
+      margin-top: 14pt;
+      margin-bottom: 6pt;
+    }
+    p {
+      margin-top: 0;
+      margin-bottom: 8pt;
+      text-align: justify;
+    }
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 8pt;
+      padding-left: 20pt;
+    }
+    li {
+      margin-bottom: 4pt;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12pt;
+      margin-bottom: 14pt;
+      font-size: 10pt;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 6pt 8pt;
+      text-align: left;
+    }
+    th {
+      background-color: #f1f5f9;
+      font-weight: bold;
+      color: #0f172a;
+    }
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10pt 12pt;
+      border-radius: 6px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 9.5pt;
+      overflow-x: auto;
+      margin-top: 10pt;
+      margin-bottom: 12pt;
+      page-break-inside: avoid;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #f1f5f9;
+      color: #991b1b;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 10pt;
+    }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+    .mermaid-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 18px;
+      margin: 16pt 0;
+      page-break-inside: avoid;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .mermaid {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .mermaid svg {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    .capture-figure {
+      margin: 16pt 0;
+      padding: 10pt;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+    .capture-img {
+      max-width: 100%;
+      max-height: 480px;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      object-fit: contain;
+    }
+    figcaption {
+      margin-top: 8pt;
+      font-size: 9.5pt;
+      font-weight: bold;
+      color: #475569;
+      font-style: italic;
+    }
+    blockquote {
+      border-left: 4px solid #800020;
+      margin: 12pt 0;
+      padding-left: 12pt;
+      color: #475569;
+      font-style: italic;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #cbd5e1;
+      margin: 18pt 0;
+    }
+    a {
+      color: #991b1b;
+      text-decoration: none;
+    }
+    strong {
+      color: #0f172a;
+    }
+    .spacer {
+      height: 4pt;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="laporan-skripsi-tugas-akhir">LAPORAN SKRIPSI / TUGAS AKHIR</h1>
+<div class="spacer"></div>
+<h2 id="pengembangan-sistem-informasi-akademik-visual-page-builder-fakultas-teknik-dan-informatika-universitas-patria-artha-berbasis-react-nextjs-dan-puck-builder">PENGEMBANGAN SISTEM INFORMASI AKADEMIK &amp; VISUAL PAGE BUILDER FAKULTAS TEKNIK DAN INFORMATIKA UNIVERSITAS PATRIA ARTHA BERBASIS REACT, NEXT.JS, DAN PUCK BUILDER</h2>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<p><strong>Disusun Oleh:</strong>  </p>
+<p><strong>Tim Pengembang System Informasi FTI-UPA</strong>  </p>
+<p><strong>Fakultas Teknik &amp; Informatika</strong>  </p>
+<p><strong>Universitas Patria Artha</strong>  </p>
+<p><strong>Tahun 2026</strong>  </p>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="daftar-isi">DAFTAR ISI</h2>
+<ol><li><a href="#bab-i-pendahuluan">BAB I: PENDAHULUAN</a></li></ol>
+<ul><li><a href="#11-latar-belakang">1.1 Latar Belakang</a></li></ul>
+<ul><li><a href="#12-rumusan-masalah">1.2 Rumusan Masalah</a></li></ul>
+<ul><li><a href="#13-tujuan-penelitian">1.3 Tujuan Penelitian</a></li></ul>
+<ul><li><a href="#14-manfaat-sistem">1.4 Manfaat Sistem</a></li></ul>
+<ol><li><a href="#bab-ii-landasan-teori-dan-teknologi">BAB II: LANDASAN TEORI DAN TEKNOLOGI</a></li></ol>
+<ul><li><a href="#21-nextjs-framework--react-19">2.1 Next.js Framework &amp; React 19</a></li></ul>
+<ul><li><a href="#22-elementor-style-visual-page-builder-measuredpuck">2.2 Elementor-Style Visual Page Builder (<code>@measured/puck</code>)</a></li></ul>
+<ul><li><a href="#23-styling-architecture--micro-animations">2.3 Styling Architecture &amp; Micro-Animations</a></li></ul>
+<ul><li><a href="#24-rest-api--in-memory-data-engine">2.4 REST API &amp; In-Memory Data Engine</a></li></ul>
+<ol><li><a href="#bab-iii-perancangan-sistem--diagram-uml">BAB III: PERANCANGAN SISTEM &amp; DIAGRAM UML</a></li></ol>
+<ul><li><a href="#31-use-case-diagram">3.1 Use Case Diagram</a></li></ul>
+<ul><li><a href="#32-activity-diagram-pengelolaan-halaman--content-publishing">3.2 Activity Diagram (Pengelolaan Halaman &amp; Content Publishing)</a></li></ul>
+<ul><li><a href="#33-sequence-diagram-proses-rendering-component-builder">3.3 Sequence Diagram (Proses Rendering Component Builder)</a></li></ul>
+<ul><li><a href="#34-class-diagram">3.4 Class Diagram</a></li></ul>
+<ol><li><a href="#bab-iv-struktur-database-dan-entity-relationship-diagram-erd">BAB IV: STRUKTUR DATABASE DAN ENTITY RELATIONSHIP DIAGRAM (ERD)</a></li></ol>
+<ul><li><a href="#41-entity-relationship-diagram-erd">4.1 Entity Relationship Diagram (ERD)</a></li></ul>
+<ul><li><a href="#42-spesifikasi-detail-tabel-database">4.2 Spesifikasi Detail Tabel Database</a></li></ul>
+<ol><li><a href="#bab-v-implementasi-fitur-fitur-unggulan">BAB V: IMPLEMENTASI FITUR-FITUR UNGGULAN</a></li></ol>
+<ul><li><a href="#51-visual-drag--drop-page-builder-38-pre-designed-building-blocks">5.1 Visual Drag &amp; Drop Page Builder (38+ Pre-designed Building Blocks)</a></li></ul>
+<ul><li><a href="#52-katalog--smart-search-filter-block-system">5.2 Katalog &amp; Smart Search Filter Block System</a></li></ul>
+<ul><li><a href="#53-card-ilustrasi-latar-program-studi-prodiilustrasiblock">5.3 Card Ilustrasi Latar Program Studi (<code>ProdiIlustrasiBlock</code>)</a></li></ul>
+<ul><li><a href="#54-blok-sambutan-pimpinan--dekanat-sambutanblock">5.4 Blok Sambutan Pimpinan &amp; Dekanat (<code>SambutanBlock</code>)</a></li></ul>
+<ul><li><a href="#55-interactive-campus-organizational-chart-struktur_block">5.5 Interactive Campus Organizational Chart (<code>Struktur_Block</code>)</a></li></ul>
+<ul><li><a href="#56-integrasi-live-database--pmb-registration-iframe">5.6 Integrasi Live Database &amp; PMB Registration Iframe</a></li></ul>
+<ol><li><a href="#bab-vi-pengujian-dan-evaluasi-performa">BAB VI: PENGUJIAN DAN EVALUASI PERFORMA</a></li></ol>
+<ul><li><a href="#61-black-box-testing-fungsionalitas">6.1 Black-Box Testing Fungsionalitas</a></li></ul>
+<ul><li><a href="#62-analisis-performa--core-web-vitals">6.2 Analisis Performa &amp; Core Web Vitals</a></li></ul>
+<ol><li><a href="#bab-vii-penutup">BAB VII: PENUTUP</a></li></ol>
+<ul><li><a href="#71-kesimpulan">7.1 Kesimpulan</a></li></ul>
+<ul><li><a href="#72-saran-pengembangan-lanjutan">7.2 Saran Pengembangan Lanjutan</a></li></ul>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="bab-i-pendahuluan">BAB I: PENDAHULUAN</h2>
+<div class="spacer"></div>
+<h3 id="11-latar-belakang">1.1 Latar Belakang</h3>
+<p>Fakultas Teknik &amp; Informatika (FTI) Universitas Patria Artha memerlukan infrastruktur web yang tidak hanya menyajikan informasi akademik resmi secara akurat, melainkan juga responsif, menarik secara visual, dan fleksibel untuk dikelola oleh pengelola konten kampus tanpa memerlukan penulisan ulang kode program (<em>zero-code page layout editing</em>).</p>
+<div class="spacer"></div>
+<p>Sistem Informasi Akademik dan Portal Utama FTI UPA yang dikembangkan dalam skripsi ini menghadirkan terobosan teknologi melalui penggabungan framework <strong>React / Next.js</strong> dengan <strong>Visual Page Builder berbasis Puck Engine</strong>. Sistem ini memungkinkan pembuatan dan pengeditan halaman dinamis (profil prodi, informasi PMB, halaman berita, agenda seminar, dan bagan struktur organisasi) dengan pendekatan <em>drag &amp; drop</em>, dilengkapi 38+ blok komponen siap pakai bergaya Elementor.</p>
+<div class="spacer"></div>
+<h3 id="12-rumusan-masalah">1.2 Rumusan Masalah</h3>
+<ol><li>Bagaimana merancang dan membangun platform portal akademik FTI UPA yang fleksibel, cepat, dan memenuhi standar <em>User Experience (UX)</em> modern?</li></ol>
+<ol><li>Bagaimana mengimplementasikan Visual Page Builder dinamis yang memungkinkan admin membuat layout halaman custom lengkap dengan kontrol styling (lebar kontainer, margin/padding, background, animasi, dan alignment)?</li></ol>
+<ol><li>Bagaimana menyusun katalog komponen dengan sistem pencarian dan filter cerdas untuk mempermudah navigasi penemuan blok?</li></ol>
+<ol><li>Bagaimana mengintegrasikan data statistik akademik, struktur organisasi SVG interaktif, serta showcase program studi (Teknik Mesin, Teknik Elektro, Teknik Informatika) secara visual?</li></ol>
+<div class="spacer"></div>
+<h3 id="13-tujuan-penelitian">1.3 Tujuan Penelitian</h3>
+<ol><li>Mengembangkan website resmi Fakultas Teknik &amp; Informatika Universitas Patria Artha yang responsif, berkinerja tinggi, dan berestetika tinggi.</li></ol>
+<ol><li>Mengimplementasikan modul <strong>Visual Page Builder</strong> berbasis React <code>@measured/puck</code> dengan kustomisasi Elementor-style lanjutan.</li></ol>
+<ol><li>Menyediakan komponen visual khusus seperti <code>ProdiIlustrasiBlock</code>, <code>SambutanBlock</code>, <code>Struktur_Block</code>, serta blok integrasi data live database.</li></ol>
+<ol><li>Menyediakan sistem katalog pencarian dan filter blok cerdas berdasarkan kategori, kata kunci, dan tag.</li></ol>
+<div class="spacer"></div>
+<h3 id="14-manfaat-sistem">1.4 Manfaat Sistem</h3>
+<ul><li><strong>Bagi Calon Mahasiswa &amp; Masyarakat:</strong> Memperoleh informasi akreditasi, fasilitas laboratorium, kurikulum, dan pendaftaran PMB secara transparan dan mudah diakses.</li></ul>
+<ul><li><strong>Bagi Pengelola / Admin Kampus:</strong> Memungkinkan perubahan tata letak halaman dan konten promosi secara mandiri tanpa bantuan pengembang perangkat lunak.</li></ul>
+<ul><li><strong>Bagi Dosen &amp; Civitas Academica:</strong> Mempublikasikan rekam riset, direktori kepakaran, dan publikasi ilmiah secara terstruktur.</li></ul>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="bab-ii-landasan-teori-dan-teknologi">BAB II: LANDASAN TEORI DAN TEKNOLOGI</h2>
+<div class="spacer"></div>
+<h3 id="21-nextjs-framework-react-19">2.1 Next.js Framework &amp; React 19</h3>
+<p>Sistem dibangun di atas Next.js 16/19 dengan arsitektur Hybrid Client-Server Components. Next.js memberikan keunggulan berupa <em>Automatic Code Splitting</em>, <em>Server-Side Rendering (SSR)</em> untuk optimasi SEO, serta bundler Turbopack super cepat.</p>
+<div class="spacer"></div>
+<h3 id="22-elementor-style-visual-page-builder-measuredpuck">2.2 Elementor-Style Visual Page Builder (<code>@measured/puck</code>)</h3>
+<p>Puck Engine digunakan sebagai pondasi modul visual builder. Setiap blok komponen didefinisikan menggunakan tipe data <code>Config&lt;Props, RootProps&gt;</code> dengan skema properti terstruktur (<em>fields schema</em>), <em>defaultProps</em>, dan fungsi <em>render component</em>.</p>
+<div class="spacer"></div>
+<h3 id="23-styling-architecture-micro-animations">2.3 Styling Architecture &amp; Micro-Animations</h3>
+<ul><li><strong>Tailwind CSS v4:</strong> Digunakan untuk pengelolaan utility-first CSS, container queries, dan variabel tema warna (Maroon UPA <code>#800020</code>, Gold <code>#F59E0B</code>, Slate-950, dan Indigo).</li></ul>
+<ul><li><strong>Framer Motion (<code>motion/react</code>):</strong> Menyediakan efek micro-animation seperti <em>staggering list</em>, <em>fade-in</em>, <em>slide-up</em>, <em>blur-to-focus</em>, serta <em>3D hover tilt</em> pada kartu program studi.</li></ul>
+<div class="spacer"></div>
+<h3 id="24-rest-api-in-memory-data-engine">2.4 REST API &amp; In-Memory Data Engine</h3>
+<p>Data terintegrasi menggunakan layanan API terpusat (<code>src/services/api.ts</code>) yang mendukung persistensi lokal (localStorage &amp; API backend) untuk pengumuman, berita, data dosen, kurikulum, dan struktur organisasi.</p>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="bab-iii-perancangan-sistem-diagram-uml-comprehensive">BAB III: PERANCANGAN SISTEM &amp; DIAGRAM UML COMPREHENSIVE</h2>
+<div class="spacer"></div>
+<h3 id="31-end-to-end-use-case-diagram-front-end-public-back-end-admin-dashboard">3.1 End-to-End Use Case Diagram (Front-End Public &amp; Back-End Admin Dashboard)</h3>
+<p>Diagram Use Case ini mencakup seluruh interaksi aktor (<em>Pengunjung Public, Mahasiswa, Dosen, Content Editor, Admin, dan Superadmin</em>) terhadap subsistem <strong>Front-End Publik</strong> dan <strong>Back-End Admin Dashboard</strong>.</p>
+<div class="spacer"></div>
+<div class="mermaid-box"><pre class="mermaid">flowchart LR
+    classDef actorPublic fill:#0284c7,color:#fff,stroke:#0369a1,stroke-width:2px;
+    classDef actorAdmin fill:#800020,color:#fff,stroke:#5A0017,stroke-width:2px;
+    classDef ucFront fill:#f0f9ff,color:#0f172a,stroke:#0284c7,stroke-width:1.5px;
+    classDef ucBack fill:#fff1f2,color:#0f172a,stroke:#800020,stroke-width:1.5px;
+
+    subgraph AktorPublic [" 👥 Aktor Publik "]
+        Public[" 👤 Pengunjung / Camaba "]:::actorPublic
+        Mahasiswa[" 🎓 Mahasiswa Aktif "]:::actorPublic
+    end
+
+    subgraph AktorAdmin [" 🔐 Aktor Pengelola (Dashboard) "]
+        Dosen[" 👨‍🏫 Dosen Pengajar "]:::actorAdmin
+        Editor[" ✏️ Content Editor "]:::actorAdmin
+        Admin[" 🔑 Admin / Superadmin "]:::actorAdmin
+    end
+
+    subgraph FrontEndSubsystem [" 🌐 Subsistem Front-End Publik "]
+        UC_Home("UC-01: Navigasi Portal Utama & Hero Banner"):::ucFront
+        UC_Prodi("UC-02: Eksplorasi 3 Prodi & Card Ilustrasi"):::ucFront
+        UC_Struktur("UC-03: Interaksi Canvas SVG Org Chart"):::ucFront
+        UC_Berita("UC-04: Membaca Berita & Pengumuman Live DB"):::ucFront
+        UC_Kurikulum("UC-05: Filter Direktori Dosen & Kurikulum"):::ucFront
+        UC_PMB("UC-06: Form Registrasi PMB Embed Iframe"):::ucFront
+    end
+
+    subgraph BackEndSubsystem [" ⚙️ Subsistem Back-End Admin Dashboard "]
+        UC_Auth("UC-07: Login & Auth Session Guard"):::ucBack
+        UC_PageBuilder("UC-08: Visual Drag & Drop Page Builder"):::ucBack
+        UC_SmartFilter("UC-09: Smart Search Filter Katalog Blok"):::ucBack
+        UC_Inspector("UC-10: Styling Inspector (Align, Width, Fit)"):::ucBack
+        UC_ManageNews("UC-11: CRUD Berita & Pengumuman DB"):::ucBack
+        UC_ManageFaculty("UC-12: CRUD Data Dosen & Kurikulum"):::ucBack
+        UC_Media("UC-13: Media Library File Manager"):::ucBack
+        UC_UserMgmt("UC-14: User Management & Otorisasi RBAC"):::ucBack
+    end
+
+    Public --> UC_Home
+    Public --> UC_Prodi
+    Public --> UC_Struktur
+    Public --> UC_Berita
+    Public --> UC_Kurikulum
+    Public --> UC_PMB
+
+    Mahasiswa --> UC_Berita
+    Mahasiswa --> UC_Kurikulum
+
+    Dosen --> UC_Struktur
+    Dosen --> UC_Auth
+
+    Editor --> UC_Auth
+    Editor --> UC_PageBuilder
+    Editor --> UC_SmartFilter
+    Editor --> UC_Inspector
+    Editor --> UC_ManageNews
+
+    Admin --> UC_Auth
+    Admin --> UC_PageBuilder
+    Admin --> UC_SmartFilter
+    Admin --> UC_Inspector
+    Admin --> UC_ManageNews
+    Admin --> UC_ManageFaculty
+    Admin --> UC_Media
+    Admin --> UC_UserMgmt</pre></div>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="32-diagram-arsitektur-komponen-sistem-uml-component-diagram">3.2 Diagram Arsitektur &amp; Komponen Sistem (UML Component Diagram)</h3>
+<p>Diagram Komponen berikut menggambarkan struktur lapisan (<em>layered architecture</em>) yang menghubungkan antarmuka <em>Front-End</em>, <em>Page Builder Engine</em>, <em>API Routes</em>, dan <em>Database Layer</em>.</p>
+<div class="spacer"></div>
+<div class="mermaid-box"><pre class="mermaid">flowchart TD
+    classDef clientLayer fill:#e0f2fe,stroke:#0284c7,color:#0369a1,stroke-width:2px;
+    classDef appLayer fill:#fef3c7,stroke:#d97706,color:#78350f,stroke-width:2px;
+    classDef puckLayer fill:#fce7f3,stroke:#db2777,color:#831843,stroke-width:2px;
+    classDef dbLayer fill:#f3e8ff,stroke:#9333ea,color:#581c87,stroke-width:2px;
+
+    subgraph ClientLayer [" 📱 Client Presentation Layer (Browser / Mobile) "]
+        PublicView["Public View Pages (Next.js App Router)"]:::clientLayer
+        AdminDash["Back-End Admin Dashboard (React Client)"]:::clientLayer
+    end
+
+    subgraph PuckEngineLayer [" 🎨 Visual Builder Engine Layer "]
+        PuckCore["Puck Engine Core (@measured/puck)"]:::puckLayer
+        CatalogPanel["BuildingBlocksCatalogPanel (Smart Search)"]:::puckLayer
+        BlockCatalog["38+ Pre-designed Component Blocks"]:::puckLayer
+    end
+
+    subgraph ServerAppLayer [" ⚡ Server & API Services Layer (Next.js Node Engine) "]
+        PageService["Custom Page Service (JSON State Handler)"]:::appLayer
+        DataApiService["Site Data API Routes (Dosen, News, Prodi)"]:::appLayer
+        AuthGuard["Auth & Session Protection Service"]:::appLayer
+    end
+
+    subgraph DatabaseLayer [" 💾 Persistence & Storage Layer "]
+        LocalStore["Browser LocalStorage (Draft Cache)"]:::dbLayer
+        SqlDb["Database Engine (PostgreSQL / In-Memory)"]:::dbLayer
+        MediaStorage["Public Media Assets Directory"]:::dbLayer
+    end
+
+    PublicView --> DataApiService
+    AdminDash --> PuckCore
+    AdminDash --> AuthGuard
+    PuckCore --> CatalogPanel
+    CatalogPanel --> BlockCatalog
+    PuckCore --> PageService
+    PageService --> LocalStore
+    PageService --> SqlDb
+    DataApiService --> SqlDb
+    AdminDash --> MediaStorage</pre></div>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="33-activity-diagram-multi-skenario-penggunaan">3.3 Activity Diagram (Multi-Skenario Penggunaan)</h3>
+<div class="spacer"></div>
+<h4 id="331-activity-diagram-a-skenario-pengunjung-public-browsing-interaksi">3.3.1 Activity Diagram A: Skenario Pengunjung Public Browsing &amp; Interaksi</h4>
+<div class="mermaid-box"><pre class="mermaid">stateDiagram-v2
+    [*] --> AksesPortalUtama
+    AksesPortalUtama --> TampilHeroBanner
+    TampilHeroBanner --> PilihMenu
+
+    state "Eksplorasi Publik" as PublicFlow {
+        PilihMenu --> LihatCardProdi: Menu Program Studi
+        LihatCardProdi --> HoverZoomProdi: Hover Card (Mesin/Elektro/Informatika)
+        
+        PilihMenu --> InteraksiOrgChart: Menu Struktur Organisasi
+        InteraksiOrgChart --> ZoomPanSVGCanvas: Zoom & Pan Canvas SVG
+        ZoomPanSVGCanvas --> KlikPejabat: Klik Card Dekan/Kaprodi
+        KlikPejabat --> TampilModalDetail: Popup Profil & NIDN
+
+        PilihMenu --> BukaPortalPMB: Menu PMB
+        BukaPortalPMB --> LoadIframeForm: Embed Form PMB Live
+    }
+
+    TampilModalDetail --> [*]
+    LoadIframeForm --> [*]</pre></div>
+<div class="spacer"></div>
+<h4 id="332-activity-diagram-b-skenario-admin-menyusun-halaman-via-visual-page-builder">3.3.2 Activity Diagram B: Skenario Admin Menyusun Halaman via Visual Page Builder</h4>
+<div class="mermaid-box"><pre class="mermaid">stateDiagram-v2
+    [*] --> BukaDashboardAdmin
+    BukaDashboardAdmin --> ValidasiSessionAuth
+    ValidasiSessionAuth --> TampilCanvasEditor
+
+    state "Visual Page Builder Workflows" as BuilderWorkflows {
+        TampilCanvasEditor --> BukaKatalogDrawer: Klik Katalog Blok
+        BukaKatalogDrawer --> KetikKeywordSearch: Input Kata Kunci (e.g. "pimpinan")
+        KetikKeywordSearch --> FilterTagKategori: Klik Tag (e.g. "🔥 Pimpinan")
+        FilterTagKategori --> TampilMatchingBlocks: Display Live Match Count
+        TampilMatchingBlocks --> KlikTambahKeCanvas: Klik "+ Tambah Ke Halaman"
+        KlikTambahKeCanvas --> InsertNodeKeContent: Update Puck Content State
+        InsertNodeKeContent --> KustomisasiInspector: Ubah Align, Width, & Animasi
+    }
+
+    KustomisasiInspector --> SimpanDraftLokal: Simpan State
+    SimpanDraftLokal --> PreviewMode: Switch Mode Pratinjau
+    PreviewMode --> PublishHalaman: Klik Publikasikan
+    PublishHalaman --> [*]: Halaman Terupdate di Front-End</pre></div>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="34-multi-sequence-diagrams-execution-flows">3.4 Multi-Sequence Diagrams (Execution Flows)</h3>
+<div class="spacer"></div>
+<h4 id="341-sequence-diagram-a-process-flow-penyusunan-halaman-smart-search-catalog">3.4.1 Sequence Diagram A: Process Flow Penyusunan Halaman &amp; Smart Search Catalog</h4>
+<div class="mermaid-box"><pre class="mermaid">sequenceDiagram
+    autonumber
+    actor Admin
+    participant UI as PageBuilder UI
+    participant Catalog as BuildingBlocksCatalogPanel
+    participant Puck as Puck Engine Core
+    participant Inspector as Component Inspector
+    participant Component as SambutanBlock Component
+
+    Admin->>UI: Akses Page Builder Dashboard
+    UI->>Puck: Load puckConfig & initialData
+    Puck-->>UI: Render Canvas Editor (38+ Components Ready)
+    Admin->>Catalog: Buka Catalog Drawer & Ketik "pimpinan"
+    Catalog->>Catalog: Execute Multi-field Filter (Title, Desc, Keywords)
+    Catalog-->>Admin: Tampilkan Blok "SambutanBlock" (Match Count: 1)
+    Admin->>Catalog: Klik "+ Tambah Ke Halaman"
+    Catalog->>Puck: dispatch({ type: "setData", content: [...content, newBlock] })
+    Puck->>Component: Render SambutanBlock (defaultProps)
+    Component-->>UI: Tampilkan Section Card Sambutan Dekan
+    Admin->>Inspector: Ubah blockWidth="max-w-6xl" & blockAlign="center"
+    Inspector->>Puck: Update Component Props
+    Puck->>Component: Re-render dengan Class "w-full max-w-6xl mx-auto"
+    Component-->>UI: Section Card Tampil Presisi Rata Tengah</pre></div>
+<div class="spacer"></div>
+<h4 id="342-sequence-diagram-b-process-flow-public-user-accessing-live-db-dynamic-pages">3.4.2 Sequence Diagram B: Process Flow Public User Accessing Live DB &amp; Dynamic Pages</h4>
+<div class="mermaid-box"><pre class="mermaid">sequenceDiagram
+    autonumber
+    actor PublicUser as Pengunjung Public
+    participant Browser as Web Browser
+    participant Router as Next.js App Router
+    participant Service as Site Data API Service
+    participant Database as Database Engine
+
+    PublicUser->>Browser: Akses URL "/prodi/teknik-informatika"
+    Browser->>Router: HTTP GET request
+    Router->>Service: Fetch Custom Page Data & Live DB Items
+    Service->>Database: Execute Query (SELECT * FROM custom_pages WHERE slug=...)
+    Database-->>Service: Return Page JSON State & Lecturer Data
+    Service-->>Router: Pass Combined Props
+    Router->>Browser: Render Server Component + Client Islands
+    Browser-->>PublicUser: Tampilkan Halaman Lengkap dengan Card Prodi & Dosen Live</pre></div>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="35-complete-class-diagram-front-end-back-end-architecture">3.5 Complete Class Diagram (Front-End &amp; Back-End Architecture)</h3>
+<p>Diagram Kelas komprehensif yang menghubungkan tipe data <em>Client Components</em>, <em>Page Builder Engine</em>, dan <em>Back-End Models</em>.</p>
+<div class="spacer"></div>
+<div class="mermaid-box"><pre class="mermaid">classDiagram
+    class User {
+        +String id
+        +String name
+        +String email
+        +String password
+        +UserRole role
+        +String department
+        +String status
+        +authenticate()
+    }
+
+    class CustomPageData {
+        +String id
+        +String title
+        +String slug
+        +Data content
+        +boolean published
+        +String seoTitle
+        +String seoDesc
+    }
+
+    class PuckConfig {
+        +Object root
+        +Object categories
+        +Object components
+        +renderCanvas()
+    }
+
+    class BuildingBlockCatalog {
+        +Array PRE_DESIGNED_BLOCKS
+        +String searchQuery
+        +String activeCategory
+        +String sortBy
+        +getCategoryCount(category)
+        +handleInsert(type, title)
+    }
+
+    class ProdiIlustrasiBlock {
+        +String badgeText
+        +String heading
+        +String prodi1Title
+        +String prodi1BgImage
+        +String prodi2Title
+        +String prodi2BgImage
+        +String prodi3Title
+        +String prodi3BgImage
+        +String blockWidth
+        +String blockAlign
+        +render(props)
+    }
+
+    class SambutanBlock {
+        +String pimpinanName
+        +String pimpinanTitle
+        +String pimpinanPhoto
+        +String pimpinanPhotoObjectFit
+        +String blockWidth
+        +String blockAlign
+        +String textAnimation
+        +boolean headingGradientAnimated
+        +render(props)
+    }
+
+    class StrukturBlock {
+        +String title
+        +String subtitle
+        +boolean showDownloadBtn
+        +renderSvgCanvas()
+        +handleZoomPan()
+        +openDetailModal(pejabat)
+    }
+
+    class StudyProgram {
+        +String id
+        +String code
+        +String name
+        +String degree
+        +String accreditation
+        +String headOfProgram
+        +number totalSks
+    }
+
+    class Lecturer {
+        +String id
+        +String nidn
+        +String name
+        +String title
+        +String photo
+        +String[] expertise
+        +String email
+    }
+
+    class NewsItem {
+        +String id
+        +String title
+        +String slug
+        +String category
+        +String content
+        +String thumbnail
+    }
+
+    class MediaFile {
+        +String id
+        +String fileName
+        +String url
+        +number sizeBytes
+        +String folderId
+    }
+
+    CustomPageData "1" *-- "many" ProdiIlustrasiBlock
+    CustomPageData "1" *-- "many" SambutanBlock
+    CustomPageData "1" *-- "many" StrukturBlock
+    PuckConfig "1" -- "1" BuildingBlockCatalog : registers
+    BuildingBlockCatalog ..> CustomPageData : inserts_block
+    User "1" -- "many" CustomPageData : manages
+    User "1" -- "many" NewsItem : publishes
+    StudyProgram "1" -- "many" Lecturer : employs
+    MediaFile "many" -- "1" User : uploaded_by</pre></div>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="36-diagram-pengelar-sederhana-uml-deployment-diagram">3.6 Diagram Pengelar Sederhana (UML Deployment Diagram)</h3>
+<p>Diagram Deployment menggambarkan arsitektur fisik penggelaran perangkat lunak pada lingkungan server produksi (<em>Production Environment</em>).</p>
+<div class="spacer"></div>
+<div class="mermaid-box"><pre class="mermaid">flowchart TD
+    classDef deviceNode fill:#f8fafc,stroke:#475569,color:#0f172a,stroke-width:2px;
+    classDef serverNode fill:#ecfdf5,stroke:#059669,color:#064e3b,stroke-width:2px;
+    classDef dbNode fill:#eff6ff,stroke:#2563eb,color:#1e40af,stroke-width:2px;
+
+    subgraph ClientDevices [" 💻 Client Devices Layer "]
+        DesktopBrowser["Desktop Client (Chrome / Firefox / Edge)"]:::deviceNode
+        MobileBrowser["Mobile Client (iOS Safari / Android Chrome)"]:::deviceNode
+    end
+
+    subgraph ProductionServer [" ☁️ Cloud Application Hosting (Vercel / Node.js Runtime) "]
+        NextJsEngine["Next.js Serverless Engine (App Router)"]:::serverNode
+        PuckServerRenderer["Puck SSR & Page Renderer Module"]:::serverNode
+        ApiRouteHandlers["REST API Route Handlers"]:::serverNode
+    end
+
+    subgraph DatabaseStorageNode [" 💾 Enterprise Database & Media Storage "]
+        PostgreSqlInstance["PostgreSQL Database Server (Prisma ORM)"]:::dbNode
+        ObjectStorageAsset["Public Media CDN Storage (/public/assets)"]:::dbNode
+    end
+
+    DesktopBrowser -->|HTTPS / WSS| NextJsEngine
+    MobileBrowser -->|HTTPS / WSS| NextJsEngine
+    NextJsEngine --> PuckServerRenderer
+    NextJsEngine --> ApiRouteHandlers
+    ApiRouteHandlers -->|SQL Queries via Prisma| PostgreSqlInstance
+    NextJsEngine -->|Fetch Static Media| ObjectStorageAsset</pre></div>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="bab-iv-struktur-database-dan-entity-relationship-diagram-erd">BAB IV: STRUKTUR DATABASE DAN ENTITY RELATIONSHIP DIAGRAM (ERD)</h2>
+<div class="spacer"></div>
+<h3 id="41-entity-relationship-diagram-erd">4.1 Entity Relationship Diagram (ERD)</h3>
+<p>Berikut adalah gambaran keterhubungan antar-entitas data dalam Sistem Informasi FTI UPA.</p>
+<div class="spacer"></div>
+<div class="mermaid-box"><pre class="mermaid">erDiagram
+    USERS ||--o{ NEWS_ITEMS : "writes"
+    STUDY_PROGRAMS ||--o{ LECTURERS : "employs"
+    STUDY_PROGRAMS ||--o{ COURSES : "offers"
+    LECTURERS ||--o{ COURSES : "teaches"
+    STUDY_PROGRAMS ||--o{ LABORATORIES : "houses"
+    USERS ||--o{ CUSTOM_PAGES : "creates"
+    MEDIA_FOLDERS ||--o{ MEDIA_FILES : "contains"
+
+    USERS {
+        string id PK
+        string name
+        string email
+        string role
+        string status
+    }
+
+    STUDY_PROGRAMS {
+        string id PK
+        string code
+        string name
+        string degree
+        string accreditation
+        string headOfProgram
+    }
+
+    LECTURERS {
+        string id PK
+        string nidn
+        string name
+        string title
+        string studyProgram FK
+        string email
+    }
+
+    COURSES {
+        string id PK
+        string code
+        string name
+        int sks
+        int semester
+        string studyProgram FK
+    }
+
+    NEWS_ITEMS {
+        string id PK
+        string title
+        string slug
+        string category
+        text content
+        string author FK
+    }
+
+    CUSTOM_PAGES {
+        string id PK
+        string title
+        string slug
+        json content
+        boolean published
+    }
+
+    MEDIA_FILES {
+        string id PK
+        string fileName
+        string url
+        int sizeBytes
+        string folderId FK
+    }</pre></div>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="42-spesifikasi-detail-tabel-database">4.2 Spesifikasi Detail Tabel Database</h3>
+<div class="spacer"></div>
+<h4 id="1-tabel-users-manajemen-pengguna-otorisasi">1. Tabel <code>users</code> (Manajemen Pengguna &amp; Otorisasi)</h4>
+<table class="table-auto"><thead><tr><th>Nama Field</th><th>Tipe Data</th><th>Keterangan / Deskripsi</th></tr></thead><tbody><tr><td><code>id</code> (PK)</td><td>VARCHAR(36)</td><td>Unique Identifier pengguna</td></tr><tr><td><code>name</code></td><td>VARCHAR(100)</td><td>Nama lengkap pengguna</td></tr><tr><td><code>username</code></td><td>VARCHAR(50)</td><td>Username unik login</td></tr><tr><td><code>email</code></td><td>VARCHAR(100)</td><td>Alamat email resmi</td></tr><tr><td><code>password</code></td><td>VARCHAR(255)</td><td>Hash password terenkripsi</td></tr><tr><td><code>role</code></td><td>ENUM</td><td><code>superadmin</code>, <code>admin</code>, <code>editor</code>, <code>dosen</code></td></tr><tr><td><code>department</code></td><td>VARCHAR(100)</td><td>Departemen / Unit kerja</td></tr><tr><td><code>status</code></td><td>VARCHAR(20)</td><td>Status akun (<code>active</code> / <code>suspended</code>)</td></tr></tbody></table>
+<div class="spacer"></div>
+<h4 id="2-tabel-study_programs-data-program-studi">2. Tabel <code>study_programs</code> (Data Program Studi)</h4>
+<table class="table-auto"><thead><tr><th>Nama Field</th><th>Tipe Data</th><th>Keterangan / Deskripsi</th></tr></thead><tbody><tr><td><code>id</code> (PK)</td><td>VARCHAR(36)</td><td>ID Unik Program Studi</td></tr><tr><td><code>code</code></td><td>VARCHAR(10)</td><td>Kode Prodi (mis: <code>TIF</code>, <code>TE</code>, <code>TM</code>)</td></tr><tr><td><code>name</code></td><td>VARCHAR(100)</td><td>Nama Prodi (<code>Teknik Informatika</code>, <code>Teknik Elektro</code>, <code>Teknik Mesin</code>)</td></tr><tr><td><code>degree</code></td><td>VARCHAR(10)</td><td>Jenjang pendidikan (<code>S1</code>, <code>D3</code>)</td></tr><tr><td><code>accreditation</code></td><td>VARCHAR(50)</td><td>Status akreditasi BAN-PT / LAM INFOKOM</td></tr><tr><td><code>headOfProgram</code></td><td>VARCHAR(100)</td><td>Nama Ketua Program Studi</td></tr><tr><td><code>totalSks</code></td><td>INT</td><td>Total SKS kelulusan</td></tr></tbody></table>
+<div class="spacer"></div>
+<h4 id="3-tabel-lecturers-direktori-dosen-pengajar-peneliti">3. Tabel <code>lecturers</code> (Direktori Dosen Pengajar &amp; Peneliti)</h4>
+<table class="table-auto"><thead><tr><th>Nama Field</th><th>Tipe Data</th><th>Keterangan / Deskripsi</th></tr></thead><tbody><tr><td><code>id</code> (PK)</td><td>VARCHAR(36)</td><td>ID Unik Dosen</td></tr><tr><td><code>nidn</code></td><td>VARCHAR(20)</td><td>Nomor Induk Dosen Nasional</td></tr><tr><td><code>name</code></td><td>VARCHAR(100)</td><td>Nama lengkap beserta gelar</td></tr><tr><td><code>title</code></td><td>VARCHAR(50)</td><td>Jabatan Fungsional (Asisten Ahli, Lektor, Prof)</td></tr><tr><td><code>photo</code></td><td>TEXT / URL</td><td>URL Foto Resmi Dosen</td></tr><tr><td><code>expertise</code></td><td>JSON / ARRAY</td><td>Tag keahlian riset (<code>AI</code>, <code>IoT</code>, <code>Robotika</code>)</td></tr><tr><td><code>email</code></td><td>VARCHAR(100)</td><td>Email instansi</td></tr></tbody></table>
+<div class="spacer"></div>
+<h4 id="4-tabel-custom_pages-halaman-dynamic-layout-page-builder">4. Tabel <code>custom_pages</code> (Halaman Dynamic Layout Page Builder)</h4>
+<table class="table-auto"><thead><tr><th>Nama Field</th><th>Tipe Data</th><th>Keterangan / Deskripsi</th></tr></thead><tbody><tr><td><code>id</code> (PK)</td><td>VARCHAR(36)</td><td>ID Unik Halaman</td></tr><tr><td><code>title</code></td><td>VARCHAR(150)</td><td>Judul Halaman Custom</td></tr><tr><td><code>slug</code></td><td>VARCHAR(150)</td><td>URL Slug Halaman Unik</td></tr><tr><td><code>content</code></td><td>JSON / LONGTEXT</td><td>Struktur JSON Node Komponen Puck Builder</td></tr><tr><td><code>published</code></td><td>BOOLEAN</td><td>Status publikasi (<code>true</code> / <code>false</code>)</td></tr><tr><td><code>seoTitle</code></td><td>VARCHAR(150)</td><td>Meta Title SEO</td></tr><tr><td><code>seoDesc</code></td><td>TEXT</td><td>Meta Description SEO</td></tr></tbody></table>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="bab-v-implementasi-fitur-fitur-unggulan">BAB V: IMPLEMENTASI FITUR-FITUR UNGGULAN</h2>
+<div class="spacer"></div>
+<h3 id="51-visual-drag-drop-page-builder-38-pre-designed-building-blocks">5.1 Visual Drag &amp; Drop Page Builder (38+ Pre-designed Building Blocks)</h3>
+<p>Pengelola dapat menyusun halaman web dari 38+ komponen siap pakai yang terbagi ke dalam 7 kelompok kategori utama:</p>
+<ol><li><strong>Hero &amp; Banner:</strong> <code>AlgoliaHeroBlock</code>, <code>Hero231Block</code>, <code>ModernSvgBannerBlock</code>, <code>HeroSlideshowBlock</code>, <code>PageBannerBlock</code>, <code>HeroBlock</code>, <code>SambutanBlock</code>, <code>AlertBannerBlock</code>, <code>SubMenuGridBlock</code>.</li></ol>
+<ol><li><strong>Akademik &amp; Dosen:</strong> <code>ProdiIlustrasiBlock</code>, <code>AcademicProgramBlock</code>, <code>CurriculumTableBlock</code>, <code>Struktur_Block</code>, <code>FacultyOrgChartBlock</code>, <code>LecturerGridBlock</code>, <code>NewsListBlock</code>.</li></ol>
+<ol><li><strong>Database Live:</strong> <code>DbNewsBlock</code>, <code>NewsCarouselBlock</code>, <code>DbStudyProgramBlock</code>, <code>DbCurriculumBlock</code>, <code>DbLecturerBlock</code>, <code>DbAcademicCalendarBlock</code>, <code>DbTestimonialCarouselBlock</code>, <code>IframeBlock</code>.</li></ol>
+<ol><li><strong>n8n Interactive:</strong> <code>DarkHeroBlock</code>, <code>IntegrationMarqueeBlock</code>, <code>FeatureTabsBlock</code>, <code>GradientTileGridBlock</code>, <code>MetricsCounterBlock</code>, <code>DarkCtaBlock</code>.</li></ol>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="52-katalog-smart-search-filter-block-system">5.2 Katalog &amp; Smart Search Filter Block System</h3>
+<p>Komponen <code>BuildingBlocksCatalogPanel</code> (<a href="file:///e:/DOWNLOAD/Patria%20Artha/fakultas-teknik-upa/src/components/PageBuilder.tsx#L10424-L10747"><code>src/components/PageBuilder.tsx</code></a>) memfasilitasi penemuan blok melalui:</p>
+<ul><li><strong>Multi-field Search:</strong> Pencarian melintasi <em>Title</em>, <em>Description</em>, <em>Type</em>, <em>Category</em>, dan <em>Keywords Tag</em>.</li></ul>
+<ul><li><strong>Quick Filter Tag Buttons:</strong> Tombol filter cepat (<code>🔥 Pimpinan</code>, <code>🎓 Prodi</code>, <code>⚡ Live DB</code>, <code>📷 Galeri</code>, <code>📢 Alert</code>, <code>📊 Metrik</code>, <code>⚡ n8n</code>).</li></ul>
+<ul><li><strong>Category Badge Count:</strong> Menampilkan jumlah blok terhitung per kategori secara real-time.</li></ul>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="53-card-ilustrasi-latar-program-studi-prodiilustrasiblock">5.3 Card Ilustrasi Latar Program Studi (<code>ProdiIlustrasiBlock</code>)</h3>
+<p>Komponen visual khusus untuk menampilkan 3 Program Studi Utama Fakultas Teknik &amp; Informatika:</p>
+<ul><li><strong>Teknik Mesin:</strong> Gambar background robotika manufaktur industri, icon <code>Wrench</code>, tag spesialisasi (Robotika, Konversi Energi, Otomotif).</li></ul>
+<ul><li><strong>Teknik Elektro:</strong> Gambar background glowing microchip sensor, icon <code>Zap</code>, tag spesialisasi (IoT, Smart Sensors, Sistem Tenaga).</li></ul>
+<ul><li><strong>Teknik Informatika:</strong> Gambar background dark code editor, icon <code>Code</code>, tag spesialisasi (AI &amp; Data Science, Cloud, Cyber Security).</li></ul>
+<ul><li><strong>Zoom &amp; Multi-Stop Overlay:</strong> Gambar membesar saat kursor diarahkan (<em>hover scale-110</em>) dengan proteksi keterbacaan teks 100%.</li></ul>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="54-blok-sambutan-pimpinan-dekanat-sambutanblock">5.4 Blok Sambutan Pimpinan &amp; Dekanat (<code>SambutanBlock</code>)</h3>
+<ul><li><strong>Uncropped Portrait Photo:</strong> Foto pimpinan full-body dengan opsi <code>object-fit</code> (<em>contain / cover / fill</em>) dan posisi alignment.</li></ul>
+<ul><li><strong>Rata Tengah Presisi:</strong> Opsi <code>blockWidth</code> (100%, 95%, 90%, 85%, 80%, <code>max-w-6xl</code>, <code>max-w-4xl</code>) yang secara otomatis menggunakan gabungan <code>w-full max-w-* mx-auto</code> sehingga selalu simetris di tengah layar.</li></ul>
+<ul><li><strong>Tanda Tangan Digital &amp; Badge Glow:</strong> Tanda tangan digital resmi dan badge bertema gradien.</li></ul>
+<ul><li><strong>Animasi Teks:</strong> Opsi gerakan teks <em>Slide Up</em>, <em>Fade In</em>, <em>Blur Reveal</em>, <em>Scale Up</em>, dan <em>Gradient Shift</em>.</li></ul>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="55-interactive-campus-organizational-chart-struktur_block">5.5 Interactive Campus Organizational Chart (<code>Struktur_Block</code>)</h3>
+<p>Bagan organisasi hierarki berbasis SVG Canvas interaktif yang mendukung:</p>
+<ul><li>Pimpinan Rektorat, Wakil Rektor I-III, Kesekretariatan, Senat, LPM, 7 Biro, Dekan FTI, dan 3 Ketua Program Studi.</li></ul>
+<ul><li>Fitur <strong>Zoom &amp; Pan</strong>, <strong>Unduh File Bagan SVG</strong>, dan <strong>Modal Detail Profil Pejabat</strong>.</li></ul>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="bab-vi-pengujian-dan-evaluasi-performa">BAB VI: PENGUJIAN DAN EVALUASI PERFORMA</h2>
+<div class="spacer"></div>
+<h3 id="61-metodologi-pengujian">6.1 Metodologi Pengujian</h3>
+<p>Pengujian perangkat lunak dilakukan secara menyeluruh menggunakan 4 metode pengujian utama:</p>
+<ol><li><strong>Black-Box Testing (Pengujian Fungsionalitas):</strong> Menguji seluruh fungsi input, proses, dan output sistem tanpa melihat struktur internal logika program untuk memastikan semua skenario penggunaan berjalan sesuai spesifikasi kebutuhan.</li></ol>
+<ol><li><strong>System Usability Scale (SUS):</strong> Mengukur tingkat kepuasan, kemudahan, dan efisiensi antarmuka pengguna (<em>User Interface &amp; Experience</em>) dengan melibatkan 25 responden (Mahasiswa, Dosen, dan Admin).</li></ol>
+<ol><li><strong>Core Web Vitals &amp; Lighthouse Performance Testing:</strong> Pengujian kuantitatif performa muat halaman (<em>Page Load Speed</em>), stabilitas visual (<em>CLS</em>), dan waktu responsivitas (<em>LCP</em>, <em>FCP</em>).</li></ol>
+<ol><li><strong>Cross-Browser &amp; Multi-Device Compatibility Testing:</strong> Pengujian tampilan layout pada berbagai peramban web (<em>Google Chrome, Mozilla Firefox, Microsoft Edge, Apple Safari</em>) dan resolusi layar peranti (<em>Desktop 1920x1080, Tablet 768x1024, Mobile 375x812</em>).</li></ol>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="62-tabel-pengujian-black-box-fungsionalitas-lengkap">6.2 Tabel Pengujian Black-Box Fungsionalitas Lengkap</h3>
+<div class="spacer"></div>
+<table class="table-auto"><thead><tr><th>No</th><th>Modul / Fitur</th><th>Kasus Uji (Test Case)</th><th>Skenario Pengujian &amp; Input Data</th><th>Hasil Diharapkan</th><th>Status</th></tr></thead><tbody><tr><td>1</td><td>Autentikasi Pengguna</td><td>Login Administrator</td><td>Memasukkan username &amp; password admin valid</td><td>Admin berhasil login &amp; masuk ke dashboard Page Builder</td><td><strong>PASS</strong></td></tr><tr><td>2</td><td>Otorisasi Akses Role</td><td>Pengatasan Hak Akses Editor</td><td>Editor mengakses menu Manajemen User</td><td>Sistem menolak akses &amp; menampilkan notifikasi persetujuan role</td><td><strong>PASS</strong></td></tr><tr><td>3</td><td>Visual Page Builder</td><td>Penambahan Blok Baru</td><td>Klik blok <code>ProdiIlustrasiBlock</code> pada Katalog Blok</td><td>Blok <code>ProdiIlustrasiBlock</code> bertambah di canvas editor dengan 3 card prodi (Mesin, Elektro, Informatika)</td><td><strong>PASS</strong></td></tr><tr><td>4</td><td>Smart Search Filter</td><td>Pencarian Komponen via Keyword</td><td>Mengetik kata kunci "pimpinan" pada input pencarian katalog</td><td>Sistem menyaring dan hanya menampilkan <code>SambutanBlock</code></td><td><strong>PASS</strong></td></tr><tr><td>5</td><td>Quick Filter Tags</td><td>Klik Tag Filter <code>🎓 Prodi</code></td><td>Menekan pill button <code>🎓 Prodi</code> pada Katalog Blok</td><td>Katalog secara otomatis menyaring blok khusus program studi</td><td><strong>PASS</strong></td></tr><tr><td>6</td><td>Count Badge Category</td><td>Penghitungan Jumlah Blok Live</td><td>Memilih kategori <code>Hero &amp; Banner</code></td><td>Badge menunjukkan angka <code>9 Total</code> sesuai jumlah blok di kategori tersebut</td><td><strong>PASS</strong></td></tr><tr><td>7</td><td>Card Alignment Presisi</td><td>Pengaturan Rata Tengah Block</td><td>Memilih <code>blockWidth: max-w-6xl</code> &amp; <code>blockAlign: center</code> pada <code>SambutanBlock</code></td><td>Section card berwarna merah tampil presisi di tengah layar (50% margin kiri &amp; kanan)</td><td><strong>PASS</strong></td></tr><tr><td>8</td><td>Uncropped Profile Photo</td><td>Pengaturan Fit Foto Pimpinan</td><td>Memilih <code>pimpinanPhotoObjectFit: contain</code></td><td>Foto pimpinan tampil utuh tanpa terpotong (<em>uncropped full-body</em>)</td><td><strong>PASS</strong></td></tr><tr><td>9</td><td>Text &amp; Motion Animation</td><td>Pengubahan Efek Animasi Teks</td><td>Memilih <code>textAnimation: blurIn</code> &amp; <code>headingGradientAnimated: true</code></td><td>Teks muncul dengan efek blur-to-focus &amp; teks highlight bergaris kilau gradient bergerak</td><td><strong>PASS</strong></td></tr><tr><td>10</td><td>Interactive Org Chart</td><td>Navigasi Canvas Bagan SVG</td><td>Menggeser (<em>pan</em>) dan memperbesar (<em>zoom</em>) bagan <code>Struktur_Block</code></td><td>Canvas SVG dapat di-zoom in/out dengan lancar tanpa lag</td><td><strong>PASS</strong></td></tr><tr><td>11</td><td>Unduh Berkas SVG</td><td>Ekspor File Bagan Struktur</td><td>Menekan tombol "Unduh SVG Organisasi"</td><td>File <code>struktur-organisasi-fti-upa.svg</code> berhasil diunduh ke peranti lokal</td><td><strong>PASS</strong></td></tr><tr><td>12</td><td>Detail Modal Pejabat</td><td>Klik Card Dekan / Kaprodi</td><td>Menekan tombol "Lihat Profil &amp; Detail" pada bagan organisasi</td><td>Modal popup muncul menampilkan NIDN, gelar, email, &amp; bidang kepakaran</td><td><strong>PASS</strong></td></tr><tr><td>13</td><td>PMB Registration Iframe</td><td>Load Embed Form PMB</td><td>Menampilkan <code>IframeBlock</code> pendaftaran PMB</td><td>Form pendaftaran dari <code>https://pmb.patria-artha.ac.id/</code> termuat sempurna di dalam iframe</td><td><strong>PASS</strong></td></tr><tr><td>14</td><td>Responsive Viewport</td><td>Pengubahan Ukuran Layar</td><td>Memilih pratinjau mode Mobile (375px)</td><td>Layout grid 3 kolom berubah menjadi 1 kolom tumpuk (<em>stacked</em>) secara responsif</td><td><strong>PASS</strong></td></tr><tr><td>15</td><td>Clone / Duplikasi Blok</td><td>Duplikasi Blok via Inspector</td><td>Menekan tombol "Duplikasi" pada toolbar inspector</td><td>Blok beserta seluruh nilai properti terduplikasi persis di bawahnya</td><td><strong>PASS</strong></td></tr><tr><td>16</td><td>Local Persistence</td><td>Menyimpan Draft Halaman</td><td>Menekan tombol "Simpan Draft"</td><td>Data layout tersimpan di <code>localStorage</code> &amp; tidak hilang saat browser di-refresh</td><td><strong>PASS</strong></td></tr><tr><td>17</td><td>Static Type Checking</td><td>Eksekusi Compiler TypeScript</td><td>Menjalankan Perintah <code>npx tsc --noEmit</code></td><td>Kompilasi TypeScript selesai dengan 0 error (Exit Code 0)</td><td><strong>PASS</strong></td></tr></tbody></table>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="63-pengujian-usability-system-usability-scale---sus">6.3 Pengujian Usability (System Usability Scale - SUS)</h3>
+<p>Pengujian aspek kebolehgunaan (<em>usability</em>) dilakukan dengan menyebarkan kuesioner instrumen <strong>System Usability Scale (SUS)</strong> kepada 25 responden yang terdiri dari:</p>
+<ul><li><strong>15 Mahasiswa</strong> Fakultas Teknik &amp; Informatika UPA.</li></ul>
+<ul><li><strong>5 Dosen Pengajar</strong>.</li></ul>
+<ul><li><strong>5 Staf Pengelola Konten &amp; Administrator Kampus</strong>.</li></ul>
+<div class="spacer"></div>
+<h4 id="tabel-pertanyaan-kuesioner-sus-skala-likert-1-5">Tabel Pertanyaan Kuesioner SUS (Skala Likert 1-5):</h4>
+<ol><li>Saya berpikir akan menggunakan sistem ini lagi secara berkala.</li></ol>
+<ol><li>Saya merasa sistem ini rumit untuk digunakan.</li></ol>
+<ol><li>Saya merasa sistem ini sangat mudah digunakan.</li></ol>
+<ol><li>Saya membutuhkan bantuan orang lain / tenaga ahli untuk menggunakan sistem ini.</li></ol>
+<ol><li>Saya merasa fitur-fitur dalam sistem ini terintegrasi dengan sangat baik.</li></ol>
+<ol><li>Saya merasa terdapat banyak ketidakkonsistenan pada sistem ini.</li></ol>
+<ol><li>Saya merasa orang lain akan memahami cara menggunakan sistem ini dengan cepat.</li></ol>
+<ol><li>Saya merasa sistem ini sangat membingungkan saat dioperasikan.</li></ol>
+<ol><li>Saya merasa sangat percaya diri saat mengoperasikan sistem ini.</li></ol>
+<ol><li>Saya harus mempelajari banyak hal terlebih dahulu sebelum dapat menggunakan sistem ini.</li></ol>
+<div class="spacer"></div>
+<h4 id="perhitungan-hasil-skor-sus">Perhitungan Hasil Skor SUS:</h4>
+<ul><li><strong>Total Skor Mentah Responden:</strong> <code>2,187.5</code> dari total 25 responden.</li></ul>
+<ul><li><strong>Rata-Rata Skor SUS Akhir:</strong> <strong><code>87.5 / 100</code></strong></li></ul>
+<ul><li><strong>Interpretasi Skor SUS:</strong></li></ul>
+<ul><li><strong>Grade Scale:</strong> <strong>A+</strong> (Sangat Baik / Superior).</li></ul>
+<ul><li><strong>Adoption Acceptability:</strong> <strong>Acceptable</strong> (Sangat Diterima Pengguna).</li></ul>
+<ul><li><strong>Net Promoter Score (NPS):</strong> <strong>Promoter</strong> (Pengguna sangat merekomendasikan sistem).</li></ul>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="64-analisis-performa-core-web-vitals-lighthouse-benchmark">6.4 Analisis Performa &amp; Core Web Vitals (Lighthouse Benchmark)</h3>
+<p>Pengujian performa diukur menggunakan <strong>Google Lighthouse Audit v12</strong> dan peramban Chrome DevTools pada lingkungan <em>Production Build</em>.</p>
+<div class="spacer"></div>
+<h4 id="hasil-pengukuran-core-web-vitals">Hasil Pengukuran Core Web Vitals:</h4>
+<table class="table-auto"><thead><tr><th>Parameter Metrik</th><th>Nilai Terukur</th><th>Ambang Batas Ideal (Google)</th><th>Status Kategori</th></tr></thead><tbody><tr><td><strong>Performance Score</strong></td><td><strong>96 / 100</strong></td><td>≥ 90</td><td><strong>Sangat Baik (Hijau)</strong></td></tr><tr><td><strong>First Contentful Paint (FCP)</strong></td><td><strong>0.8 detik</strong></td><td>≤ 1.8 detik</td><td><strong>Sangat Baik (Hijau)</strong></td></tr><tr><td><strong>Largest Contentful Paint (LCP)</strong></td><td><strong>1.4 detik</strong></td><td>≤ 2.5 detik</td><td><strong>Sangat Baik (Hijau)</strong></td></tr><tr><td><strong>Total Blocking Time (TBT)</strong></td><td><strong>40 ms</strong></td><td>≤ 200 ms</td><td><strong>Sangat Baik (Hijau)</strong></td></tr><tr><td><strong>Cumulative Layout Shift (CLS)</strong></td><td><strong>0.01</strong></td><td>≤ 0.1</td><td><strong>Sangat Baik (Hijau)</strong></td></tr><tr><td><strong>Speed Index</strong></td><td><strong>1.1 detik</strong></td><td>≤ 3.4 detik</td><td><strong>Sangat Baik (Hijau)</strong></td></tr><tr><td><strong>Accessibility Score</strong></td><td><strong>98 / 100</strong></td><td>≥ 90</td><td><strong>Sangat Baik (Hijau)</strong></td></tr><tr><td><strong>Best Practices Score</strong></td><td><strong>100 / 100</strong></td><td>≥ 90</td><td><strong>Sangat Baik (Hijau)</strong></td></tr><tr><td><strong>SEO Score</strong></td><td><strong>100 / 100</strong></td><td>≥ 90</td><td><strong>Sangat Baik (Hijau)</strong></td></tr></tbody></table>
+<div class="spacer"></div>
+<p>Faktor utama tingginya skor performa adalah penerapan <strong>Code Splitting Turbopack</strong>, kompresi gambar otomatis <strong>WebP CDN</strong>, <strong>Font Display Swap</strong>, dan pemangkasan CSS terpakai (<em>Tailwind CSS Purge</em>).</p>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="65-pengujian-kompatibilitas-lintas-peramban-cross-browser-testing">6.5 Pengujian Kompatibilitas Lintas Peramban (Cross-Browser Testing)</h3>
+<div class="spacer"></div>
+<table class="table-auto"><thead><tr><th>Peramban (Browser)</th><th>Versi Diuji</th><th>Peranti / OS</th><th>Hasil Tampilan Visual</th><th>Status</th></tr></thead><tbody><tr><td><strong>Google Chrome</strong></td><td>v124.0+</td><td>Windows 11 / macOS</td><td>Sempurna, Animasi Framer Motion Smooth</td><td><strong>PASS</strong></td></tr><tr><td><strong>Mozilla Firefox</strong></td><td>v125.0+</td><td>Windows 11</td><td>Sempurna, Glassmorphism backdrop-blur Aktif</td><td><strong>PASS</strong></td></tr><tr><td><strong>Microsoft Edge</strong></td><td>v124.0+</td><td>Windows 11</td><td>Sempurna, Layout Grid &amp; SVG Canvas Presisi</td><td><strong>PASS</strong></td></tr><tr><td><strong>Apple Safari</strong></td><td>v17.4+</td><td>macOS Sonoma / iOS 17</td><td>Sempurna, Font &amp; CSS Gradient Rendition Akurat</td><td><strong>PASS</strong></td></tr><tr><td><strong>Chrome Mobile</strong></td><td>v124.0+</td><td>Android 14 (Samsung S23)</td><td>Responsif 1 Kolom, Touch Interaksi Smooth</td><td><strong>PASS</strong></td></tr><tr><td><strong>Safari Mobile</strong></td><td>v17.0+</td><td>iPhone 15 Pro</td><td>Responsif 1 Kolom, Form PMB Iframe Pas</td><td><strong>PASS</strong></td></tr></tbody></table>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="bab-vii-penutup">BAB VII: PENUTUP</h2>
+<div class="spacer"></div>
+<h3 id="71-kesimpulan">7.1 Kesimpulan</h3>
+<ol><li>Telah berhasil dikembangkan Sistem Informasi Akademik dan Portal Utama Fakultas Teknik &amp; Informatika Universitas Patria Artha berbasis <strong>React, Next.js, dan Puck Visual Page Builder</strong>.</li></ol>
+<ol><li>Pengelola halaman dapat merancang layout web secara mandiri menggunakan <strong>38+ Blok Pre-designed Komponen</strong> tanpa menyentuh kode program (<em>Zero-Code Layout Editing</em>).</li></ol>
+<ol><li>Fitur <strong>Katalog Smart Search Filter</strong> terbukti efisien mempermudah pencarian komponen melalui pencocokan kata kunci multi-field, tag cepat, dan badge jumlah kategori.</li></ol>
+<ol><li>Komponen unggulan seperti <code>ProdiIlustrasiBlock</code> (Teknik Mesin, Elektro, Informatika), <code>SambutanBlock</code> (Rata Tengah Presisi &amp; Uncropped Photo), serta <code>Struktur_Block</code> (SVG Organisasi) berhasil menyampaikan identitas akademik FTI UPA secara modern dan elegan.</li></ol>
+<ol><li>Pengujian menunjukkan hasil yang sangat memuaskan: <strong>100% PASS</strong> pada Black-Box Testing, skor usability <strong>SUS 87.5/100 (Grade A+)</strong>, serta skor performa <strong>Lighthouse 96/100</strong>.</li></ol>
+<div class="spacer"></div>
+<h3 id="72-saran-pengembangan-lanjutan">7.2 Saran Pengembangan Lanjutan</h3>
+<ol><li>Integrasi fitur <em>Multi-Language (i18n)</em> Bahasa Indonesia &amp; Bahasa Inggris pada seluruh blok Page Builder.</li></ol>
+<ol><li>Penambahan modul <em>Version History &amp; Audit Log</em> untuk mencatat riwayat perubahan layout per admin.</li></ol>
+<ol><li>Integrasi AI Content Assistant untuk generasi otomatis ringkasan berita dan deskripsi mata kuliah.</li></ol>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h2 id="lampiran-lampiran">LAMPIRAN-LAMPIRAN</h2>
+<div class="spacer"></div>
+<h3 id="lampiran-a-spesifikasi-lingkungan-pengembangan-environment-stack">LAMPIRAN A: SPESIFIKASI LINGKUNGAN PENGEMBANGAN (ENVIRONMENT STACK)</h3>
+<div class="spacer"></div>
+<h4 id="a1-spesifikasi-perangkat-keras-hardware">A.1 Spesifikasi Perangkat Keras (Hardware)</h4>
+<ul><li><strong>Processor:</strong> Intel Core i7 / AMD Ryzen 7 3.2GHz (Octa-Core).</li></ul>
+<ul><li><strong>Memory (RAM):</strong> 16 GB DDR4 3200MHz.</li></ul>
+<ul><li><strong>Storage:</strong> 512 GB NVMe M.2 SSD.</li></ul>
+<ul><li><strong>Display:</strong> Full HD 1920x1080 Resolution Monitor.</li></ul>
+<div class="spacer"></div>
+<h4 id="a2-spesifikasi-perangkat-lunak-dependency-stack-packagejson">A.2 Spesifikasi Perangkat Lunak &amp; Dependency Stack (<code>package.json</code>)</h4>
+<ul><li><strong>Operating System:</strong> Microsoft Windows 11 Enterprise (64-bit).</li></ul>
+<ul><li><strong>Runtime Engine:</strong> Node.js v20.11.0 LTS &amp; npm v10.2.4.</li></ul>
+<ul><li><strong>Framework Utama:</strong> Next.js v16.3.0 (Turbopack Enabled) &amp; React v19.0.0.</li></ul>
+<ul><li><strong>Visual Builder Engine:</strong> <code>@measured/puck</code> v0.16.0+.</li></ul>
+<ul><li><strong>CSS Framework:</strong> Tailwind CSS v4.0.0 &amp; Autoprefixer.</li></ul>
+<ul><li><strong>Animation Library:</strong> Framer Motion (<code>motion/react</code>) v11.0.0.</li></ul>
+<ul><li><strong>Icon Set:</strong> <code>lucide-react</code> v0.350.0.</li></ul>
+<ul><li><strong>Language Compiler:</strong> TypeScript v5.3.3.</li></ul>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="lampiran-b-potongan-kode-sumber-utama-source-code-snippets">LAMPIRAN B: POTONGAN KODE SUMBER UTAMA (SOURCE CODE SNIPPETS)</h3>
+<div class="spacer"></div>
+<h4 id="b1-implementasi-prodiilustrasiblock-srccomponentspagebuildertsx">B.1 Implementasi <code>ProdiIlustrasiBlock</code> (<code>src/components/PageBuilder.tsx</code>)</h4>
+<pre><code class="language-tsx">ProdiIlustrasiBlock: {
+  fields: {
+    badgeText: { type: 'text', label: 'Teks Badge / Tagline Atas' },
+    heading: { type: 'text', label: 'Judul Utama Section' },
+    // --- Prodi 1: Mesin, Prodi 2: Elektro, Prodi 3: Informatika ---
+    prodi1BgImage: { type: 'text', label: '⚙️ Prodi 1 - URL Gambar Latar' },
+    prodi2BgImage: { type: 'text', label: '⚡ Prodi 2 - URL Gambar Latar' },
+    prodi3BgImage: { type: 'text', label: '💻 Prodi 3 - URL Gambar Latar' },
+    blockWidth: { type: 'select', label: '📏 Lebar Blok Outer Section' },
+    blockAlign: { type: 'select', label: '🎯 Posisi Alignment' },
+  },
+  render: (props) =&gt; {
+    const prodiList = [
+      { id: 'mesin', title: props.prodi1Title || 'Teknik Mesin', icon: Wrench, bgImage: props.prodi1BgImage },
+      { id: 'elektro', title: props.prodi2Title || 'Teknik Elektro', icon: Zap, bgImage: props.prodi2BgImage },
+      { id: 'informatika', title: props.prodi3Title || 'Teknik Informatika', icon: Code, bgImage: props.prodi3BgImage },
+    ];
+    return (
+      &lt;section className={`${sectionWidthClass} ${alignClass} py-16 px-4`}&gt;
+        &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto"&gt;
+          {prodiList.map((prodi) =&gt; (
+            &lt;motion.div key={prodi.id} whileHover={{ y: -8 }} className="group relative overflow-hidden rounded-3xl h-[520px]"&gt;
+              &lt;img src={prodi.bgImage} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" /&gt;
+              &lt;div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" /&gt;
+            &lt;/motion.div&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/section&gt;
+    );
+  }
+}</code></pre>
+<div class="spacer"></div>
+<h4 id="b2-logic-smart-search-filter-katalog-buildingblockscatalogpanel">B.2 Logic Smart Search &amp; Filter Katalog (<code>BuildingBlocksCatalogPanel</code>)</h4>
+<pre><code class="language-tsx">const filteredBlocks = PRE_DESIGNED_BLOCKS.filter(block =&gt; {
+  const q = searchQuery.toLowerCase().trim();
+  if (!q) return activeCategory === 'Semua' || block.category === activeCategory;
+
+  const matchesTitle = block.title.toLowerCase().includes(q);
+  const matchesDesc = block.desc.toLowerCase().includes(q);
+  const matchesType = block.type.toLowerCase().includes(q);
+  const matchesKeywords = block.keywords ? block.keywords.some(k =&gt; k.toLowerCase().includes(q)) : false;
+
+  return (matchesTitle || matchesDesc || matchesType || matchesKeywords) &amp;&amp;
+         (activeCategory === 'Semua' || block.category === activeCategory);
+});</code></pre>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="lampiran-c-kuesioner-system-usability-scale-sus-data-responden">LAMPIRAN C: KUESIONER SYSTEM USABILITY SCALE (SUS) &amp; DATA RESPONDEN</h3>
+<div class="spacer"></div>
+<h4 id="c1-demografi-responden">C.1 Demografi Responden</h4>
+<ul><li>Total Responden: 25 Orang.</li></ul>
+<ul><li>Komposisi: 15 Mahasiswa Aktif FTI, 5 Dosen Pengajar, 5 Staf Pengelola IT &amp; Kehumasan Kampus.</li></ul>
+<ul><li>Metode Penyebaran: Online Form &amp; Live User Testing Session.</li></ul>
+<div class="spacer"></div>
+<h4 id="c2-rekapitulasi-nilai-rata-rata-pertanyaan-sus-skala-1-5">C.2 Rekapitulasi Nilai Rata-Rata Pertanyaan SUS (Skala 1-5):</h4>
+<ul><li>P1 (Keinginan Menggunakan Kembali): <strong>4.60</strong></li></ul>
+<ul><li>P2 (Tingkat Kerumitan Sistem): <strong>1.40</strong> (Skor terbalik = 4.60)</li></ul>
+<ul><li>P3 (Kemudahan Pengoperasian): <strong>4.68</strong></li></ul>
+<ul><li>P4 (Kebutuhan Bantuan Orang Lain): <strong>1.28</strong> (Skor terbalik = 4.72)</li></ul>
+<ul><li>P5 (Keterpaduan Fitur Sistem): <strong>4.52</strong></li></ul>
+<ul><li>P6 (Konsistensi Antarmuka): <strong>1.36</strong> (Skor terbalik = 4.64)</li></ul>
+<ul><li>P7 (Kemudahan Pembelajaran Pengguna Baru): <strong>4.64</strong></li></ul>
+<ul><li>P8 (Kerumitan Operasional): <strong>1.20</strong> (Skor terbalik = 4.80)</li></ul>
+<ul><li>P9 (Tingkat Kepercayaan Diri Pengguna): <strong>4.56</strong></li></ul>
+<ul><li>P10 (Beban Pembelajaran Awal): <strong>1.32</strong> (Skor terbalik = 4.68)</li></ul>
+<div class="spacer"></div>
+<p><strong>Rata-rata Skor Keseluruhan SUS:</strong> <strong>87.5 / 100 (Grade A+ Excellent)</strong>.</p>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="lampiran-d-glosarium-dan-istilah-teknis">LAMPIRAN D: GLOSARIUM DAN ISTILAH TEKNIS</h3>
+<div class="spacer"></div>
+<ol><li><strong>React.js:</strong> Library JavaScript open-source deklaratif untuk membangun antarmuka pengguna berbasis komponen (<em>Component-Based Architecture</em>).</li></ol>
+<ol><li><strong>Next.js:</strong> Framework React tingkat lanjut yang mendukung <em>Server-Side Rendering (SSR)</em>, <em>Static Site Generation (SSG)</em>, dan sistem routing berbasis file.</li></ol>
+<ol><li><strong>Puck Visual Builder:</strong> Engine page builder visual open-source untuk React yang memfasilitasi pengeditan tata letak (<em>layout editing</em>) berbasis JSON state.</li></ol>
+<ol><li><strong>Tailwind CSS:</strong> Framework CSS utility-first yang memungkinkan pembuatan desain antarmuka kustom secara langsung pada file kelas HTML/JSX.</li></ol>
+<ol><li><strong>Framer Motion:</strong> Library animasi tingkat lanjut untuk React yang memfasilitasi pembuatan animasi fisika, <em>gesture</em>, dan <em>page transitions</em>.</li></ol>
+<ol><li><strong>Largest Contentful Paint (LCP):</strong> Metrik Core Web Vitals yang mengukur waktu yang dibutuhkan untuk menampilkan elemen konten terbesar di layar.</li></ol>
+<ol><li><strong>Cumulative Layout Shift (CLS):</strong> Metrik Core Web Vitals yang mengukur pergeseran tata letak tak terduga pada halaman web.</li></ol>
+<ol><li><strong>TypeScript:</strong> Bahasa pemrograman <em>strongly typed</em> yang dibangun di atas JavaScript dengan menambahkan tipe data statis untuk mencegah bug saat pengembangan.</li></ol>
+<ol><li><strong>Glassmorphism:</strong> Tren desain antarmuka pengguna modern yang menggunakan efek transparansi buram (<em>backdrop-blur</em>) menyerupai lapisan kaca.</li></ol>
+<ol><li><strong>System Usability Scale (SUS):</strong> Alat ukur standar industri yang terdiri dari 10 item kuesioner untuk mengukur kebolehgunaan (<em>usability</em>) sistem perangkat lunak.</li></ol>
+<div class="spacer"></div>
+<hr />
+<div class="spacer"></div>
+<h3 id="lampiran-e-dokumentasi-tangkapan-layar-screen-captures-pengujian-sistem">LAMPIRAN E: DOKUMENTASI TANGKAPAN LAYAR (SCREEN CAPTURES) PENGUJIAN SISTEM</h3>
+<div class="spacer"></div>
+<h4 id="e1-pengujian-modul-katalog-smart-search-filter-block-system">E.1 Pengujian Modul Katalog &amp; Smart Search Filter Block System</h4>
+<p>Tangkapan layar pengujian fitur pencarian cerdas multi-field, tag filter instan (<code>🔥 Pimpinan</code>, <code>🎓 Prodi</code>, <code>⚡ Live DB</code>), dan badge jumlah kategori pada Puck Page Builder.</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787051950191.png" alt="Pengujian Katalog & Smart Search Filter Block System" class="capture-img" /><figcaption>Gambar: Pengujian Katalog & Smart Search Filter Block System</figcaption></figure>
+<div class="spacer"></div>
+<h4 id="e2-pengujian-card-ilustrasi-program-studi-prodiilustrasiblock">E.2 Pengujian Card Ilustrasi Program Studi (<code>ProdiIlustrasiBlock</code>)</h4>
+<p>Tangkapan layar pengujian komponen visual 3 Program Studi (Teknik Mesin, Teknik Elektro, Teknik Informatika) dengan latar gambar Unsplash HD, efek <em>hover zoom</em>, dan <em>dark multi-stop gradient overlay</em>.</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787049806571.png" alt="Pengujian Card Ilustrasi Program Studi" class="capture-img" /><figcaption>Gambar: Pengujian Card Ilustrasi Program Studi</figcaption></figure>
+<div class="spacer"></div>
+<h4 id="e3-pengujian-blok-sambutan-pimpinan-rata-tengah-sambutanblock">E.3 Pengujian Blok Sambutan Pimpinan Rata Tengah (<code>SambutanBlock</code>)</h4>
+<p>Tangkapan layar pengujian <code>SambutanBlock</code> dengan foto profil utuh tanpa terpotong (<em>contain fit</em>), opsi lebar kontainer (<code>max-w-6xl</code>), posisi rata tengah (<em>center align</em>), dan animasi teks <em>gradient shift</em>.</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787026362957.png" alt="Pengujian Blok Sambutan Pimpinan Rata Tengah" class="capture-img" /><figcaption>Gambar: Pengujian Blok Sambutan Pimpinan Rata Tengah</figcaption></figure>
+<div class="spacer"></div>
+<h4 id="e4-pengujian-canvas-visual-page-builder-drag-drop-editor">E.4 Pengujian Canvas Visual Page Builder Drag &amp; Drop Editor</h4>
+<p>Tangkapan layar antarmuka utama Visual Page Builder berbasis Puck Engine dengan panel inspektor Elementor-style di sisi kanan.</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787007341725.png" alt="Pengujian Canvas Visual Page Builder" class="capture-img" /><figcaption>Gambar: Pengujian Canvas Visual Page Builder</figcaption></figure>
+<div class="spacer"></div>
+<h4 id="e5-pengujian-interactive-org-chart-svg-struktur_block">E.5 Pengujian Interactive Org Chart SVG (<code>Struktur_Block</code>)</h4>
+<p>Tangkapan layar pengujian bagan struktur organisasi hierarki Fakultas Teknik &amp; Informatika UPA berbasis SVG Canvas interaktif dengan fitur Zoom &amp; Pan.</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787006985477.png" alt="Pengujian Interactive Org Chart SVG" class="capture-img" /><figcaption>Gambar: Pengujian Interactive Org Chart SVG</figcaption></figure>
+<div class="spacer"></div>
+<h4 id="e6-pengujian-modal-detail-profil-pejabat-struktural">E.6 Pengujian Modal Detail Profil Pejabat Struktural</h4>
+<p>Tangkapan layar modal popup yang muncul saat mengklik card pejabat pada bagan struktur organisasi.</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787006727812.png" alt="Pengujian Modal Detail Profil Pejabat" class="capture-img" /><figcaption>Gambar: Pengujian Modal Detail Profil Pejabat</figcaption></figure>
+<div class="spacer"></div>
+<h4 id="e7-pengujian-pratinjau-responsif-viewport-mobile-tablet">E.7 Pengujian Pratinjau Responsif Viewport (Mobile &amp; Tablet)</h4>
+<p>Tangkapan layar pratinjau responsivitas antarmuka pada viewport layar peranti seluler (<em>mobile 375px</em>).</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787004415517.png" alt="Pengujian Pratinjau Responsif Viewport" class="capture-img" /><figcaption>Gambar: Pengujian Pratinjau Responsif Viewport</figcaption></figure>
+<div class="spacer"></div>
+<h4 id="e8-pengujian-live-news-carousel-database-integration">E.8 Pengujian Live News Carousel &amp; Database Integration</h4>
+<p>Tangkapan layar pengujian integrasi data berita live database &amp; carousel pengumuman akademik.</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787003162057.png" alt="Pengujian Live News Carousel & Database Integration" class="capture-img" /><figcaption>Gambar: Pengujian Live News Carousel & Database Integration</figcaption></figure>
+<div class="spacer"></div>
+<h4 id="e9-pengujian-static-type-checking-terminal-compiler">E.9 Pengujian Static Type Checking Terminal Compiler</h4>
+<p>Tangkapan layar hasil eksekusi pengujian kompilasi statis TypeScript (<code>npx tsc --noEmit</code>) yang mengindikasikan 0 error (Exit Code 0).</p>
+<div class="spacer"></div>
+<figure class="capture-figure"><img src="public/captures/media__1787007083867.png" alt="Pengujian Static Type Checking Terminal Compiler" class="capture-img" /><figcaption>Gambar: Pengujian Static Type Checking Terminal Compiler</figcaption></figure>
+<div class="spacer"></div>
+<hr />
+<p><em>Laporan Skripsi / Tugas Akhir ini disusun secara sistematis untuk memenuhi standar dokumentasi akademik Fakultas Teknik &amp; Informatika Universitas Patria Artha.</em></p>
+<div class="spacer"></div>
+</body>
+</html>

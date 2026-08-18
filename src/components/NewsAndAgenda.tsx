@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NewsItem } from '../types';
 import { api } from '../services/api';
 import { renderMarkdownToHtml } from '../utils/markdown';
+import { getNewsSlug } from '../utils/slugify';
 import { 
   Newspaper, 
   Calendar, 
@@ -68,7 +69,8 @@ export const NewsAndAgenda: React.FC<NewsAndAgendaProps> = ({ newsList: propNews
 
   const handleOpenArticle = (article: NewsItem) => {
     setActiveArticle(article);
-    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?berita=${article.slug || article.id}#berita`;
+    const targetSlug = getNewsSlug(article);
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?berita=${encodeURIComponent(targetSlug)}#berita`;
     window.history.pushState({path:newUrl},'',newUrl);
     window.scrollTo({ top: document.getElementById('berita')?.offsetTop || 0, behavior: 'smooth' });
   };
@@ -158,8 +160,8 @@ export const NewsAndAgenda: React.FC<NewsAndAgendaProps> = ({ newsList: propNews
 
                 {/* Summary Box */}
                 {activeArticle.summary && (
-                  <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/90 dark:bg-slate-950/80 border-l-4 border-[#9B2C2C] text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
-                    <p className="font-bold text-[#9B2C2C] dark:text-red-400 mb-1 uppercase tracking-wider text-[10px]">Ringkasan Berita:</p>
+                  <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/90 dark:bg-slate-950/80 border-l-4 border-[#9B2C2C] text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                    <p className="font-bold text-[#9B2C2C] dark:text-red-400 mb-1 uppercase tracking-wider text-xs">Ringkasan Berita:</p>
                     {activeArticle.summary}
                   </div>
                 )}
@@ -175,7 +177,7 @@ export const NewsAndAgenda: React.FC<NewsAndAgendaProps> = ({ newsList: propNews
                         className="w-full h-auto max-h-[700px] object-contain rounded-2xl mx-auto block"
                       />
                     </div>
-                    <p className="text-[11px] text-center text-slate-400 italic">
+                    <p className="text-xs text-center text-slate-400 italic">
                       Visual Dokumentasi: {activeArticle.title}
                     </p>
                   </div>
@@ -271,8 +273,8 @@ export const NewsAndAgenda: React.FC<NewsAndAgendaProps> = ({ newsList: propNews
                         className="w-14 h-14 rounded-xl object-cover shrink-0 border border-slate-200 dark:border-slate-800"
                       />
                       <div className="min-w-0 flex-1">
-                        <span className="text-[9px] font-extrabold text-[#9B2C2C] uppercase block mb-0.5">{item.category}</span>
-                        <h4 className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-[#9B2C2C] line-clamp-2 leading-snug">
+                        <span className="text-xs font-extrabold text-[#9B2C2C] uppercase block mb-0.5">{item.category}</span>
+                        <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#9B2C2C] line-clamp-2 leading-snug">
                           {item.title}
                         </h4>
                       </div>
@@ -283,7 +285,7 @@ export const NewsAndAgenda: React.FC<NewsAndAgendaProps> = ({ newsList: propNews
 
               {/* SIDEBAR WIDGET 4: MEDIA TERVERIFIKASI & YOUTUBE OFFICIAL */}
               <div className="p-5 rounded-3xl bg-gradient-to-br from-[#800020] to-red-950 text-white shadow-xl space-y-3">
-                <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-amber-200 text-[10px] font-black uppercase">Media Terverifikasi</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-amber-200 text-xs font-black uppercase">Media Terverifikasi</span>
                 <h4 className="text-sm font-black">Portal Berita Resmi UPA</h4>
                 <p className="text-xs text-red-100/90 leading-relaxed">
                   Universitas Patria Artha terverifikasi dan berkomitmen menyajikan informasi akademik yang akurat dan terpercaya.
@@ -325,7 +327,7 @@ export const NewsAndAgenda: React.FC<NewsAndAgendaProps> = ({ newsList: propNews
                         />
                       </div>
                       <div className="p-5 space-y-2">
-                        <span className="text-[10px] font-black px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 uppercase">
+                        <span className="text-xs font-black px-2.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 uppercase">
                           {rel.category}
                         </span>
                         <h4 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-[#9B2C2C] line-clamp-2 leading-snug">
@@ -404,7 +406,7 @@ export const NewsAndAgenda: React.FC<NewsAndAgendaProps> = ({ newsList: propNews
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute top-3 left-3 bg-[#9B2C2C] text-white text-[10px] font-black px-3 py-1 rounded-lg shadow-md uppercase">
+                  <div className="absolute top-3 left-3 bg-[#9B2C2C] text-white text-xs font-black px-3 py-1 rounded-lg shadow-md uppercase">
                     {article.category}
                   </div>
                 </div>

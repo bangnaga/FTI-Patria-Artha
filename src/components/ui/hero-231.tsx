@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight, Sparkles } from 'lucide-react';
+import { ParticlesBg } from './particles-bg';
 
 export type HeroBgType = 'solid' | 'gradient' | 'image' | 'video' | 'slideshow';
 export type HeroLayoutStyle = 'staggered' | 'bento' | 'floating-glass' | 'cinematic-center';
@@ -29,6 +30,8 @@ export interface Hero231Props {
   layoutStyle?: HeroLayoutStyle;
   animatedTitles?: string[]; // Rotating word highlights
   enableTextAnimation?: boolean;
+  showParticles?: boolean | string;
+  particlesColor?: string;
 }
 
 const DEFAULT_LOGOS = [
@@ -71,6 +74,8 @@ export default function Hero231({
   layoutStyle = 'staggered',
   animatedTitles = ['Mencetak Talenta AI', 'Software Engineering', 'Cyber Security'],
   enableTextAnimation = true,
+  showParticles,
+  particlesColor = 'white',
 }: Hero231Props) {
   const [slideIndex, setSlideIndex] = useState(0);
   const [titleIndex, setTitleIndex] = useState(0);
@@ -109,6 +114,10 @@ export default function Hero231({
 
   return (
     <section className={`relative overflow-hidden w-full py-16 sm:py-24 ${getBgStyleClasses()}`}>
+      {/* Background Particles.js Canvas Animation */}
+      {showParticles && showParticles !== 'false' && (
+        <ParticlesBg color={particlesColor} count={50} speed={0.9} />
+      )}
       
       {/* 1. Background Video Layer */}
       {bgType === 'video' && bgVideoUrl && (

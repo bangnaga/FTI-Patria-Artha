@@ -1,29 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
 }
 
 :root {
   /* Colors */
-  --header-bg: #800020;
+  --header-bg: #DC2626;
   --header-text: #FFF5F5;
   --body-bg: #FFFFFF;
-  --main-text: lab(35.5623 -1.74978 -15.4316);
+  --main-text: #334155;
   --heading-text: #0F172A;
-  --primary-accent: #9B2C2C;
-  --secondary-accent: #EDF2F7;
+  --primary-accent: #DC2626;
+  --secondary-accent: #F1F5F9;
   --accent-color: #F59E0B;
   --card-bg: #FFFFFF;
   --border-divider: #E2E8F0;
 
   /* Default Font Specification */
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --base-font-size: 20px;
-  --base-line-height: 33px;
+  --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --base-font-size: 16px;
+  --base-line-height: 1.65;
   --base-font-weight: 400;
   --heading-font-weight: 800;
   --letter-spacing-heading: -0.025em;
@@ -36,24 +37,50 @@
 }
 
 html {
-  font-size: var(--base-font-size, 20px);
+  font-size: 16px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  background-color: var(--body-bg, #FFFFFF);
-  color: var(--main-text, lab(35.5623 -1.74978 -15.4316));
-  font-family: var(--font-body);
-  font-size: var(--base-font-size, 20px);
-  line-height: var(--base-line-height, 33px);
-  font-weight: var(--base-font-weight, 400);
-  font-style: normal;
+/* Universal Font Standardization for Main Web & Puck Visual Builder */
+*, ::before, ::after {
+  font-family: inherit;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  letter-spacing: var(--letter-spacing-heading);
+body,
+button,
+input,
+select,
+textarea,
+p,
+span,
+li,
+a,
+label,
+div,
+.Puck,
+[class*="Puck"],
+[class*="puck"],
+[data-puck-component] {
+  font-family: var(--font-body, 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+}
+
+h1, h2, h3, h4, h5, h6,
+.font-heading,
+.puck-heading,
+[class*="Puck"] h1,
+[class*="Puck"] h2,
+[class*="Puck"] h3,
+[class*="Puck"] h4,
+[class*="puck"] h1,
+[class*="puck"] h2,
+[class*="puck"] h3,
+[class*="puck"] h4 {
+  font-family: var(--font-heading, 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif);
+  letter-spacing: var(--letter-spacing-heading, -0.025em);
 }
 
 .rounded-global {
@@ -71,7 +98,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @layer utilities {
   .bg-burgundy {
-    background-color: var(--header-bg, #800020);
+    background-color: var(--header-bg, #DC2626);
   }
   .text-soft-red-white {
     color: var(--header-text, #FFF5F5);
@@ -80,19 +107,19 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--body-bg, #FFFFFF);
   }
   .text-charcoal {
-    color: var(--main-text, #1E293B);
+    color: var(--main-text, #334155);
   }
   .bg-dark-cherry {
-    background-color: var(--primary-accent, #9B2C2C);
+    background-color: var(--primary-accent, #DC2626);
   }
   .text-dark-cherry {
-    color: var(--primary-accent, #9B2C2C);
+    color: var(--primary-accent, #DC2626);
   }
   .border-dark-cherry {
-    border-color: var(--primary-accent, #9B2C2C);
+    border-color: var(--primary-accent, #DC2626);
   }
   .bg-neutral-gray {
-    background-color: var(--secondary-accent, #EDF2F7);
+    background-color: var(--secondary-accent, #F1F5F9);
   }
   .border-soft-divider {
     border-color: var(--border-divider, #E2E8F0);
@@ -105,10 +132,6 @@ h1, h2, h3, h4, h5, h6 {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 @keyframes shimmerSweep {
@@ -131,6 +154,58 @@ html {
 
 .animate-float {
   animation: floatAnimation 5s ease-in-out infinite;
+}
+
+/* Custom Sleek Scrollbar & Single Scrollbar Control */
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(220, 38, 38, 0.7);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(220, 38, 38, 0.5);
+  border-radius: 9999px;
+}
+
+/* Eliminate Unwanted Borders on Hero Sections & Header Navbar */
+header {
+  border-bottom: none !important;
+}
+
+#hero,
+.puck-editor-container,
+[data-puck-component*="Hero"],
+[class*="Hero"] {
+  border-top: none !important;
+  border-left: none !important;
+  outline: none !important;
 }
 
 

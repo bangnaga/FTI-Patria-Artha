@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { ParticlesBg } from './particles-bg';
 
 export type HeroAccentColor = 'orange' | 'blue' | 'green' | 'purple' | 'red';
 export type HeroTheme = 'light' | 'dark';
@@ -17,6 +18,8 @@ export interface DarkHeroProps {
   secondaryCtaHref?: string;
   accentColor?: HeroAccentColor;
   showNodes?: boolean;
+  showParticles?: boolean | string;
+  particlesColor?: string;
 }
 
 const ACCENT_COLORS: Record<HeroAccentColor, { gradient: string; glow: string; badge: string; node: string }> = {
@@ -71,6 +74,8 @@ export default function DarkHero({
   secondaryCtaHref = '#',
   accentColor = 'orange',
   showNodes = true,
+  showParticles,
+  particlesColor = 'white',
 }: DarkHeroProps) {
   const accent = ACCENT_COLORS[accentColor];
   const isDark = theme === 'dark';
@@ -87,6 +92,10 @@ export default function DarkHero({
 
   return (
     <section className={sectionClass}>
+      {/* Background Particles.js Canvas Animation */}
+      {showParticles && showParticles !== 'false' && (
+        <ParticlesBg color={particlesColor} count={50} speed={0.9} />
+      )}
       {/* Background glow */}
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"

@@ -2,10 +2,9 @@
 
 import * as React from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
-
 import { cn } from '../../lib/utils'
-
 import { Cta, type CtaProps } from './hero-10-utils/cta'
+import { ParticlesBg } from './particles-bg'
 
 export interface Hero10Props {
   title: string
@@ -15,10 +14,20 @@ export interface Hero10Props {
   socialProof?: string
   images: string[]
   imageAlts?: string[]
+  photoNames?: string[]
+  photoTitles?: string[]
+  photo1Name?: string
+  photo1Title?: string
+  photo2Name?: string
+  photo2Title?: string
+  photo3Name?: string
+  photo3Title?: string
   animation?: 'none' | 'subtle'
   primaryCTA: CtaProps
   secondaryCTA?: CtaProps
   variant?: 'standard' | 'compact'
+  showParticles?: boolean | string
+  particlesColor?: string
 }
 
 const variantStyles = {
@@ -116,11 +125,15 @@ function Reveal({
 function ImageFan({
   images,
   imageAlts,
+  names,
+  titles,
   cardAspect,
   animate,
 }: Readonly<{
   images: string[]
   imageAlts?: string[]
+  names?: string[]
+  titles?: string[]
   cardAspect: string
   animate: boolean
 }>) {
@@ -142,13 +155,27 @@ function ImageFan({
         ]
         const validSrc = src && src.trim() !== '' ? src : fallbackUrls[i % fallbackUrls.length]
 
+        const defaultNames = [
+          'Prof. Dr. Ir. H. Ahmad Fauzi, M.T.',
+          'Dr. Eng. Rina Melati, S.T., M.T.',
+          'Ir. Muhammad Arham, M.Kom.'
+        ]
+        const defaultTitles = [
+          'Dekan FTI UPA',
+          'Wakil Dekan I Akademik',
+          'Ketua Prodi Informatika'
+        ]
+
+        const photoName = names?.[i] || defaultNames[i % defaultNames.length]
+        const photoTitle = titles?.[i] || defaultTitles[i % defaultTitles.length]
+
         return (
           <motion.div
             key={`fan-img-${i}-${validSrc}`}
             custom={slot}
             variants={fanCard}
             className={cn(
-              'relative shrink-0 overflow-hidden rounded-xl shadow-xl outline outline-black/10 dark:outline-white/10',
+              'relative shrink-0 overflow-hidden rounded-2xl shadow-2xl outline outline-black/10 dark:outline-white/10 group cursor-pointer transition-all duration-300 hover:z-30 hover:scale-105',
               cardAspect,
               slot.width,
               slot.layout,
@@ -156,10 +183,23 @@ function ImageFan({
           >
             <img
               src={validSrc}
-              alt={imageAlts?.[i] ?? ''}
+              alt={imageAlts?.[i] ?? photoName}
               decoding="async"
-              className="size-full object-cover"
+              className="size-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
+            {/* Overlay Nama dan Jabatan */}
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent p-2.5 sm:p-3.5 text-left backdrop-blur-[2px] z-10 flex flex-col justify-end">
+              {photoTitle && (
+                <div className="inline-block self-start px-2 py-0.5 rounded bg-red-600/90 text-white text-[9px] sm:text-[10px] font-extrabold mb-1 shadow-xs tracking-wider uppercase">
+                  {photoTitle}
+                </div>
+              )}
+              {photoName && (
+                <h4 className="text-white font-extrabold text-xs sm:text-sm md:text-base leading-snug drop-shadow-md line-clamp-1">
+                  {photoName}
+                </h4>
+              )}
+            </div>
           </motion.div>
         )
       })}
@@ -175,14 +215,27 @@ export function Hero10({
   socialProof,
   images,
   imageAlts,
+  photoNames,
+  photoTitles,
+  photo1Name,
+  photo1Title,
+  photo2Name,
+  photo2Title,
+  photo3Name,
+  photo3Title,
   animation = 'none',
   primaryCTA,
   secondaryCTA,
   variant = 'standard',
+  showParticles,
+  particlesColor = 'white',
 }: Readonly<Hero10Props>) {
   const reduce = useReducedMotion()
   const animate = animation === 'subtle' && !reduce
   const vs = variantStyles[variant]
+
+  const resolvedNames = photoNames || [photo1Name || '', photo2Name || '', photo3Name || ''].filter(Boolean)
+  const resolvedTitles = photoTitles || [photo1Title || '', photo2Title || '', photo3Title || ''].filter(Boolean)
 
   const titleElement = title && (
     <h1
@@ -231,6 +284,8 @@ export function Hero10({
     <ImageFan
       images={images}
       imageAlts={imageAlts}
+      names={resolvedNames.length ? resolvedNames : undefined}
+      titles={resolvedTitles.length ? resolvedTitles : undefined}
       cardAspect={vs.fanCard}
       animate={animate}
     />
@@ -238,6 +293,9 @@ export function Hero10({
 
   return (
     <section className="bg-white dark:bg-slate-900 relative isolate w-full overflow-hidden">
+      {showParticles && showParticles !== 'false' && (
+        <ParticlesBg color={particlesColor} count={45} speed={0.8} />
+      )}
       <motion.div
         className={cn(
           'relative z-10 mx-auto flex max-w-6xl flex-col items-center px-6 text-center',

@@ -274,7 +274,7 @@ export const StudentAndAlumni: React.FC<StudentAndAlumniProps> = ({ studentOrg: 
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
                       <img
-                        src={alumni.photo}
+                        src={alumni.photo || '/uploads/noface-1787027055368-je087.jpg'}
                         alt={alumni.name}
                         referrerPolicy="no-referrer"
                         className="w-14 h-14 rounded-2xl object-cover border-2 border-blue-500/30"

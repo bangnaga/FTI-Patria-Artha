@@ -107,6 +107,7 @@ interface AdminDashboardProps {
   setMediaFilesList?: (media: MediaFile[]) => void;
   onUpdateMediaFiles?: (media: MediaFile[]) => void;
 
+  initialTab?: string;
   onOpenPageBuilder?: (page?: any) => void;
   onBackToWebsite?: () => void;
   user?: { name: string; role: string; email: string } | null;
@@ -117,6 +118,7 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
+  initialTab,
   newsList: propNewsList,
   setNewsList,
   onUpdateNews,
@@ -222,7 +224,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   };
 
   // Tab State
-  const [activeTab, setActiveTab] = useState<'overview' | 'berita' | 'dosen' | 'prodi' | 'kurikulum' | 'custom-page' | 'menu' | 'media' | 'tema' | 'pengaturan' | 'kalender' | 'testimoni' | 'pengguna' | 'footer-editor'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'berita' | 'dosen' | 'prodi' | 'kurikulum' | 'custom-page' | 'menu' | 'media' | 'tema' | 'pengaturan' | 'kalender' | 'testimoni' | 'pengguna' | 'footer-editor'>((initialTab as any) || 'overview');
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab as any);
+    }
+  }, [initialTab]);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Search and Filter States
@@ -827,45 +835,45 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     {
       id: 'putih-bersih-semua',
       name: 'Latar Putih Bersih (Full White Clean)',
-      desc: 'Pengaturan latar belakang putih bersih (#FFFFFF) di seluruh website dengan aksen Merah FTI (#9B2C2C) yang kontras & elegan',
-      primaryColor: '#9B2C2C',
-      secondaryColor: '#800020',
+      desc: 'Pengaturan latar belakang putih bersih (#FFFFFF) di seluruh website dengan aksen Merah Cerah FTI (#DC2626) yang kontras & modern',
+      primaryColor: '#DC2626',
+      secondaryColor: '#B91C1C',
       bgColor: '#FFFFFF',
       cardColor: '#FFFFFF',
       mainTextColor: '#1E293B',
-      headerBgColor: '#800020',
+      headerBgColor: '#DC2626',
       headerTextColor: '#FFF5F5',
       accentColor: '#F59E0B',
-      previewGradient: 'from-[#800020] via-[#9B2C2C] to-white',
+      previewGradient: 'from-red-600 via-red-500 to-white',
       badge: 'Bg Putih Semua'
     },
     {
-      id: 'merah-maroon-putih',
-      name: 'Merah Maroon & Putih FTI (Default Resmi)',
-      desc: 'Warna identitas resmi FTI Patria Artha: Maroon Burgundy (#800020), Merah Cabai (#9B2C2C), Putih Bersih & Emas FTI',
-      primaryColor: '#9B2C2C',
-      secondaryColor: '#800020',
+      id: 'merah-cerah-putih',
+      name: 'Merah Cerah & Putih FTI (Default Resmi)',
+      desc: 'Warna identitas resmi FTI Patria Artha: Merah Cerah (#DC2626), Merah Cabai Modern, Putih Bersih & Emas FTI',
+      primaryColor: '#DC2626',
+      secondaryColor: '#B91C1C',
       bgColor: '#FFFFFF',
       cardColor: '#FFFFFF',
       mainTextColor: '#1E293B',
-      headerBgColor: '#800020',
+      headerBgColor: '#DC2626',
       headerTextColor: '#FFF5F5',
       accentColor: '#F59E0B',
-      previewGradient: 'from-[#800020] via-[#9B2C2C] to-white',
+      previewGradient: 'from-red-600 via-red-500 to-white',
       badge: 'Resmi FTI'
     },
     {
       id: 'putih-minimalis-header-white',
       name: 'Minimalis All-White (Header & Body Putih)',
-      desc: 'Tema serba putih dengan Navbar header putih (#FFFFFF), teks gelap, dan aksen Merah Cabai modern',
-      primaryColor: '#9B2C2C',
-      secondaryColor: '#800020',
+      desc: 'Tema serba putih dengan Navbar header putih (#FFFFFF), teks gelap, dan aksen Merah Cerah modern',
+      primaryColor: '#DC2626',
+      secondaryColor: '#B91C1C',
       bgColor: '#FFFFFF',
       cardColor: '#FAFAFA',
       mainTextColor: '#0F172A',
       headerBgColor: '#FFFFFF',
       headerTextColor: '#0F172A',
-      accentColor: '#9B2C2C',
+      accentColor: '#DC2626',
       previewGradient: 'from-slate-200 via-white to-red-600',
       badge: 'Full White Header'
     },
@@ -887,31 +895,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     {
       id: 'merah-crimson-cream',
       name: 'Merah Crimson & Krem Putih Halus',
-      desc: 'Tema hangat dengan warna Crimson Deep, latar Krem Putih Halus (#FFFDF8) & aksen Amber Emas',
-      primaryColor: '#991B1B',
-      secondaryColor: '#7F1D1D',
+      desc: 'Tema hangat dengan warna Crimson Bright, latar Krem Putih Halus (#FFFDF8) & aksen Amber Emas',
+      primaryColor: '#DC2626',
+      secondaryColor: '#B91C1C',
       bgColor: '#FFFDF8',
       cardColor: '#FFFFFF',
       mainTextColor: '#2D3748',
-      headerBgColor: '#7F1D1D',
+      headerBgColor: '#B91C1C',
       headerTextColor: '#FFF5F5',
       accentColor: '#D97706',
-      previewGradient: 'from-red-900 via-red-800 to-amber-50',
+      previewGradient: 'from-red-700 via-red-600 to-amber-50',
       badge: 'Elegance'
     },
     {
       id: 'dark-maroon-putih',
-      name: 'Dark Mode Maroon & Slate',
-      desc: 'Tampilan modern latar gelap Slate Navy (#0F172A) dengan aksen Merah Cabai & Teks Putih Kontras',
+      name: 'Dark Mode Red & Slate',
+      desc: 'Tampilan modern latar gelap Slate Navy (#0F172A) dengan aksen Merah Cerah & Teks Putih Kontras',
       primaryColor: '#EF4444',
-      secondaryColor: '#B91C1C',
+      secondaryColor: '#DC2626',
       bgColor: '#0F172A',
       cardColor: '#1E293B',
       mainTextColor: '#F8FAFC',
       headerBgColor: '#0F172A',
       headerTextColor: '#F8FAFC',
       accentColor: '#38BDF8',
-      previewGradient: 'from-slate-900 via-[#800020] to-red-600',
+      previewGradient: 'from-slate-900 via-red-600 to-red-500',
       badge: 'Dark Mode'
     }
   ];
@@ -928,10 +936,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       try { return JSON.parse(saved); } catch (e) {}
     }
     return {
-      primaryColor: '#9B2C2C',
-      secondaryColor: '#800020',
+      primaryColor: '#DC2626',
+      secondaryColor: '#B91C1C',
       accentColor: '#F59E0B',
-      headerBgColor: '#800020',
+      headerBgColor: '#DC2626',
       headerTextColor: '#FFF5F5',
       bodyBgColor: '#FFFFFF',
       cardBgColor: '#FFFFFF',
@@ -1668,7 +1676,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-[#2D3748] dark:text-slate-100 flex flex-col lg:flex-row font-sans">
+    <div className="h-screen overflow-hidden bg-slate-50 dark:bg-slate-950 text-[#2D3748] dark:text-slate-100 flex flex-col lg:flex-row font-sans">
       
       {/* LEFT SIDEBAR NAVIGATION */}
       <aside 
@@ -1832,7 +1840,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       )}
 
       {/* MAIN CONTENT WORKSPACE AREA */}
-      <main className="flex-1 min-w-0 flex flex-col min-h-screen overflow-y-auto bg-[#FDFBF7] dark:bg-slate-900">
+      <main className="flex-1 min-w-0 flex flex-col h-full overflow-y-auto bg-[#FDFBF7] dark:bg-slate-900">
         
         {/* Top Header Bar inside Main Workspace */}
         <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 py-4 flex items-center justify-between shadow-xs">

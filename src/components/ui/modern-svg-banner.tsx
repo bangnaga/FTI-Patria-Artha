@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, ArrowRight, Home, ChevronRight } from 'lucide-react';
+import { ParticlesBg } from './particles-bg';
 
 export interface ModernSvgBannerProps {
   titleTop?: string;
@@ -15,6 +16,8 @@ export interface ModernSvgBannerProps {
   rightTheme?: 'dark-navy' | 'maroon-dark' | 'emerald-dark' | 'slate-dark';
   height?: 'compact' | 'medium' | 'tall';
   breadcrumb?: string;
+  showParticles?: boolean | string;
+  particlesColor?: string;
 }
 
 const ACCENT_COLOR_MAP = {
@@ -103,6 +106,8 @@ export const ModernSvgBanner: React.FC<ModernSvgBannerProps> = ({
   rightTheme = 'dark-navy',
   height = 'compact',
   breadcrumb = '',
+  showParticles,
+  particlesColor = 'white',
 }) => {
   const accent = ACCENT_COLOR_MAP[accentColor] || ACCENT_COLOR_MAP.orange;
   const theme = RIGHT_THEME_MAP[rightTheme] || RIGHT_THEME_MAP['dark-navy'];
@@ -112,6 +117,10 @@ export const ModernSvgBanner: React.FC<ModernSvgBannerProps> = ({
 
   return (
     <div className={`relative w-full overflow-hidden shadow-xl select-none ${heightClass}`}>
+      {/* Background Particles.js Canvas Animation */}
+      {showParticles && showParticles !== 'false' && (
+        <ParticlesBg color={particlesColor} count={40} speed={0.8} />
+      )}
       {/* SVG Background Layer */}
       <svg
         className="absolute inset-0 w-full h-full object-cover"

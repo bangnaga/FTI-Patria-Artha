@@ -5,8 +5,10 @@ import { motion } from 'motion/react';
 import { ChevronRight, Home, Calendar, User, Eye, Sparkles } from 'lucide-react';
 
 import ModernSvgBanner from './modern-svg-banner';
+import { ParticlesBg } from './particles-bg';
 
 export interface PageBannerProps {
+  id?: string;
   badge?: string;
   badgeColor?: 'blue' | 'maroon' | 'amber' | 'emerald' | 'purple';
   title: string;
@@ -24,6 +26,8 @@ export interface PageBannerProps {
   bannerHeight?: 'compact' | 'medium' | 'tall' | 'h150';
   textAlign?: 'left' | 'center' | 'right';
   accentColor?: 'maroon' | 'amber' | 'emerald' | 'blue' | 'purple';
+  showParticles?: boolean | string;
+  particlesColor?: string;
 }
 
 const getYoutubeId = (urlOrId?: string) => {
@@ -90,6 +94,8 @@ export default function PageBanner({
   bannerHeight = 'compact',
   textAlign = 'left',
   accentColor = 'maroon',
+  showParticles,
+  particlesColor = 'white',
 }: PageBannerProps) {
   if (bgType === 'svg-slash') {
     const titleWords = title ? title.split(' ') : ['BANNER', 'TEMPLATE'];
@@ -129,6 +135,10 @@ export default function PageBanner({
 
   return (
     <section className="relative overflow-hidden w-full bg-slate-950 text-white isolate shadow-xl">
+      {/* Background Particles.js Canvas Animation */}
+      {showParticles && showParticles !== 'false' && (
+        <ParticlesBg color={particlesColor} count={45} speed={0.8} />
+      )}
       {/* Background Mode: YouTube Video */}
       {bgMode === 'youtube' && youtubeId && (
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-60">

@@ -195,10 +195,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (fonts.headingFont) {
           root.style.setProperty('--font-heading', fonts.headingFont);
         }
-        const baseSize = fonts.baseFontSize || 18;
+        const baseSize = fonts.baseFontSize || 16;
         root.style.setProperty('--base-font-size', `${baseSize}px`);
         root.style.fontSize = `${baseSize}px`;
-        document.body.style.fontSize = `${baseSize}px`;
+      } else {
+        root.style.setProperty('--font-body', "'Plus Jakarta Sans', 'Inter', sans-serif");
+        root.style.setProperty('--font-heading', "'Outfit', 'Plus Jakarta Sans', sans-serif");
+        root.style.setProperty('--base-font-size', "16px");
+        root.style.fontSize = "16px";
       }
     } catch (e) {
       console.error('Error applying theme settings:', e);

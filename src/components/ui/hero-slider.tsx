@@ -50,6 +50,8 @@ export interface HeroSpecTag {
   color: string; // red | rose | amber | emerald | blue
 }
 
+import { ParticlesBg } from './particles-bg';
+
 export interface HeroSliderProps {
   slides: HeroSlide[];
   stats: HeroStat[];
@@ -62,6 +64,8 @@ export interface HeroSliderProps {
   showSpecTags: boolean;
   showStats: boolean;
   showFloatingCards: boolean;
+  showParticles?: boolean | string;
+  particlesColor?: string;
 }
 
 // ─── Icon Map ──────────────────────────────────────────────────────────────
@@ -364,6 +368,8 @@ export default function HeroSlider({
   showSpecTags = true,
   showStats = true,
   showFloatingCards = true,
+  showParticles,
+  particlesColor = 'white',
 }: HeroSliderProps) {
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(autoPlayInterval > 0);
@@ -398,6 +404,10 @@ export default function HeroSlider({
 
   return (
     <section className={`relative overflow-hidden ${bgColor} text-white transition-colors`}>
+      {/* Background Particles.js Canvas Animation */}
+      {showParticles && showParticles !== 'false' && (
+        <ParticlesBg color={particlesColor} count={50} speed={0.9} />
+      )}
       {/* Animated background blobs */}
       <AnimatedBlobs blob1={blob1Color} blob2={blob2Color} blob3={blob3Color} />
 

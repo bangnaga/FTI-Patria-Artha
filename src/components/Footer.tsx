@@ -11,6 +11,7 @@ import {
   Youtube, 
   Github, 
   Linkedin, 
+  Play,
   ArrowUp
 } from 'lucide-react';
 
@@ -50,28 +51,14 @@ export const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const footerStylePreset = websiteSettings?.footerStyle || 'maroon';
-
-  const getFooterBgClasses = () => {
-    switch (footerStylePreset) {
-      case 'dark':
-        return 'bg-slate-950 text-slate-100 border-t border-slate-800';
-      case 'navy':
-        return 'bg-slate-900 text-slate-100 border-t border-slate-800';
-      case 'emerald':
-        return 'bg-emerald-950 text-emerald-100 border-t border-emerald-900';
-      case 'black':
-        return 'bg-black text-slate-100 border-t border-slate-900';
-      default:
-        return 'bg-[#800020] text-[#FFF5F5] border-t border-[#9B2C2C]';
-    }
-  };
-
   return (
-    <footer id="kontak" className={`${getFooterBgClasses()} pt-16 pb-8 relative scroll-mt-10 transition-colors duration-300`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer id="kontak" className="relative bg-gradient-to-r from-[#690013] via-[#850018] to-[#4F000E] text-white pt-16 pb-8 border-t-2 border-amber-500/40 shadow-2xl overflow-hidden scroll-mt-10">
+      {/* Background Subtle Shimmer Effect */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-amber-500/20">
           
           {/* Col 1: About Prodi */}
           <div className="lg:col-span-2 space-y-4">
@@ -83,116 +70,106 @@ export const Footer: React.FC = () => {
                   className="h-12 max-w-[160px] object-contain shrink-0"
                 />
               ) : (
-                <UpaLogo size={48} />
+                <div className="shrink-0">
+                  <UpaLogo size={46} />
+                </div>
               )}
               <div>
-                <span className="font-black tracking-wider text-lg block leading-tight">
-                  {websiteSettings?.logoText || 'FTI PATRIA ARTHA'}
+                <span style={{ color: '#FFD700' }} className="font-black tracking-wider text-xl block leading-tight font-heading !text-[#FFD700] [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)]">
+                  {websiteSettings?.logoText || 'FTI – UPA'}
                 </span>
-                <span className="text-[10px] text-amber-300 font-bold uppercase tracking-widest block mt-0.5">
-                  {websiteSettings?.logoSubtitle || 'Universitas Patria Artha (U.P.A)'}
+                <span style={{ color: '#FCD34D' }} className="text-[11px] !text-amber-300 font-extrabold uppercase tracking-widest block mt-0.5 font-heading [text-shadow:_0_1px_3px_rgba(0,0,0,0.9)]">
+                  {websiteSettings?.logoSubtitle || 'UNIVERSITAS PATRIA ARTHA'}
                 </span>
               </div>
             </div>
 
-            <p className="text-sm leading-relaxed max-w-sm opacity-90">
+            <p className="text-sm leading-relaxed max-w-sm text-white/95 font-medium">
               {websiteSettings?.aboutText || 'Fakultas Teknik dan Informatika Universitas Patria Artha terakreditasi UNGGUL & Sertifikasi Internasional. Unggul dalam riset Artificial Intelligence, Cyber Security, dan Software Engineering.'}
             </p>
 
-            <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/25 border border-white/20 text-xs sm:text-sm font-semibold">
-              <Award className="w-4 h-4 text-amber-300 shrink-0" />
-              <span>{websiteSettings?.accreditationText || 'Akreditasi UNGGUL • SK No: 0482/SK/LAM-INFOKOM/2024'}</span>
+            {/* 3D Metallic Accreditation Badge with Bright Gold Text */}
+            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#1A1A1A] via-[#2A1F13] to-[#1A1A1A] border-2 border-amber-500/80 shadow-[0_6px_20px_rgba(0,0,0,0.7)] text-xs sm:text-sm font-black mt-2">
+              <Award className="w-4.5 h-4.5 text-[#FFD700] shrink-0" />
+              <span style={{ color: '#FFD700' }} className="!text-[#FFD700] font-black tracking-wide [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)]">
+                {websiteSettings?.accreditationText || 'Unggul & Terakreditasi BAN-PT / LAM INFOKOM'}
+              </span>
             </div>
           </div>
 
           {/* Col 2: Navigation Links */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-extrabold uppercase tracking-wider text-amber-300">Tautan Cepat</h4>
-            <ul className="space-y-2 text-sm opacity-85">
-              <li><Link href="/halaman/profil" className="hover:text-white transition-colors">Profil & Akreditasi</Link></li>
-              <li><Link href="/halaman/prodi" className="hover:text-white transition-colors">Kurikulum & Silabus</Link></li>
-              <li><Link href="/halaman/dosen" className="hover:text-white transition-colors">Direktori Dosen</Link></li>
-              <li><Link href="/halaman/prodi" className="hover:text-white transition-colors">Publikasi & Showcase</Link></li>
-              <li><Link href="/halaman/kontak" className="hover:text-white transition-colors">Informasi PMB</Link></li>
+          <div className="space-y-4">
+            <h4 style={{ color: '#FFD700' }} className="text-sm font-black uppercase tracking-wider !text-[#FFD700] font-heading [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)]">TAUTAN CEPAT</h4>
+            <ul className="space-y-2.5 text-sm font-semibold text-white/95">
+              <li><Link href="/halaman/profil" className="hover:text-[#FFD700] transition-colors">Profil & Akreditasi</Link></li>
+              <li><Link href="/halaman/prodi" className="hover:text-[#FFD700] transition-colors">Kurikulum & Silabus</Link></li>
+              <li><Link href="/halaman/dosen" className="hover:text-[#FFD700] transition-colors">Direktori Dosen</Link></li>
+              <li><Link href="/halaman/prodi" className="hover:text-[#FFD700] transition-colors">Publikasi & Showcase</Link></li>
+              <li><Link href="/halaman/kontak" className="hover:text-[#FFD700] transition-colors">Informasi PMB</Link></li>
             </ul>
           </div>
 
           {/* Col 3: Academic Services */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-extrabold uppercase tracking-wider text-amber-300">Layanan Akademik</h4>
-            <ul className="space-y-2 text-sm opacity-85">
-              <li><Link href="/halaman/berita" className="hover:text-white transition-colors">Kalender Akademik</Link></li>
-              <li><Link href="/halaman/organisasi" className="hover:text-white transition-colors">HMTI & Organisasi</Link></li>
-              <li><Link href="/halaman/dosen" className="hover:text-white transition-colors">Tracer Study Alumni</Link></li>
-              <li><Link href="/halaman/berita" className="hover:text-white transition-colors">Pengumuman Terbaru</Link></li>
-              <li><Link href="/halaman/kontak" className="hover:text-white transition-colors">Kalkulator UKT</Link></li>
+          <div className="space-y-4">
+            <h4 style={{ color: '#FFD700' }} className="text-sm font-black uppercase tracking-wider !text-[#FFD700] font-heading [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)]">LAYANAN AKADEMIK</h4>
+            <ul className="space-y-2.5 text-sm font-semibold text-white/95">
+              <li><Link href="/halaman/berita" className="hover:text-[#FFD700] transition-colors">Kalender Akademik</Link></li>
+              <li><Link href="/halaman/organisasi" className="hover:text-[#FFD700] transition-colors">HMTI & Organisasi</Link></li>
+              <li><Link href="/halaman/dosen" className="hover:text-[#FFD700] transition-colors">Tracer Study Alumni</Link></li>
+              <li><Link href="/halaman/berita" className="hover:text-[#FFD700] transition-colors">Pengumuman Terbaru</Link></li>
+              <li><Link href="/halaman/kontak" className="hover:text-[#FFD700] transition-colors">Kalkulator UKT</Link></li>
             </ul>
           </div>
 
           {/* Col 4: Contact & Location */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-extrabold uppercase tracking-wider text-amber-300">Kontak & Sekretariat</h4>
-            <ul className="space-y-2.5 text-sm opacity-90">
-              <li className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                <span className="leading-snug">{websiteSettings?.address || 'Jl. Tun Abdul Razak, (Terusan Jl. Hertasning Baru - Makassar), Kab. Gowa (SUL-SEL)'}</span>
+          <div className="space-y-4">
+            <h4 style={{ color: '#FFD700' }} className="text-sm font-black uppercase tracking-wider !text-[#FFD700] font-heading [text-shadow:_0_2px_4px_rgba(0,0,0,0.9)]">KONTAK & SEKRETARIAT</h4>
+            <ul className="space-y-3 text-sm font-semibold text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              <li className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]" />
+                <span className="leading-snug">{websiteSettings?.address || 'Jl. Tun Abdul Razak No. 1, Gowa - Makassar, Sulawesi Selatan'}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{websiteSettings?.phone || '(0411) 898-7654 / WA: 0812-3456-7890'}</span>
+              <li className="flex items-center gap-2.5">
+                <Phone className="w-4 h-4 text-amber-400 shrink-0 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]" />
+                <span>{websiteSettings?.phone || '+62 411 888 9999'}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                <a href={`mailto:${websiteSettings?.email || 'info@patria-artha.ac.id'}`} className="hover:underline font-mono text-amber-200">
-                  {websiteSettings?.email || 'info@patria-artha.ac.id'}
+              <li className="flex items-center gap-2.5">
+                <Mail className="w-4 h-4 text-amber-400 shrink-0 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]" />
+                <a href={`mailto:${websiteSettings?.email || 'fti@patria-artha.ac.id'}`} className="hover:underline text-white font-semibold">
+                  {websiteSettings?.email || 'fti@patria-artha.ac.id'}
                 </a>
               </li>
             </ul>
 
-            {websiteSettings?.officeHours && (
-              <div className="pt-1.5 text-xs text-amber-200 font-medium border-t border-white/10 space-y-0.5">
-                <p className="font-bold text-white uppercase text-[11px] tracking-wider">Jam Operasional:</p>
-                <p>{websiteSettings.officeHours}</p>
-              </div>
-            )}
-
-            {/* Social Icons */}
-            <div className="flex items-center gap-2 pt-2 flex-wrap">
-              {websiteSettings?.instagram && (
-                <a href={websiteSettings.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-black/40 border border-white/10 rounded-xl hover:bg-white/20 transition-all text-slate-200 hover:text-white" title="Instagram">
-                  <Instagram className="w-4 h-4" />
-                </a>
-              )}
-              {websiteSettings?.youtube && (
-                <a href={websiteSettings.youtube} target="_blank" rel="noopener noreferrer" className="p-2 bg-black/40 border border-white/10 rounded-xl hover:bg-white/20 transition-all text-slate-200 hover:text-white" title="YouTube">
-                  <Youtube className="w-4 h-4" />
-                </a>
-              )}
-              {websiteSettings?.linkedin && (
-                <a href={websiteSettings.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-black/40 border border-white/10 rounded-xl hover:bg-white/20 transition-all text-slate-200 hover:text-white" title="LinkedIn">
-                  <Linkedin className="w-4 h-4" />
-                </a>
-              )}
-              {websiteSettings?.github && (
-                <a href={websiteSettings.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-black/40 border border-white/10 rounded-xl hover:bg-white/20 transition-all text-slate-200 hover:text-white" title="GitHub">
-                  <Github className="w-4 h-4" />
-                </a>
-              )}
+            {/* 3D Metallic Social Icons */}
+            <div className="flex items-center gap-2.5 pt-3">
+              <a href={websiteSettings?.instagram || '#'} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-600 via-amber-950 to-slate-950 border border-amber-400/50 shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex items-center justify-center text-amber-200 hover:text-white hover:scale-110 hover:border-amber-300 transition-all cursor-pointer" title="Instagram">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href={websiteSettings?.youtube || '#'} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-600 via-amber-950 to-slate-950 border border-amber-400/50 shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex items-center justify-center text-amber-200 hover:text-white hover:scale-110 hover:border-amber-300 transition-all cursor-pointer" title="YouTube">
+                <Youtube className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-600 via-amber-950 to-slate-950 border border-amber-400/50 shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex items-center justify-center text-amber-200 hover:text-white hover:scale-110 hover:border-amber-300 transition-all cursor-pointer" title="Play">
+                <Play className="w-4 h-4 fill-amber-200" />
+              </a>
+              <a href={websiteSettings?.linkedin || '#'} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-600 via-amber-950 to-slate-950 border border-amber-400/50 shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex items-center justify-center text-amber-200 hover:text-white hover:scale-110 hover:border-amber-300 transition-all cursor-pointer" title="LinkedIn">
+                <Linkedin className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs opacity-75">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/80 font-medium">
           <p>{websiteSettings?.copyrightText || `© 2026 ${websiteSettings?.facultyName || 'Fakultas Teknik dan Informatika'} - ${websiteSettings?.universityName || 'Universitas Patria Artha'}. All rights reserved.`}</p>
           
           <button
             onClick={scrollToTop}
-            className="p-2.5 rounded-xl bg-black/40 hover:bg-black/60 text-slate-200 hover:text-white border border-white/15 transition-all flex items-center gap-1.5 font-bold shadow-xs cursor-pointer"
+            className="px-4 py-2 rounded-full bg-gradient-to-r from-[#1A1A1A] to-[#2E2E2E] hover:from-amber-950 hover:to-amber-900 text-amber-200 hover:text-white border border-amber-500/40 transition-all flex items-center gap-2 font-bold shadow-md cursor-pointer"
           >
             <span>Kembali ke Atas</span>
-            <ArrowUp className="w-3.5 h-3.5 text-amber-300" />
+            <ArrowUp className="w-3.5 h-3.5 text-amber-400" />
           </button>
         </div>
 

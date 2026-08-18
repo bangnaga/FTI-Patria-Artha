@@ -2,7 +2,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Sparkles, Zap, ArrowRight, BookOpen, GraduationCap, Cpu, ShieldCheck, Code, Award, ChevronRight, Terminal } from 'lucide-react';
+import { 
+  Code, Cpu, BookOpen, Zap, Award, ShieldCheck, 
+  GraduationCap, Sparkles, Search, ChevronRight, ArrowRight 
+} from 'lucide-react';
+import { ParticlesBg } from './particles-bg';
 
 export interface AlgoliaHeroSearchItem {
   id?: string;
@@ -27,6 +31,8 @@ export interface AlgoliaHeroProps {
   primaryCtaLink?: string;
   secondaryCtaText?: string;
   secondaryCtaLink?: string;
+  showParticles?: boolean | string;
+  particlesColor?: string;
 }
 
 const DEFAULT_DATASET: AlgoliaHeroSearchItem[] = [
@@ -107,6 +113,8 @@ export default function AlgoliaHero({
   primaryCtaLink = '#spmb',
   secondaryCtaText = 'Jelajahi Kurikulum & SKS',
   secondaryCtaLink = '#prodi',
+  showParticles,
+  particlesColor = 'white',
 }: AlgoliaHeroProps) {
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'all' | 'prodi' | 'lab'>('all');
@@ -162,6 +170,11 @@ export default function AlgoliaHero({
 
   return (
     <section className="relative overflow-hidden bg-slate-950 text-white py-16 lg:py-24 selection:bg-red-500/30">
+      {/* Background Particles.js Canvas Animation */}
+      {showParticles && showParticles !== 'false' && (
+        <ParticlesBg color={particlesColor} count={50} speed={0.9} />
+      )}
+
       {/* Background Algolia-Style Ambient Gradient Glowing Lines & Grid */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         {/* Glow Spheres */}

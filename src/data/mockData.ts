@@ -97,327 +97,230 @@ export const ACCREDITATION_DATA: AccreditationInfo = {
 };
 
 export const COURSES_DATA: Course[] = [
+  // ================= TEKNIK INFORMATIKA (51 Mata Kuliah) =================
   // Semester 1
-  {
-    id: 'if101',
-    code: 'IF1101',
-    name: 'Algoritma & Pemrograman I',
-    sks: 4,
-    semester: 1,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Informatika',
-    description: 'Dasar-dasar logika pemrograman, variabel, kontrol alur, fungsi, struktur data dasar menggunakan Python & C++.',
-    prerequisites: [],
-    syllabusTopic: ['Variables & Data Types', 'Control Flow & Loops', 'Functions & Recursion', 'Basic Data Structures', 'Problem Solving Techniques']
-  },
-  {
-    id: 'if102',
-    code: 'IF1102',
-    name: 'Matematika Diskrit',
-    sks: 3,
-    semester: 1,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Informatika',
-    description: 'Konsep dasar matematika untuk ilmu komputer: logika proposisi, teori himpunan, relasi & fungsi, graf, dan kombinatorika.',
-    prerequisites: [],
-    syllabusTopic: ['Propositional Logic', 'Set Theory & Relations', 'Graph Theory', 'Combinatorics', 'Boolean Algebra']
-  },
-  {
-    id: 'if103',
-    code: 'IF1103',
-    name: 'Pengantar Teknologi Informasi',
-    sks: 2,
-    semester: 1,
-    category: 'Wajib Prodi',
-    studyProgram: 'Semua Prodi',
-    description: 'Gambaran umum ekosistem TI, sejarah komputer, sistem operasi, jaringan dasar, dan etika profesi TI.',
-    prerequisites: [],
-    syllabusTopic: ['History of Computing', 'Computer Architecture Overview', 'Operating System Fundamentals', 'Network Intro', 'IT Ethics']
-  },
-  {
-    id: 'if104',
-    code: 'KU1101',
-    name: 'Kalkulus Informatika',
-    sks: 3,
-    semester: 1,
-    category: 'Wajib Universitas',
-    studyProgram: 'Semua Prodi',
-    description: 'Fungsi, limit, turunan, dan integral serta aplikasinya dalam pemodelan matematis dan analisis performa algoritma.',
-    prerequisites: [],
-    syllabusTopic: ['Limits & Continuity', 'Derivatives & Applications', 'Integrals', 'Series & Sequences']
-  },
-  {
-    id: 'te101',
-    code: 'TE1101',
-    name: 'Rangkaian Listrik & Sinyal',
-    sks: 3,
-    semester: 1,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Elektro',
-    description: 'Teori dasar rangkaian DC/AC, hukum Ohm & Kirchhoff, analisis Nodal, serta pemrosesan sinyal analog.',
-    prerequisites: [],
-    syllabusTopic: ['DC & AC Circuits', 'Kirchhoff Laws', 'Phasors & Impedance', 'Signal Processing Intro']
-  },
-  {
-    id: 'tm101',
-    code: 'TM1101',
-    name: 'Gambar Teknik & CAD 3D',
-    sks: 3,
-    semester: 1,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Mesin',
-    description: 'Proyeksi orthografis, toleransi dimensi, serta pemodelan komponen mesin 3D dengan Autodesk Fusion 360.',
-    prerequisites: [],
-    syllabusTopic: ['2D Sketching & Dimensioning', '3D Solid Modeling', 'Assembly & Drafting', 'CAD Simulation']
-  },
+  { id: 'tif101-2', code: 'TIF101-2', name: 'Pemrograman I', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pemrograman I', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif102-3', code: 'TIF102-3', name: 'Pengantar Teknologi Informasi', sks: 3, semester: 1, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pengantar Teknologi Informasi', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif103-2', code: 'TIF103-2', name: 'Kalkulus I', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Kalkulus I', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif104-3', code: 'TIF104-3', name: 'Fisika Dasar', sks: 3, semester: 1, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Fisika Dasar', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif105-2', code: 'TIF105-2', name: 'Aplikasi Komputer Dasardasar', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Aplikasi Komputer Dasardasar', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif106-2', code: 'TIF106-2', name: 'Pendidikan Agama', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pendidikan Agama', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif107-2', code: 'TIF107-2', name: 'Bahasa Indonesia', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Bahasa Indonesia', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif108-2', code: 'TIF108-2', name: 'Pendidikan Pancasila', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pendidikan Pancasila', prerequisites: [], syllabusTopic: [] },
 
   // Semester 2
-  {
-    id: 'if201',
-    code: 'IF1201',
-    name: 'Algoritma & Struktur Data II',
-    sks: 4,
-    semester: 2,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Informatika',
-    description: 'Struktur data kompleks (Tree, Heap, Graph, Hash Table), dynamic programming, dan analisis kompleksitas Big-O.',
-    prerequisites: ['Algoritma & Pemrograman I'],
-    syllabusTopic: ['Arrays & Linked Lists', 'Stacks & Queues', 'Trees & Binary Search Trees', 'Graph Algorithms (BFS/DFS)', 'Big-O Analysis']
-  },
-  {
-    id: 'if202',
-    code: 'IF1202',
-    name: 'Pemrograman Berorientasi Objek (PBO)',
-    sks: 3,
-    semester: 2,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Informatika',
-    description: 'Konsep Enkapsulasi, Inheritansi, Polimorfisme, Abstraksi, Design Patterns dasar menggunakan Java / TypeScript.',
-    prerequisites: ['Algoritma & Pemrograman I'],
-    syllabusTopic: ['Classes & Objects', 'Encapsulation & Inheritance', 'Polymorphism & Interfaces', 'SOLID Principles', 'Design Patterns Intro']
-  },
-  {
-    id: 'if203',
-    code: 'IF1203',
-    name: 'Aljabar Linear & Matriks',
-    sks: 3,
-    semester: 2,
-    category: 'Wajib Prodi',
-    studyProgram: 'Semua Prodi',
-    description: 'Sistem persamaan linear, matriks, vektor, eigenvalue/eigenvector, serta penerapannya dalam Grafik Komputer & Machine Learning.',
-    prerequisites: ['Kalkulus Informatika'],
-    syllabusTopic: ['Matrix Operations & Determinants', 'Vector Spaces', 'Eigenvalues & Eigenvectors', 'SVD & Dimensionality Reduction']
-  },
-  {
-    id: 'te201',
-    code: 'TE1201',
-    name: 'Elektronika Digital & Mikrokontroler',
-    sks: 3,
-    semester: 2,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Elektro',
-    description: 'Gerbang logika, flip-flop, register, pemrograman ARM/Arduino, dan antarmuka periferal digital.',
-    prerequisites: [],
-    syllabusTopic: ['Logic Gates & Boolean Algebra', 'Sequential Logic & Flip-Flops', 'Microcontroller Architecture', 'GPIO & Timers']
-  },
+  { id: 'tif201-3', code: 'TIF201-3', name: 'Pemrograman II', sks: 3, semester: 2, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pemrograman II', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif202-3', code: 'TIF202-3', name: 'Struktur Data', sks: 3, semester: 2, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Struktur Data', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif203-2', code: 'TIF203-2', name: 'Sistem Digital', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Sistem Digital', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif204-2', code: 'TIF204-2', name: 'Kalkulus II', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Kalkulus II', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif205-2', code: 'TIF205-2', name: 'Logika Matematika', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Logika Matematika', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif206-2', code: 'TIF206-2', name: 'Organisasi & Arsitektur Komputer', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Organisasi & Arsitektur Komputer', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif207-2', code: 'TIF207-2', name: 'Bahasa Inggris I', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Bahasa Inggris I', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif208-2', code: 'TIF208-2', name: 'Pendidikan Kewarganegaraan', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pendidikan Kewarganegaraan', prerequisites: [], syllabusTopic: [] },
 
   // Semester 3
-  {
-    id: 'if301',
-    code: 'IF2101',
-    name: 'Basis Data & SQL Modern',
-    sks: 4,
-    semester: 3,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Informatika',
-    description: 'Perancangan ERD, normalisasi data, query SQL tingkat lanjut, indexing, transaksi, ACID, serta pengenalan NoSQL.',
-    prerequisites: ['Algoritma & Struktur Data II'],
-    syllabusTopic: ['ERD Modeling', 'Relational Algebra & SQL', 'Normalization (1NF-BCNF)', 'Indexing & Performance', 'NoSQL & Document DBs']
-  },
-  {
-    id: 'if302',
-    code: 'IF2102',
-    name: 'Jaringan Komputer & Komunikasi Data',
-    sks: 4,
-    semester: 3,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Informatika',
-    description: 'Model OSI & TCP/IP, IP Addressing (IPv4/IPv6), Subnetting, Routing Protocols, DNS, HTTP/S, dan Praktikum Jaringan Cisco.',
-    prerequisites: [],
-    syllabusTopic: ['OSI Layer & TCP/IP Stack', 'IP Subnetting & CIDR', 'Routing & Switching', 'Application Layer Protocols', 'Wireshark Analysis']
-  },
-  {
-    id: 'if303',
-    code: 'IF2103',
-    name: 'Sistem Operasi & Virtualisasi',
-    sks: 3,
-    semester: 3,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Informatika',
-    description: 'Manajemen proses, thread, penjadwalan CPU, memori virtual, deadlock, Linux CLI, dan teknologi Kontainerisasi (Docker).',
-    prerequisites: [],
-    syllabusTopic: ['Processes & Threads', 'CPU Scheduling', 'Memory Management', 'File Systems', 'Docker Containerization']
-  },
-  {
-    id: 'tm301',
-    code: 'TM2101',
-    name: 'Termodinamika & Otomasi Mesin',
-    sks: 3,
-    semester: 3,
-    category: 'Wajib Prodi',
-    studyProgram: 'Teknik Mesin',
-    description: 'Hukum termodinamika I & II, siklus energi, pneumatik, serta sistem kontrol PLC industri.',
-    prerequisites: [],
-    syllabusTopic: ['Thermodynamic Laws', 'Power Cycles', 'Pneumatics & Hydraulics', 'PLC Automation']
-  },
+  { id: 'tif301-3', code: 'TIF301-3', name: 'Pemrograman Berorientasi Objek', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pemrograman Berorientasi Objek', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif302-3', code: 'TIF302-3', name: 'Basis Data', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Basis Data', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif303-3', code: 'TIF303-3', name: 'Jaringan Komputer', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Jaringan Komputer', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif304-2', code: 'TIF304-2', name: 'Aljabar Linear & Matriks', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Aljabar Linear & Matriks', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif305-2', code: 'TIF305-2', name: 'Sistem Operasi', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Sistem Operasi', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif306-2', code: 'TIF306-2', name: 'Analisis & Perancangan Sistem', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Analisis & Perancangan Sistem', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif307-2', code: 'TIF307-2', name: 'Bahasa Inggris II', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Bahasa Inggris II', prerequisites: [], syllabusTopic: [] },
 
   // Semester 4
-  {
-    id: 'if401',
-    code: 'IF2201',
-    name: 'Rekayasa Perangkat Lunak (RPL)',
-    sks: 3,
-    semester: 4,
-    category: 'Wajib Prodi',
-    specialization: 'RPL',
-    studyProgram: 'Teknik Informatika',
-    description: 'Metodologi SDLC, Agile / Scrum, UML Modeling, Requirement Engineering, Software Testing, dan CI/CD pipeline.',
-    prerequisites: ['Pemrograman Berorientasi Objek (PBO)'],
-    syllabusTopic: ['Agile & Scrum Framework', 'UML Architecture Diagrams', 'Requirement Analysis', 'Automated Testing', 'CI/CD Overview']
-  },
-  {
-    id: 'if402',
-    code: 'IF2202',
-    name: 'Kecerdasan Buatan (AI) & Machine Learning',
-    sks: 4,
-    semester: 4,
-    category: 'Wajib Prodi',
-    specialization: 'AI',
-    studyProgram: 'Teknik Informatika',
-    description: 'Supervised & Unsupervised Learning, Supervised Classification, Regression, Clustering, Decision Trees, Neural Networks, PyTorch.',
-    prerequisites: ['Aljabar Linear & Matriks'],
-    syllabusTopic: ['Linear & Logistic Regression', 'Decision Trees & Random Forest', 'Support Vector Machines', 'Clustering (K-Means)', 'Neural Networks Intro']
-  },
-  {
-    id: 'if403',
-    code: 'IF2203',
-    name: 'Pemrograman Web & API Service',
-    sks: 3,
-    semester: 4,
-    category: 'Wajib Prodi',
-    specialization: 'RPL',
-    studyProgram: 'Teknik Informatika',
-    description: 'Pengembangan Web Full-Stack modern (React, TypeScript, Node.js/Express, RESTful API, JWT Auth, Tailwind CSS).',
-    prerequisites: ['Basis Data & SQL Modern'],
-    syllabusTopic: ['HTML5/CSS3 & Modern Tailwind', 'React & State Management', 'Node.js Express REST APIs', 'Authentication & JWT', 'Web Deployment']
-  },
+  { id: 'tif401-3', code: 'TIF401-3', name: 'Pemrograman Web', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pemrograman Web', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif402-3', code: 'TIF402-3', name: 'Rekayasa Perangkat Lunak', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Rekayasa Perangkat Lunak', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif403-3', code: 'TIF403-3', name: 'Kecerdasan Buatan', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Kecerdasan Buatan', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif404-2', code: 'TIF404-2', name: 'Grafika Komputer', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Grafika Komputer', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif405-2', code: 'TIF405-2', name: 'Sistem Basis Data Lanjut', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Sistem Basis Data Lanjut', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif406-2', code: 'TIF406-2', name: 'Interaksi Manusia & Komputer', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Interaksi Manusia & Komputer', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif407-2', code: 'TIF407-2', name: 'Kewirausahaan', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Kewirausahaan', prerequisites: [], syllabusTopic: [] },
 
   // Semester 5
-  {
-    id: 'if501',
-    code: 'IF3101',
-    name: 'Deep Learning & Computer Vision',
-    sks: 3,
-    semester: 5,
-    category: 'Mata Kuliah Pilihan',
-    specialization: 'AI',
-    studyProgram: 'Teknik Informatika',
-    description: 'Convolutional Neural Networks (CNN), Object Detection (YOLO), Segmentation, Vision Transformers, OpenCV & PyTorch.',
-    prerequisites: ['Kecerdasan Buatan (AI) & Machine Learning'],
-    syllabusTopic: ['CNN Architecture', 'Object Detection YOLO', 'Image Segmentation', 'Generative Adversarial Networks', 'PyTorch Deployment']
-  },
-  {
-    id: 'if502',
-    code: 'IF3102',
-    name: 'Keamanan Siber & Ethical Hacking',
-    sks: 3,
-    semester: 5,
-    category: 'Mata Kuliah Pilihan',
-    specialization: 'CyberSecurity',
-    studyProgram: 'Teknik Informatika',
-    description: 'Penetration testing methodology, OWASP Top 10 vulnerabilities, Metasploit, Cryptography, Wireshark, SOC fundamentals.',
-    prerequisites: ['Jaringan Komputer & Komunikasi Data'],
-    syllabusTopic: ['Reconnaissance & Scanning', 'OWASP Web Exploitation', 'Network Penetration Testing', 'Cryptography Applications', 'Incident Response']
-  },
-  {
-    id: 'if503',
-    code: 'IF3103',
-    name: 'Sistem Terdistribusi & Microservices',
-    sks: 3,
-    semester: 5,
-    category: 'Mata Kuliah Pilihan',
-    specialization: 'RPL',
-    studyProgram: 'Teknik Informatika',
-    description: 'Arsitektur Event-Driven, Message Broker (Kafka/RabbitMQ), gRPC, Kubernetes, Service Mesh, dan Fault Tolerance.',
-    prerequisites: ['Rekayasa Perangkat Lunak (RPL)'],
-    syllabusTopic: ['Monolith to Microservices', 'gRPC & Protocol Buffers', 'Kafka Event Streaming', 'Kubernetes Orchestration', 'Distributed Systems CAP Theorem']
-  },
+  { id: 'tif501-3', code: 'TIF501-3', name: 'Pemrograman Mobile', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pemrograman Mobile', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif502-3', code: 'TIF502-3', name: 'Keamanan Komputer & Jaringan', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Keamanan Komputer & Jaringan', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif503-3', code: 'TIF503-3', name: 'Pengolahan Citra Digital', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pengolahan Citra Digital', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif504-2', code: 'TIF504-2', name: 'Etika Profesi & Hukum Cyber', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Etika Profesi & Hukum Cyber', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif505-2', code: 'TIF505-2', name: 'Metode Numerik', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Metode Numerik', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif506-2', code: 'TIF506-2', name: 'Metodologi Penelitian', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Metodologi Penelitian', prerequisites: [], syllabusTopic: [] },
 
   // Semester 6
-  {
-    id: 'if601',
-    code: 'IF3201',
-    name: 'Internet of Things & Embedded Systems',
-    sks: 3,
-    semester: 6,
-    category: 'Mata Kuliah Pilihan',
-    specialization: 'IoT',
-    studyProgram: 'Teknik Elektro',
-    description: 'Mikrokontroler ESP32/Raspberry Pi, sensor & actuator, protokol MQTT/CoAP, Smart Campus IoT dashboard.',
-    prerequisites: ['Jaringan Komputer & Komunikasi Data'],
-    syllabusTopic: ['ESP32 Microcontroller Programming', 'MQTT Protocol & Cloud IoT', 'Sensors Integration', 'Edge Computing', 'IoT Security']
-  },
-  {
-    id: 'if602',
-    code: 'IF3202',
-    name: 'Natural Language Processing (NLP) & LLM',
-    sks: 3,
-    semester: 6,
-    category: 'Mata Kuliah Pilihan',
-    specialization: 'AI',
-    studyProgram: 'Teknik Informatika',
-    description: 'Text Processing, Sentiment Analysis, Word Embeddings, Transformer Architecture, Prompt Engineering, Gemini & HuggingFace.',
-    prerequisites: ['Kecerdasan Buatan (AI) & Machine Learning'],
-    syllabusTopic: ['Tokenization & Lemmatization', 'Word2Vec & GloVe', 'Attention Mechanism & Transformers', 'RAG (Retrieval-Augmented Generation)', 'LLM Fine-tuning']
-  },
+  { id: 'tif601-3', code: 'TIF601-3', name: 'Data Mining & Data Warehouse', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Data Mining & Data Warehouse', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif602-3', code: 'TIF602-3', name: 'Cloud Computing', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Cloud Computing', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif603-3', code: 'TIF603-3', name: 'Internet of Things (IoT)', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Internet of Things (IoT)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif604-2', code: 'TIF604-2', name: 'Kriptografi', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Kriptografi', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif605-2', code: 'TIF605-2', name: 'Sistem Terdistribusi', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Sistem Terdistribusi', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif606-2', code: 'TIF606-2', name: 'Manajemen Proyek IT', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Manajemen Proyek IT', prerequisites: [], syllabusTopic: [] },
 
-  // Semester 7 & 8
-  {
-    id: 'if701',
-    code: 'IF4101',
-    name: 'Metodologi Penelitian & Seminar Proposal',
-    sks: 3,
-    semester: 7,
-    category: 'Wajib Prodi',
-    studyProgram: 'Semua Prodi',
-    description: 'Penyusunan rencana riset Skripsi, kajian literatur ilmiah (Scopus/Sinta), penulisan sitasi IEEE, dan presentasi proposal.',
-    prerequisites: [],
-    syllabusTopic: ['Research Problem Formulation', 'Systematic Literature Review', 'Citation Management (Zotero/Mendeley)', 'Academic Writing', 'Proposal Defense']
-  },
-  {
-    id: 'if702',
-    code: 'IF4102',
-    name: 'Kerja Praktik / Magang Industri (MBKM)',
-    sks: 4,
-    semester: 7,
-    category: 'Wajib Prodi',
-    studyProgram: 'Semua Prodi',
-    description: 'Pengalaman kerja langsung selama 3-6 bulan di perusahaan teknologi mitra atau BUMN bidang IT.',
-    prerequisites: [],
-    syllabusTopic: ['Industry Placement', 'Sprint Tasks Execution', 'Logbook Documentation', 'Final Internship Presentation']
-  },
-  {
-    id: 'if801',
-    code: 'IF4201',
-    name: 'Skripsi / Tugas Akhir',
-    sks: 6,
-    semester: 8,
-    category: 'Wajib Prodi',
-    studyProgram: 'Semua Prodi',
-    description: 'Proyek riset mandiri atau pembuatan sistem perangkat lunak berakurasi tinggi di bawah bimbingan 2 dosen pembimbing.',
-    prerequisites: ['Metodologi Penelitian & Seminar Proposal'],
-    syllabusTopic: ['System Implementation', 'Experimental Evaluation', 'Thesis Writing', 'Sidang Skripsi Defense']
-  }
+  // Semester 7
+  { id: 'tif701-3', code: 'TIF701-3', name: 'Pembelajaran Mesin (Machine Learning)', sks: 3, semester: 7, category: 'PILIHAN', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pembelajaran Mesin (Machine Learning)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif702-3', code: 'TIF702-3', name: 'Computer Vision & Pattern Recognition', sks: 3, semester: 7, category: 'PILIHAN', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Computer Vision & Pattern Recognition', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif703-3', code: 'TIF703-3', name: 'Big Data Analytics', sks: 3, semester: 7, category: 'PILIHAN', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Big Data Analytics', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif704-2', code: 'TIF704-2', name: 'Bioinformatika', sks: 2, semester: 7, category: 'PILIHAN', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Bioinformatika', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif705-2', code: 'TIF705-2', name: 'Robotika & Sistem Cerdas', sks: 2, semester: 7, category: 'PILIHAN', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Robotika & Sistem Cerdas', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif706-2', code: 'TIF706-2', name: 'Pemrosesan Bahasa Alami (NLP)', sks: 2, semester: 7, category: 'PILIHAN', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Pemrosesan Bahasa Alami (NLP)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif707-2', code: 'TIF707-2', name: 'Seminar Proposal', sks: 2, semester: 7, category: 'BISA DIIMBANGI', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Seminar Proposal', prerequisites: [], syllabusTopic: [] },
+  { id: 'tif708-3', code: 'TIF708-3', name: 'Kerja Praktik / Magang', sks: 3, semester: 7, category: 'PILIHAN', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Kerja Praktik / Magang', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 8
+  { id: 'tif801-6', code: 'TIF801-6', name: 'Skripsi / Tugas Akhir', sks: 6, semester: 8, category: 'PILIHAN', studyProgram: 'Teknik Informatika', description: 'Mata kuliah Skripsi / Tugas Akhir', prerequisites: [], syllabusTopic: [] },
+
+  // ================= TEKNIK SIPIL (66 Mata Kuliah) =================
+  // Semester 1
+  { id: 'ts101-2', code: 'TS101-2', name: 'Statika', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Statika', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts102-2', code: 'TS102-2', name: 'Menggambar Rekayasa', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Menggambar Rekayasa', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts103-2', code: 'TS103-2', name: 'Matematika I', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Matematika I', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts104-3', code: 'TS104-3', name: 'Fisika Dasar', sks: 3, semester: 1, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Fisika Dasar', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts105-2', code: 'TS105-2', name: 'Kimia Dasar', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Kimia Dasar', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts106-2', code: 'TS106-2', name: 'Pendidikan Agama', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Pendidikan Agama', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts107-2', code: 'TS107-2', name: 'Bahasa Indonesia', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Bahasa Indonesia', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts108-2', code: 'TS108-2', name: 'Pendidikan Pancasila', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Pendidikan Pancasila', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 2
+  { id: 'ts201-3', code: 'TS201-3', name: 'Mekanika Bahan', sks: 3, semester: 2, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Mekanika Bahan', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts202-3', code: 'TS202-3', name: 'Mekanika Tanah I', sks: 3, semester: 2, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Mekanika Tanah I', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts203-2', code: 'TS203-2', name: 'Rekayasa Hidrologi', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Rekayasa Hidrologi', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts204-2', code: 'TS204-2', name: 'Matematika II', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Matematika II', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts205-2', code: 'TS205-2', name: 'Ukur Tanah', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Ukur Tanah', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts206-2', code: 'TS206-2', name: 'Teknologi Bahan Konstruksi', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Teknologi Bahan Konstruksi', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts207-2', code: 'TS207-2', name: 'Bahasa Inggris I', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Bahasa Inggris I', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts208-2', code: 'TS208-2', name: 'Pendidikan Kewarganegaraan', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Pendidikan Kewarganegaraan', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 3
+  { id: 'ts301-3', code: 'TS301-3', name: 'Analisis Struktur I', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Analisis Struktur I', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts302-3', code: 'TS302-3', name: 'Mekanika Tanah II', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Mekanika Tanah II', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts303-3', code: 'TS303-3', name: 'Mekanika Fluida & Hidraulika', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Mekanika Fluida & Hidraulika', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts304-2', code: 'TS304-2', name: 'Rekayasa Jalan Raya', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Rekayasa Jalan Raya', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts305-2', code: 'TS305-2', name: 'Geologi Teknik', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Geologi Teknik', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts306-2', code: 'TS306-2', name: 'Statistika & Probabilitas', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Statistika & Probabilitas', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts307-2', code: 'TS307-2', name: 'Bahasa Inggris II', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Bahasa Inggris II', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 4
+  { id: 'ts401-3', code: 'TS401-3', name: 'Analisis Struktur II', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Analisis Struktur II', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts402-3', code: 'TS402-3', name: 'Struktur Beton Bertulang I', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Struktur Beton Bertulang I', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts403-3', code: 'TS403-3', name: 'Struktur Baja I', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Struktur Baja I', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts404-2', code: 'TS404-2', name: 'Rekayasa Pondasi I', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Rekayasa Pondasi I', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts405-2', code: 'TS405-2', name: 'Rekayasa Irigasi & Bangunan Air', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Rekayasa Irigasi & Bangunan Air', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts406-2', code: 'TS406-2', name: 'Perencanaan Geometrik Jalan', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Perencanaan Geometrik Jalan', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts407-2', code: 'TS407-2', name: 'Kewirausahaan', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Kewirausahaan', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 5
+  { id: 'ts501-3', code: 'TS501-3', name: 'Struktur Beton Bertulang II', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Struktur Beton Bertulang II', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts502-3', code: 'TS502-3', name: 'Struktur Baja II', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Struktur Baja II', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts503-3', code: 'TS503-3', name: 'Rekayasa Pondasi II', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Rekayasa Pondasi II', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts504-2', code: 'TS504-2', name: 'Manajemen Konstruksi', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Manajemen Konstruksi', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts505-2', code: 'TS505-2', name: 'Perancangan Perkerasan Jalan', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Perancangan Perkerasan Jalan', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts506-2', code: 'TS506-2', name: 'Metodologi Penelitian', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Metodologi Penelitian', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 6
+  { id: 'ts601-3', code: 'TS601-3', name: 'Dinamika Struktur & Rekayasa Gempa', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Dinamika Struktur & Rekayasa Gempa', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts602-3', code: 'TS602-3', name: 'Ekonomi Teknik', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Ekonomi Teknik', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts603-3', code: 'TS603-3', name: 'Drainase Perkotaan', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Drainase Perkotaan', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts604-2', code: 'TS604-2', name: 'Estimasi Biaya Konstruksi (RAB)', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Estimasi Biaya Konstruksi (RAB)', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts605-2', code: 'TS605-2', name: 'Rekayasa Lalu Lintas', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Rekayasa Lalu Lintas', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts606-2', code: 'TS606-2', name: 'AMDAL & Rekayasa Lingkungan', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah AMDAL & Rekayasa Lingkungan', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 7
+  { id: 'ts701-3', code: 'TS701-3', name: 'Perancangan Bangunan Gedung', sks: 3, semester: 7, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Perancangan Bangunan Gedung', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts702-3', code: 'TS702-3', name: 'Perancangan Jembatan', sks: 3, semester: 7, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Perancangan Jembatan', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts703-3', code: 'TS703-3', name: 'Perancangan Bangunan Air', sks: 3, semester: 7, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Perancangan Bangunan Air', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts704-2', code: 'TS704-2', name: 'Rekayasa Pelabuhan', sks: 2, semester: 7, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Rekayasa Pelabuhan', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts705-2', code: 'TS705-2', name: 'Rekayasa Bandar Udara', sks: 2, semester: 7, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Rekayasa Bandar Udara', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts706-2', code: 'TS706-2', name: 'Manajemen Proyek Konstruksi', sks: 2, semester: 7, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Manajemen Proyek Konstruksi', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts707-2', code: 'TS707-2', name: 'Seminar Proposal', sks: 2, semester: 7, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Seminar Proposal', prerequisites: [], syllabusTopic: [] },
+  { id: 'ts708-3', code: 'TS708-3', name: 'Kerja Praktik / Magang', sks: 3, semester: 7, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Kerja Praktik / Magang', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 8
+  { id: 'ts801-6', code: 'TS801-6', name: 'Skripsi / Tugas Akhir', sks: 6, semester: 8, category: 'Wajib', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Skripsi / Tugas Akhir', prerequisites: [], syllabusTopic: [] },
+
+  // Konsentrasi (Semester 7)
+  { id: 'tms701-3', code: 'TMS701-3', name: 'Konsentrasi Struktur (Struktur Beton Bertulang Lanjut)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Struktur', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Struktur (Struktur Beton Bertulang Lanjut)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tms702-3', code: 'TMS702-3', name: 'Konsentrasi Struktur (Struktur Baja Lanjut)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Struktur', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Struktur (Struktur Baja Lanjut)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tms703-3', code: 'TMS703-3', name: 'Konsentrasi Struktur (Struktur Kayu & Bambu)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Struktur', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Struktur (Struktur Kayu & Bambu)', prerequisites: [], syllabusTopic: [] },
+
+  { id: 'tmg701-3', code: 'TMG701-3', name: 'Konsentrasi Geoteknik (Perbaikan Tanah & Geosintetik)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Geoteknik', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Geoteknik (Perbaikan Tanah & Geosintetik)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tmg702-3', code: 'TMG702-3', name: 'Konsentrasi Geoteknik (Mekanika Batuan & Terowongan)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Geoteknik', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Geoteknik (Mekanika Batuan & Terowongan)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tmg703-3', code: 'TMG703-3', name: 'Konsentrasi Geoteknik (Stabilitas Lereng & Dinding Penahan Tanah)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Geoteknik', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Geoteknik (Stabilitas Lereng & Dinding Penahan Tanah)', prerequisites: [], syllabusTopic: [] },
+
+  { id: 'tma701-3', code: 'TMA701-3', name: 'Konsentrasi Air (Pengembangan Sumber Daya Air)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Air', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Air (Pengembangan Sumber Daya Air)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tma702-3', code: 'TMA702-3', name: 'Konsentrasi Air (Bangunan Pantai & Lepas Pantai)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Air', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Air (Bangunan Pantai & Lepas Pantai)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tma703-3', code: 'TMA703-3', name: 'Konsentrasi Air (Erosi & Sedimentasi)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Air', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Air (Erosi & Sedimentasi)', prerequisites: [], syllabusTopic: [] },
+
+  { id: 'tmt701-3', code: 'TMT701-3', name: 'Konsentrasi Transportasi (Perencanaan Transportasi)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Transportasi', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Transportasi (Perencanaan Transportasi)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tmt702-3', code: 'TMT702-3', name: 'Konsentrasi Transportasi (Sistem Angkutan Umum)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Transportasi', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Transportasi (Sistem Angkutan Umum)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tmt703-3', code: 'TMT703-3', name: 'Konsentrasi Transportasi (Keselamatan Jalan Raya)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Transportasi', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Transportasi (Keselamatan Jalan Raya)', prerequisites: [], syllabusTopic: [] },
+
+  { id: 'tmk701-3', code: 'TMK701-3', name: 'Konsentrasi Manajemen Konstruksi (K3 Konstruksi)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Manajemen Konstruksi', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Manajemen Konstruksi (K3 Konstruksi)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tmk702-3', code: 'TMK702-3', name: 'Konsentrasi Manajemen Konstruksi (Aspek Hukum Konstruksi)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Manajemen Konstruksi', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Manajemen Konstruksi (Aspek Hukum Konstruksi)', prerequisites: [], syllabusTopic: [] },
+  { id: 'tmk703-3', code: 'TMK703-3', name: 'Konsentrasi Manajemen Konstruksi (BIM dalam Manajemen Konstruksi)', sks: 3, semester: 7, category: 'BISA DIIMBANGI', specialization: 'Manajemen Konstruksi', studyProgram: 'Teknik Sipil', description: 'Mata kuliah Konsentrasi Manajemen Konstruksi (BIM dalam Manajemen Konstruksi)', prerequisites: [], syllabusTopic: [] },
+
+  // ================= TEKNIK ELEKTRO (51 Mata Kuliah) =================
+  // Semester 1
+  { id: 'te101-2', code: 'TE101-2', name: 'Rangkaian Listrik I', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Rangkaian Listrik I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te102-2', code: 'TE102-2', name: 'Pengantar Teknik Elektro', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Pengantar Teknik Elektro', prerequisites: [], syllabusTopic: [] },
+  { id: 'te103-2', code: 'TE103-2', name: 'Pemrograman Komputer', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Pemrograman Komputer', prerequisites: [], syllabusTopic: [] },
+  { id: 'te104-3', code: 'TE104-3', name: 'Fisika Dasar I', sks: 3, semester: 1, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Fisika Dasar I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te105-2', code: 'TE105-2', name: 'Kalkulus I', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Kalkulus I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te106-2', code: 'TE106-2', name: 'Pendidikan Agama', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Pendidikan Agama', prerequisites: [], syllabusTopic: [] },
+  { id: 'te107-2', code: 'TE107-2', name: 'Bahasa Indonesia', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Bahasa Indonesia', prerequisites: [], syllabusTopic: [] },
+  { id: 'te108-2', code: 'TE108-2', name: 'Pendidikan Pancasila', sks: 2, semester: 1, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Pendidikan Pancasila', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 2
+  { id: 'te201-3', code: 'TE201-3', name: 'Rangkaian Listrik II', sks: 3, semester: 2, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Rangkaian Listrik II', prerequisites: [], syllabusTopic: [] },
+  { id: 'te202-3', code: 'TE202-3', name: 'Elektronika I', sks: 3, semester: 2, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Elektronika I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te203-2', code: 'TE203-2', name: 'Sistem Digital', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Sistem Digital', prerequisites: [], syllabusTopic: [] },
+  { id: 'te204-2', code: 'TE204-2', name: 'Medan Elektromagnetik I', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Medan Elektromagnetik I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te205-2', code: 'TE205-2', name: 'Fisika Dasar II', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Fisika Dasar II', prerequisites: [], syllabusTopic: [] },
+  { id: 'te206-2', code: 'TE206-2', name: 'Kalkulus II', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Kalkulus II', prerequisites: [], syllabusTopic: [] },
+  { id: 'te207-2', code: 'TE207-2', name: 'Bahasa Inggris I', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Bahasa Inggris I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te208-2', code: 'TE208-2', name: 'Pendidikan Kewarganegaraan', sks: 2, semester: 2, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Pendidikan Kewarganegaraan', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 3
+  { id: 'te301-3', code: 'TE301-3', name: 'Elektronika II', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Elektronika II', prerequisites: [], syllabusTopic: [] },
+  { id: 'te302-3', code: 'TE302-3', name: 'Sinyal & Sistem', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Sinyal & Sistem', prerequisites: [], syllabusTopic: [] },
+  { id: 'te303-3', code: 'TE303-3', name: 'Mesin-Mesin Listrik I', sks: 3, semester: 3, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Mesin-Mesin Listrik I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te304-2', code: 'TE304-2', name: 'Medan Elektromagnetik II', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Medan Elektromagnetik II', prerequisites: [], syllabusTopic: [] },
+  { id: 'te305-2', code: 'TE305-2', name: 'Matematika Teknik I', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Matematika Teknik I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te306-2', code: 'TE306-2', name: 'Pengukuran Besaran Listrik', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Pengukuran Besaran Listrik', prerequisites: [], syllabusTopic: [] },
+  { id: 'te307-2', code: 'TE307-2', name: 'Bahasa Inggris II', sks: 2, semester: 3, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Bahasa Inggris II', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 4
+  { id: 'te401-3', code: 'TE401-3', name: 'Mikrokontroler & Sistem Tertanam', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Mikrokontroler & Sistem Tertanam', prerequisites: [], syllabusTopic: [] },
+  { id: 'te402-3', code: 'TE402-3', name: 'Sistem Pengaturan I', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Sistem Pengaturan I', prerequisites: [], syllabusTopic: [] },
+  { id: 'te403-3', code: 'TE403-3', name: 'Analisis Sistem Tenaga Listrik', sks: 3, semester: 4, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Analisis Sistem Tenaga Listrik', prerequisites: [], syllabusTopic: [] },
+  { id: 'te404-2', code: 'TE404-2', name: 'Mesin-Mesin Listrik II', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Mesin-Mesin Listrik II', prerequisites: [], syllabusTopic: [] },
+  { id: 'te405-2', code: 'TE405-2', name: 'Dasar Sistem Telekomunikasi', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Dasar Sistem Telekomunikasi', prerequisites: [], syllabusTopic: [] },
+  { id: 'te406-2', code: 'TE406-2', name: 'Matematika Teknik II', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Matematika Teknik II', prerequisites: [], syllabusTopic: [] },
+  { id: 'te407-2', code: 'TE407-2', name: 'Kewirausahaan', sks: 2, semester: 4, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Kewirausahaan', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 5
+  { id: 'te501-3', code: 'TE501-3', name: 'Elektronika Daya', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Elektronika Daya', prerequisites: [], syllabusTopic: [] },
+  { id: 'te502-3', code: 'TE502-3', name: 'Pemrosesan Sinyal Digital', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Pemrosesan Sinyal Digital', prerequisites: [], syllabusTopic: [] },
+  { id: 'te503-3', code: 'TE503-3', name: 'Transmisi & Distribusi Tenaga Listrik', sks: 3, semester: 5, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Transmisi & Distribusi Tenaga Listrik', prerequisites: [], syllabusTopic: [] },
+  { id: 'te504-2', code: 'TE504-2', name: 'Sistem Pengaturan II', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Sistem Pengaturan II', prerequisites: [], syllabusTopic: [] },
+  { id: 'te505-2', code: 'TE505-2', name: 'Otomasi Industri & PLC', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Otomasi Industri & PLC', prerequisites: [], syllabusTopic: [] },
+  { id: 'te506-2', code: 'TE506-2', name: 'Metodologi Penelitian', sks: 2, semester: 5, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Metodologi Penelitian', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 6
+  { id: 'te601-3', code: 'TE601-3', name: 'Proteksi Sistem Tenaga Listrik', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Proteksi Sistem Tenaga Listrik', prerequisites: [], syllabusTopic: [] },
+  { id: 'te602-3', code: 'TE602-3', name: 'Sistem Kendali Terdistribusi', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Sistem Kendali Terdistribusi', prerequisites: [], syllabusTopic: [] },
+  { id: 'te603-3', code: 'TE603-3', name: 'Energi Terbarukan & Pembangkit Listrik', sks: 3, semester: 6, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Energi Terbarukan & Pembangkit Listrik', prerequisites: [], syllabusTopic: [] },
+  { id: 'te604-2', code: 'TE604-2', name: 'Komunikasi Data & Jaringan', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Komunikasi Data & Jaringan', prerequisites: [], syllabusTopic: [] },
+  { id: 'te605-2', code: 'TE605-2', name: 'Sensor & Aktuator', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Sensor & Aktuator', prerequisites: [], syllabusTopic: [] },
+  { id: 'te606-2', code: 'TE606-2', name: 'Manajemen Energi', sks: 2, semester: 6, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Manajemen Energi', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 7
+  { id: 'te701-3', code: 'TE701-3', name: 'Perancangan Sistem Elektronika', sks: 3, semester: 7, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Perancangan Sistem Elektronika', prerequisites: [], syllabusTopic: [] },
+  { id: 'te702-3', code: 'TE702-3', name: 'Perancangan Sistem Tenaga', sks: 3, semester: 7, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Perancangan Sistem Tenaga', prerequisites: [], syllabusTopic: [] },
+  { id: 'te703-3', code: 'TE703-3', name: 'Perancangan Sistem Kendali', sks: 3, semester: 7, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Perancangan Sistem Kendali', prerequisites: [], syllabusTopic: [] },
+  { id: 'te704-2', code: 'TE704-2', name: 'Teknik Tegangan Tinggi', sks: 2, semester: 7, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Teknik Tegangan Tinggi', prerequisites: [], syllabusTopic: [] },
+  { id: 'te705-2', code: 'TE705-2', name: 'Robotika & Otomasi', sks: 2, semester: 7, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Robotika & Otomasi', prerequisites: [], syllabusTopic: [] },
+  { id: 'te706-2', code: 'TE706-2', name: 'Internet of Things Industri (IIoT)', sks: 2, semester: 7, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Internet of Things Industri (IIoT)', prerequisites: [], syllabusTopic: [] },
+  { id: 'te707-2', code: 'TE707-2', name: 'Seminar Proposal', sks: 2, semester: 7, category: 'BISA DIIMBANGI', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Seminar Proposal', prerequisites: [], syllabusTopic: [] },
+  { id: 'te708-3', code: 'TE708-3', name: 'Kerja Praktik / Magang', sks: 3, semester: 7, category: 'BISA DIIMBANGI', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Kerja Praktik / Magang', prerequisites: [], syllabusTopic: [] },
+
+  // Semester 8
+  { id: 'te801-6', code: 'TE801-6', name: 'Skripsi / Tugas Akhir', sks: 6, semester: 8, category: 'Wajib', studyProgram: 'Teknik Elektro', description: 'Mata kuliah Skripsi / Tugas Akhir', prerequisites: [], syllabusTopic: [] }
 ];
 
 export const LECTURERS_DATA: Lecturer[] = [
@@ -426,7 +329,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Dr. Andi Nur Putri, S.Pd., M.T',
     nidn: '907058603',
     title: 'Dosen Tetap Teknik Elektro',
-    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Elektro', 'Sistem Isyarat', 'Elektronika'],
     email: 'andinurputri@patria-artha.ac.id',
@@ -445,7 +348,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Ir. Irwan Syarif, S.Pd., M.T',
     nidn: '903078801',
     title: 'Dosen Tetap Teknik Elektro',
-    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Elektro', 'Mikrokontroler', 'Telekomunikasi'],
     email: 'irwansyarif@patria-artha.ac.id',
@@ -463,7 +366,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Ir. Muh. Rais, S.Pd., M.T',
     nidn: '901128901',
     title: 'Dosen Tetap Teknik Elektro',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Elektro', 'Sistem Tenaga', 'Elektronika Daya'],
     email: 'muhrais@patria-artha.ac.id',
@@ -480,7 +383,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Dr. Syamsumarlin Taha, S.Pd., M.Pd',
     nidn: '907018604',
     title: 'Dosen Tetap Teknik Elektro',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Elektro', 'Pendidikan Teknologi', 'Sistem Kontrol'],
     email: 'syamsumarlin@patria-artha.ac.id',
@@ -498,7 +401,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Ir. Asnefi, M.M',
     nidn: '911087404',
     title: 'Dosen Tetap Teknik Informatika',
-    photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['RPL', 'DataScience'],
     expertiseTags: ['Teknik Informatika', 'Manajemen IT', 'Sistem Informasi'],
     email: 'asnefi@patria-artha.ac.id',
@@ -515,7 +418,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Dayanti, S.Kom, M.Kom',
     nidn: '930129602',
     title: 'Dosen Tetap Teknik Informatika',
-    photo: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['AI', 'DataScience'],
     expertiseTags: ['Teknik Informatika', 'Algoritma', 'Pemrograman Web'],
     email: 'dayanti@patria-artha.ac.id',
@@ -534,7 +437,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Jumiati Usman, S.Kom., M.M',
     nidn: '930037301',
     title: 'Dosen Tetap Teknik Informatika',
-    photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['RPL'],
     expertiseTags: ['Teknik Informatika', 'Basis Data', 'Sistem Informasi Enterprise'],
     email: 'jumiati.usman@patria-artha.ac.id',
@@ -551,7 +454,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Andi Nurfadly, S.Pd., M.Kom',
     nidn: '911058808',
     title: 'Dosen Tetap Teknik Informatika',
-    photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['CyberSecurity', 'RPL'],
     expertiseTags: ['Teknik Informatika', 'Jaringan Komputer', 'Keamanan Siber'],
     email: 'andinurfadly@patria-artha.ac.id',
@@ -569,7 +472,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Ir. Muhammad Arham, S.Pd., M.T',
     nidn: '905049006',
     title: 'Dosen Tetap Teknik Mesin',
-    photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Mesin', 'Termodinamika', 'Konversi Energi'],
     email: 'muhammad.arham@patria-artha.ac.id',
@@ -586,7 +489,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Akhsan Hamka, S.Kom., S.T., M.T.',
     nidn: '912088706',
     title: 'Dosen Tetap Teknik Mesin',
-    photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT', 'RPL'],
     expertiseTags: ['Teknik Mesin', 'CAD/CAM', 'Mekatronika'],
     email: 'akhsan.hamka@patria-artha.ac.id',
@@ -604,7 +507,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Husni Mubarak, S.T., M.T',
     nidn: '6452775676130170',
     title: 'Dosen Tetap Teknik Mesin',
-    photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Mesin', 'Material Teknik', 'Proses Manufaktur'],
     email: 'husnimubarak@patria-artha.ac.id',
@@ -620,7 +523,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Aras M Parenreng, S.Si., M.T',
     nidn: '356762663130253',
     title: 'Dosen Tetap Teknik Elektro',
-    photo: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT', 'DataScience'],
     expertiseTags: ['Teknik Elektro', 'Fisika Material', 'Telekomunikasi'],
     email: 'aras.parenreng@patria-artha.ac.id',
@@ -636,7 +539,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Amal All Gazali, S.T., M.T',
     nidn: '4857768669130510',
     title: 'Dosen Tetap Teknik Mesin',
-    photo: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Mesin', 'Otomotif', 'Sistem Dinamik'],
     email: 'amal.gazali@patria-artha.ac.id',
@@ -652,7 +555,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Sony Malino, S.T., M.T',
     nidn: '8241767668130500',
     title: 'Dosen Tetap Teknik Mesin',
-    photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Mesin', 'Getaran Mekanis', 'Konstruksi'],
     email: 'sony.malino@patria-artha.ac.id',
@@ -668,7 +571,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Priyo Wicaksono, S.T., M.T',
     nidn: '928037902',
     title: 'Dosen Tetap Teknik Informatika',
-    photo: 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['AI', 'RPL'],
     expertiseTags: ['Teknik Informatika', 'Kecerdasan Buatan', 'Pengolahan Citra'],
     email: 'priyo.wicaksono@patria-artha.ac.id',
@@ -684,7 +587,7 @@ export const LECTURERS_DATA: Lecturer[] = [
     name: 'Pratiwi Natsir Putri, S.T., M.T',
     nidn: '921108601',
     title: 'Dosen Tetap Teknik Elektro',
-    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     expertise: ['IoT'],
     expertiseTags: ['Teknik Elektro', 'Sistem Kendali', 'Instrumentasi'],
     email: 'pratiwi.natsir@patria-artha.ac.id',
@@ -1000,7 +903,7 @@ export const ALUMNI_TESTIMONIALS: AlumniTestimonial[] = [
     role: 'Senior AI & Software Engineer (Alumni S1 Teknik Informatika UPA)',
     company: 'GoTo Group (Tokopedia/Gojek)',
     companyLogo: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=100',
-    photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=300',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     quote: 'Kurikulum berbasis riset dan fasilitas Lab AI & Cyber Security di Teknik Informatika Universitas Patria Artha memberikan fondasi sangat kuat dalam pemodelan Machine Learning, Cloud Architecture, dan pengolahan Big Data skala industri.',
     linkedinUrl: 'https://linkedin.com'
   },
@@ -1011,7 +914,7 @@ export const ALUMNI_TESTIMONIALS: AlumniTestimonial[] = [
     role: 'Lead Cyber Security Analyst (Alumni S1 Teknik Informatika UPA)',
     company: 'Bank Central Asia (BCA)',
     companyLogo: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&q=80&w=100',
-    photo: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=300',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     quote: 'Praktikum intensif di Lab Komputer UPA membuat saya terbiasa dengan skenario penanganan insiden siber riil. Pembelajaran arsitektur perangkat lunak dan etika peretasan di UPA membuat karir saya melesat pesat.',
     linkedinUrl: 'https://linkedin.com'
   },
@@ -1024,7 +927,7 @@ export const ALUMNI_TESTIMONIALS: AlumniTestimonial[] = [
     role: 'IoT & Automation Engineer (Alumni S1 Teknik Elektro UPA)',
     company: 'PT Schneider Electric Indonesia',
     companyLogo: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=100',
-    photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=300',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     quote: 'Teknik Elektro Universitas Patria Artha memberikan bimbingan praktis langsung dalam perancangan mikrokontroler, IoT, dan sistem kontrol cerdas. Keterampilan riset terapan di UPA mempercepat kesiapan kami terjun di industri otomatisasi.',
     linkedinUrl: 'https://linkedin.com'
   },
@@ -1035,7 +938,7 @@ export const ALUMNI_TESTIMONIALS: AlumniTestimonial[] = [
     role: 'Power System & Automation Specialist (Alumni S1 Teknik Elektro UPA)',
     company: 'PT PLN (Persero) Transmisi',
     companyLogo: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=100',
-    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     quote: 'Kuliah di Teknik Elektro Universitas Patria Artha sangat berkesan. Penguasaan instrumen daya, sistem kendali linear, serta pengerjaan proyek laboratorium terpadu menjadi modal berharga bekerja di BUMN sektor ketenagalistrikan.',
     linkedinUrl: 'https://linkedin.com'
   },
@@ -1048,7 +951,7 @@ export const ALUMNI_TESTIMONIALS: AlumniTestimonial[] = [
     role: 'Design & Mechanical Reliability Engineer (Alumni S1 Teknik Mesin UPA)',
     company: 'PT Pertamina Heavy Industry',
     companyLogo: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&q=80&w=100',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     quote: 'Studi S1 Teknik Mesin Universitas Patria Artha membekali saya dengan pemahaman mendalam tentang mekanika bahan, simulasi CAD/CAM, dan analisis dinamika fluida. Praktikum di Lab Uji Material UPA sangat relevan dengan industri manufaktur & energi.',
     linkedinUrl: 'https://linkedin.com'
   },
@@ -1059,7 +962,7 @@ export const ALUMNI_TESTIMONIALS: AlumniTestimonial[] = [
     role: 'Automotive Maintenance Lead (Alumni S1 Teknik Mesin UPA)',
     company: 'PT Astra Heavy Machinery',
     companyLogo: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=100',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300',
+    photo: '/uploads/noface-1787027055368-je087.jpg',
     quote: 'Pengalaman belajar di Teknik Mesin Universitas Patria Artha sangat luar biasa. Para dosen yang berpengalaman di bidang mesin termal dan manufaktur presisi membentuk mental keinsinyuran yang tangguh dan siap kerja.',
     linkedinUrl: 'https://linkedin.com'
   }
@@ -1267,6 +1170,64 @@ Tempat: Auditorium Gedung Utama Universitas Patria Artha & Live Zoom.
 
 Pendaftaran gratis melalui SSO Kampus. Disediakan e-sertifikat 2 SKPK bagi mahasiswa aktif.`,
     tags: ['Kuliah Tamu', 'Generative AI', 'LLM', 'Event'],
+    featured: false
+  },
+  {
+    id: 'news-04',
+    title: 'Kerjasama Strategis FTI Universitas Patria Artha dengan Google Cloud & AWS Cloud Academy',
+    slug: 'kerjasama-patria-artha-google-aws-cloud',
+    category: 'Berita',
+    date: '15 Agustus 2026',
+    author: 'Kerjasama & Humas UPA',
+    thumbnail: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800',
+    summary: 'Mahasiswa FTI kini mendapatkan akses sertifikasi internasional Cloud Engineer dan DevOps secara gratis melalui program Kemitraan Industri Global.',
+    content: `Fakultas Teknik dan Informatika Universitas Patria Artha resmi menandatangani Nota Kesepahaman (MoU) dengan Google Cloud Academy dan AWS Educate. 
+
+Melalui kemitraan strategis ini, seluruh mahasiswa aktif prodi Teknik Informatika dan Teknik Sipil mendapatkan akses langsung ke platform pembelajaran Cloud Computing, pelatihan Kubernetes, AWS Solutions Architect, serta voucher sertifikasi resmi berstandar internasional.
+
+Program ini terintegrasi langsung dengan mata kuliah Cloud Computing dan Sistem Terdistribusi pada semester 5.`,
+    tags: ['Google Cloud', 'AWS', 'Kerjasama', 'Sertifikasi'],
+    featured: true
+  },
+  {
+    id: 'news-05',
+    title: 'Jadwal dan Ketentuan Pelaksanaan Ujian Tengah Semester (UTS) Ganjil TA 2026/2027',
+    slug: 'jadwal-ketentuan-uts-ganjil-2026-2027',
+    category: 'Pengumuman',
+    date: '17 Agustus 2026',
+    author: 'Bagian Akademik & Evaluasi',
+    thumbnail: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800',
+    summary: 'Informasi lengkap mengenai jadwal ujian, tata tertib perkuliahan, dan pengunduhan Kartu Ujian Digital bagi seluruh mahasiswa FTI.',
+    content: `Diumumkan kepada seluruh mahasiswa Fakultas Teknik dan Informatika Universitas Patria Artha bahwa pelaksanaan Ujian Tengah Semester (UTS) Ganjil Tahun Akademik 2026/2027 akan dilangsungkan pada:
+
+Tanggal: 07 - 18 September 2026
+Metode: Tatap Muka & Computer Based Test (CBT) Kampus
+
+Persyaratan Peserta Ujian:
+1. Telah melunasi kewajiban keuangan semester Ganjil.
+2. Membawa Kartu Ujian Digital yang telah diunduh via Portal Akademik UPA.
+3. Kehadiran tatap muka minimal 75%.`,
+    tags: ['Pengumuman', 'UTS', 'Akademik', 'Jadwal Ujian'],
+    featured: false
+  },
+  {
+    id: 'news-06',
+    title: 'Workshop Internasional: "Cyber Security Threat Hunting & Ethical Hacking Framework 2026"',
+    slug: 'workshop-cyber-security-threat-hunting-2026',
+    category: 'Agenda',
+    date: '18 Agustus 2026',
+    author: 'Laboratorium Siber & Jaringan FTI',
+    thumbnail: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800',
+    summary: 'Pelatihan hands-on keamanan siber yang dipandu oleh praktisi Certified Ethical Hacker (CEH) dan tim Forensik Keamanan Siber.',
+    content: `Laboratorium Keamanan Siber FTI Universitas Patria Artha menggelar Workshop Praktis Threat Hunting & Penetration Testing.
+
+Materi Pelatihan:
+- Network Traffic Analysis with Wireshark & Suricata
+- Automated Vulnerability Assessment & Patching
+- Incident Response Protocols & Memory Forensics
+
+Fasilitas: Virtual Lab Access, Sertifikat Kompetensi, Konsumsi, dan e-Book materi eksklusif.`,
+    tags: ['Cyber Security', 'Workshop', 'Ethical Hacking', 'Laboratorium'],
     featured: false
   }
 ];
